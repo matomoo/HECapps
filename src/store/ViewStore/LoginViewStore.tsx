@@ -1,6 +1,8 @@
 import { observable, action } from "mobx";
 
 class LoginStore {
+	// @observable email = "res@m.com";
+	// @observable password = "qazwsxed";
 	@observable email = "";
 	@observable password = "";
 	@observable isValid = false;

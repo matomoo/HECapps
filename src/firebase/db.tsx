@@ -56,6 +56,20 @@ export const doUpdateStatusApotekPasien = ( uid ) => {
 	return getter;
 };
 
+export const doUpdateDokterPoli1 = ( dokterName ) => {
+	const getter = db.ref(`poliklinik`).update({
+		dokter1 : dokterName,
+	});
+	return getter;
+};
+
+export const doUpdateDokterPoli2 = ( dokterName ) => {
+	const getter = db.ref(`poliklinik`).update({
+		dokter2 : dokterName,
+	});
+	return getter;
+};
+
 export const onceGetUsers = () => {
 	db.ref("users").once("value");
 };

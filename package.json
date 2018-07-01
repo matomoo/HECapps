@@ -27,7 +27,7 @@
     "start":
       "npm run build && concurrently -r 'npm run watch' 'react-native-scripts start'",
     "eject": "react-native-scripts eject",
-    "jest": "node node_modules/jest/bin/jest.js",
+    "jest": "node node_modules/jest/bin/jest.js --no-verify",
     "watch": "npm run build -- -w",
     "ios":
       "npm run build && concurrently -r 'npm run watch' 'react-native-scripts ios'",

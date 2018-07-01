@@ -39,18 +39,38 @@ export default class HomeContainer extends React.Component<Props, State> {
 		const { currentUserRole } = this.props.mainStore;
 
 		const cardPasien = (
-			<CardItem
-				button
-				onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
-				>
-				<Left><Text>Riwayat Rekam Medik</Text></Left>
-				<Right><Icon active name="ios-arrow-forward"/></Right>
-			</CardItem>
+			<List>
+				<ListItem
+					key="1"
+					button
+					onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
+					>
+					<Left><Text>Riwayat Rekam Medik</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+				<ListItem
+					key="2"
+					button
+					onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
+					>
+					<Left><Text>Daftar Antrian Poliklinik</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+			</List>
 		);
 
 		const cardResepsionis = (
 			<List>
 				<ListItem
+					key="1"
+					button
+					onPress={() => this.props.navigation.navigate("PoliklinikPage")}
+					>
+					<Left><Text>Pengaturan Poliklinik</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+				<ListItem
+					key="2"
 					button
 					onPress={() => this.props.navigation.navigate("PasienPage")}
 					>
@@ -58,6 +78,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
 				<ListItem
+					key="3"
 					button
 					onPress={() => this.props.navigation.navigate("DaftarTungguPage")}
 					>
@@ -125,7 +146,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 			selectedCard = cardApotek;
 		}
 
-		console.log(selectedCard);
+		// console.log(selectedCard);
 
 		return <Home
 			navigation={this.props.navigation}

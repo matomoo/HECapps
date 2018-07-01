@@ -14,7 +14,7 @@ class Login extends React.Component<Props, State> {
 	render() {
 		return (
 			<Container>
-				<Header style={{ height: 200 }}>
+				<Header style={{ height: 150 }}>
 					<Body style={{ alignItems: "center" }}>
 						<Image source={require("../../../../assets/HEC_w150.jpg")} />
 						<View padder>
@@ -38,7 +38,7 @@ class Login extends React.Component<Props, State> {
 				<Footer style={{ backgroundColor: "#F8F8F8" }}>
 					<View style={{ alignItems: "center", opacity: 0.5, flexDirection: "row" }}>
 						<View padder>
-							<Text style={{ color: "#000" }}>Made with love at </Text>
+							<Text style={{ color: "#000" }}>Apps of HEC</Text>
 						</View>
 					</View>
 				</Footer>
