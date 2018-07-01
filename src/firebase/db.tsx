@@ -1,5 +1,4 @@
 import { db } from "./firebase";
-// import { promisify } from "es6-promisify";
 
 export const doCreateUser = ( id, username, email, role ) => {
 	db.ref(`users/${id}`).update({
@@ -70,6 +69,15 @@ export const doUpdateDokterPoli2 = ( dokterName ) => {
 	return getter;
 };
 
+export const doPasienDaftarAntrian = ( uid, nomorAntrian ) => {
+	db.ref(`daftarTunggu/${uid}`).update({
+		nomorAntrianPasien: nomorAntrian,
+	});
+	db.ref(`daftarTunggu`).update({
+		nomorAntrian: nomorAntrian,
+	});
+};
+
 export const onceGetUsers = () => {
 	db.ref("users").once("value");
 };
@@ -106,5 +114,15 @@ export const GetRekamMedikPasien = (uid) => {
 
 export const GetSingleUsers = (uid) => {
 	const resUser = db.ref(`users/${uid}`).once("value");
+	return resUser;
+};
+
+export const getNumberLastAntrian = () => {
+	const resUser = db.ref(`daftarTunggu/nomorAntrian`).once("value");
+	return resUser;
+};
+
+export const getNomorAntrianPasien = ( uid ) => {
+	const resUser = db.ref(`daftarTunggu/${uid}/nomorAntrianPasien`).once("value");
 	return resUser;
 };

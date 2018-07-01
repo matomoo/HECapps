@@ -67,7 +67,6 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 					</CardItem>
 					<CardItem>
 						<Content>
-						{/* <Body> */}
 							<Form>
 								<Picker
 								iosHeader="Select one"
@@ -78,7 +77,6 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 								{ this.make_list(this.state.services, "Idle") }
 								</Picker>
 							</Form>
-						{/* </Body> */}
 						</Content>
 					</CardItem>
 				</Card>

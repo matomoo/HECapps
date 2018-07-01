@@ -20,7 +20,7 @@ class DaftarAntrianPoliPage extends React.Component<Props, State> {
 					</Left>
 
 					<Body style={{ flex: 3 }}>
-						<Title>Daftar Antrian Poli</Title>
+						<Title>Daftar Antrian Poliklinik</Title>
 					</Body>
 
 					<Right />

@@ -38,7 +38,7 @@ export default class LoginContainer extends React.Component<Props, State> {
 					// this.props.loginForm.responseFirebase = error.message;
 					Toast.show({
 						text: error.message,
-						duration: 500,
+						duration: 5000,
 						position: "top",
 						textStyle: { textAlign: "center" },
 					});

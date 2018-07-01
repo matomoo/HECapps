@@ -10,7 +10,6 @@ import { CardItem,
 		} from "native-base";
 
 import Home from "../../stories/screens/Home";
-import data from "./data";
 import { db } from "../../firebase";
 
 export interface Props {
@@ -25,18 +24,38 @@ export interface State {}
 export default class HomeContainer extends React.Component<Props, State> {
 
 	componentWillMount() {
-		this.props.mainStore.fetchItems(data);
-		db.GetSingleUsers(this.props.mainStore.currentUid).then(snapshot => {
+		// this.props.mainStore.fetchItems(data);
+		this.onAmbilDataAwalAplikasi();
+	}
+
+	componentDidMount() {
+			this.onAmbilDataAwalPasien();
+	}
+
+	async onAmbilDataAwalAplikasi() {
+		const { currentUid } = this.props.mainStore;
+		await db.GetSingleUsers(currentUid).then(snapshot => {
 			this.props.mainStore.currentUsername = snapshot.val().username;
 			this.props.mainStore.currentUserRole = snapshot.val().role;
-			console.log(this.props);
 		});
+		// console.log(this.props);
+		this.onAmbilDataAwalPasien();
+	}
+
+	onAmbilDataAwalPasien() {
+		const { currentUserRole, currentUid } = this.props.mainStore;
+			if (currentUserRole === "pasien") {
+				db.getNomorAntrianPasien(currentUid)
+					.then(res => {
+						this.props.mainStore.nomorAntrianPoli = res.val();
+					});
+		}
 	}
 
 	render() {
 		const list = this.props.mainStore.items.toJS();
 		const key = this.props.mainStore.currentUid;
-		const { currentUserRole } = this.props.mainStore;
+		const { currentUserRole, nomorAntrianPoli } = this.props.mainStore;
 
 		const cardPasien = (
 			<List>
@@ -53,7 +72,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 					button
 					onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
 					>
-					<Left><Text>Daftar Antrian Poliklinik</Text></Left>
+					<Left><Text>Daftar Antrian Poliklinik { nomorAntrianPoli ? " - " + nomorAntrianPoli : " - loading data..." }</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
 			</List>
