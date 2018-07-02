@@ -47,10 +47,10 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 			});
 	}
 
-	handleAntriPoli(uid) {
+	handleAntriPoli( uid, uName) {
 		db.getNumberLastAntrian()
 			.then(res => {
-				db.doPasienDaftarAntrian(uid, res.val() + 1);
+				db.doPasienDaftarAntrian(uid, uName, res.val() + 1);
 				this.setState({ nomorAntri: res.val() + 1 });
 				this.props.mainStore.nomorAntrianPoli = this.state.nomorAntri;
 				// console.log(res.val());
@@ -59,12 +59,12 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	render() {
-		const { currentUid } = this.props.mainStore;
+		const { currentUid, currentUsername } = this.props.mainStore;
 		const Forms = (
 			<View>
 				<Card>
 					<CardItem footer button
-						onPress={() => this.handleAntriPoli(currentUid)}
+						onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
 						>
 						<Text>Daftar Antrian Poli ke - { this.state.nomorAntri ? this.state.nomorAntri : "loading data..." }</Text>
 					</CardItem>

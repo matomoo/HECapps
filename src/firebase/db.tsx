@@ -69,13 +69,18 @@ export const doUpdateDokterPoli2 = ( dokterName ) => {
 	return getter;
 };
 
-export const doPasienDaftarAntrian = ( uid, nomorAntrian ) => {
+export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian ) => {
 	db.ref(`daftarTunggu/${uid}`).update({
+		namaUser: uName,
 		nomorAntrianPasien: nomorAntrian,
 	});
 	db.ref(`daftarTunggu`).update({
 		nomorAntrian: nomorAntrian,
 	});
+	db.ref(`pasiens/${uid}`).update({
+		flagActivity : "antriPoliklinik",
+	});
+
 };
 
 export const onceGetUsers = () => {

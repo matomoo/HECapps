@@ -88,20 +88,20 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<Left><Text>Pengaturan Poliklinik</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
-				<ListItem
+				{/* <ListItem
 					key="2"
 					button
 					onPress={() => this.props.navigation.navigate("PasienPage")}
 					>
 					<Left><Text>List Daftar Semua Pasien</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
+				</ListItem> */}
 				<ListItem
 					key="3"
 					button
 					onPress={() => this.props.navigation.navigate("DaftarTungguPage")}
 					>
-					<Left><Text>List Daftar Tunggu</Text></Left>
+					<Left><Text>List Daftar Tunggu Aktif</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
 			</List>

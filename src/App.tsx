@@ -12,6 +12,7 @@ import Sidebar from "./container/SidebarContainer";
 import DaftarUser from "./container/DaftarUserContainer";
 import PoliklinikPage from "./container/PoliklinikPageContainer";
 import DaftarAntrianPoliPage from "./container/DaftarAntrianPoliPageContainer";
+import DaftarTungguPage from "./container/DaftarTungguPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -32,6 +33,7 @@ const App = StackNavigator(
 		DaftarUser: {screen: DaftarUser },
 		PoliklinikPage: { screen: PoliklinikPage },
 		DaftarAntrianPoliPage: { screen: DaftarAntrianPoliPage },
+		DaftarTungguPage: { screen: DaftarTungguPage},
 	},
 	{
 		initialRouteName: "Login",
