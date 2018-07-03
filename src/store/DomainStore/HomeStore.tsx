@@ -1,20 +1,22 @@
-import { observable, action } from "mobx";
+import { observable,
+			// action
+		} from "mobx";
 // import { db } from "../../firebase";
 
 class HomeStore {
-	@observable hasErrored = false;
-	@observable isLoading = true;
-	@observable items = [];
+	// @observable hasErrored = false;
+	// @observable isLoading = true;
+	// @observable items = [];
 	@observable currentUid = "";
 	@observable currentUsername = "";
 	@observable currentUserRole = "";
-	@observable nomorAntrianPoli = "";
+	// @observable nomorAntrianPoli = "";
 
-	@action
-	fetchItems(data) {
-		this.items = data;
-		this.isLoading = false;
-	}
+	// @action
+	// fetchItems(data) {
+	// 	this.items = data;
+	// 	this.isLoading = false;
+	// }
 
 	// @action
 	// updateNomorAntrianPoli() {

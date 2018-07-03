@@ -58,6 +58,7 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 		return d;
 		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
 	}
+
 	render() {
 		const forms = (
 			<View>

@@ -3,6 +3,7 @@ import LoginStore from "../store/ViewStore/LoginViewStore";
 import DaftarUserStore from "../store/ViewStore/DaftarUserViewStore";
 import PasienStore from "../store/DomainStore/PasienStore";
 import InputDiagnosaStore from "../store/ViewStore/InputDiagnosaViewStore";
+import InputBarangApotekStore from "../store/ViewStore/InputBarangApotekViewStore";
 
 export default function() {
 	const mainStore = new MainStore();
@@ -10,6 +11,7 @@ export default function() {
 	const daftarUserForm = new DaftarUserStore();
 	const pasienStore = new PasienStore();
 	const inputDiagnosaStore = new InputDiagnosaStore();
+	const inputBarangApotekStore = new InputBarangApotekStore();
 
 	return {
 		loginForm,
@@ -17,5 +19,6 @@ export default function() {
 		daftarUserForm,
 		pasienStore,
 		inputDiagnosaStore,
+		inputBarangApotekStore,
 	};
 }

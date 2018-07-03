@@ -53,7 +53,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 	}
 
 	render() {
-		const list = this.props.mainStore.items.toJS();
+		// const list = this.props.mainStore.items.toJS();
 		const key = this.props.mainStore.currentUid;
 		const { currentUserRole, nomorAntrianPoli } = this.props.mainStore;
 
@@ -107,6 +107,27 @@ export default class HomeContainer extends React.Component<Props, State> {
 			</List>
 		);
 
+		const cardApotek = (
+			<List>
+				<ListItem
+					key="1"
+					button
+					onPress={() => this.props.navigation.navigate("InputBarangApotekPage")}
+					>
+					<Left><Text>Input Barang ke Apotek</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+				<ListItem
+					key="2"
+					button
+					onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
+					>
+					<Left><Text>List Daftar Obat Apotek</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+			</List>
+		);
+
 		const cardAdmin = (
 			<CardItem
 					button
@@ -138,18 +159,6 @@ export default class HomeContainer extends React.Component<Props, State> {
 			</List>
 		);
 
-		const cardApotek = (
-			<List>
-				<ListItem
-					button
-					onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
-					>
-					<Left><Text>List Daftar Obat Apotek</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
-		);
-
 		let selectedCard;
 		if (currentUserRole === "admin") {
 			selectedCard = cardAdmin;
@@ -169,7 +178,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 
 		return <Home
 			navigation={this.props.navigation}
-			list={list}
+			// list={list}
 			authUser={this.props.mainStore.currentUsername}
 			authRole={this.props.mainStore.currentUserRole}
 			authUid={this.props.mainStore.currentUid}

@@ -1,4 +1,5 @@
 import { db } from "./firebase";
+import firebase from "firebase";
 
 export const doCreateUser = ( id, username, email, role ) => {
 	db.ref(`users/${id}`).update({
@@ -83,6 +84,34 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian ) => {
 
 };
 
+export const doApotekBarangMasukxxInput = ( namaABM, jumlahABM, hargaBeliABM, satuanABM, jenisABM ) => {
+	const id = db.ref(`apotekBarangMasuk`).push();
+	const key = id.key;
+	db.ref(`apotekBarangMasuk/${key}`).update ({
+		idABM: key,
+		namaABM: namaABM,
+		jumlahABM: jumlahABM,
+		hargaBeliABM: hargaBeliABM,
+		satuanABM: satuanABM,
+		jenisABM: jenisABM,
+		timestamp: firebase.database.ServerValue.TIMESTAMP,
+	});
+};
+
+export const doApotekStokxxInput = ( namaAS, jumlahAS, hargaBeliAS, satuanAS, jenisAS ) => {
+	const aid = db.ref(`apotekStokBarang`).push();
+	const akey = aid.key;
+	db.ref(`apotekStokBarang/${akey}`).update ({
+		idAS: akey,
+		namaAS: namaAS,
+		jumlahAS: jumlahAS,
+		hargaBeliAS: hargaBeliAS,
+		hargaJualAS: 0,
+		satuanAS: satuanAS,
+		jenisAS: jenisAS,
+	});
+};
+
 export const onceGetUsers = () => {
 	db.ref("users").once("value");
 };
@@ -130,4 +159,9 @@ export const getNumberLastAntrian = () => {
 export const getNomorAntrianPasien = ( uid ) => {
 	const resUser = db.ref(`daftarTunggu/${uid}/nomorAntrianPasien`).once("value");
 	return resUser;
+};
+
+export const getIdAS = ( p ) => {
+	const x = db.ref(`apotekStokBarang`).orderByChild("namaAS").equalTo(`${p}`).once("value");
+	return x;
 };

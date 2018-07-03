@@ -17,7 +17,7 @@ import {
 import styles from "./styles";
 export interface Props {
 	navigation: any;
-	list: any;
+	// list: any;
 	authUser: any;
 	authRole: any;
 	authUid: any;
