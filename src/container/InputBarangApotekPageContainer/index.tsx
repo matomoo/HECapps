@@ -7,10 +7,16 @@ import {
 	Input,
 	Picker,
 	Label,
+	// Button,
+	// Icon,
+	// Text,
+	// Right,
+	// Left,
 } from "native-base";
 import { Platform } from "react-native";
 import { observer, inject } from "mobx-react/native";
 import { db } from "../../firebase";
+import ModalListStokApotek from "../../modals/ModalListStokApotek";
 
 export interface Props {
 	navigation: any;
@@ -20,7 +26,7 @@ export interface Props {
 export interface State {
 	satuanABMPilih: any;
 	jenisABMPilih: any;
-	idASInput: any;
+	modalNamaAS: any;
 }
 
 @inject("mainStore", "inputBarangApotekStore")
@@ -36,7 +42,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 		this.state = {
 			satuanABMPilih: "pilih",
 			jenisABMPilih: "pilih",
-			idASInput: "",
+			modalNamaAS: "",
 		};
 	}
 
@@ -44,17 +50,20 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 		const { namaABM, jumlahABM, hargaBeliABM } = this.props.inputBarangApotekStore;
 		db.doApotekBarangMasukxxInput( namaABM, jumlahABM, hargaBeliABM, this.state.satuanABMPilih, this.state.jenisABMPilih );
 		db.getIdAS(namaABM).then(c1 => {
-			console.log(c1.val());
+			// console.log(c1.val());
 			if (c1.val()) {
-				console.log("disini buat update jumlah");
-				// c1.forEach(c2 => {
-				// 	console.log(c2.key);
-				// 	return true;
-				// });
+				// console.log("disini buat update jumlah");
+				c1.forEach(c2 => {
+					// console.log(c2.val());
+					db.doApotekStokxxUpdateStok( c2.key, parseInt(c2.val().jumlahAS, 10) + parseInt(jumlahABM, 10) );
+					return true;
+				});
 			} else {
-				db.doApotekStokxxInput( namaABM, jumlahABM, hargaBeliABM, this.state.satuanABMPilih, this.state.jenisABMPilih );
+				db.doApotekStokxxInput( namaABM, parseInt(jumlahABM, 10), parseInt(hargaBeliABM, 10), this.state.satuanABMPilih, this.state.jenisABMPilih );
 			}
 		});
+		this.props.inputBarangApotekStore.clearStore();
+		this.props.navigation.navigate("Home");
 	}
 
 	_make_list(list, item0) {
@@ -72,11 +81,13 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	}
 
 	_handleValueChangePic1(value: string) {
-		this.setState({ satuanABMPilih: value });
+		// this.setState({ satuanABMPilih: value });
+		this.props.inputBarangApotekStore.satuanABMPilih = value;
 	}
 
 	_handleValueChangePic2(value: string) {
-		this.setState({ jenisABMPilih: value });
+		// this.setState({ jenisABMPilih: value });
+		this.props.inputBarangApotekStore.jenisABMPilih = value;
 	}
 
 	render() {
@@ -86,10 +97,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 		const FormInputBarang = (
 			<Card>
 				<Form>
-					<Item>
-						<Label>ID Barang - {form.IdAS}</Label>
-					</Item>
-					<Item stackedLabel error={form.namaABMError ? true : false}>
+					<Item error={form.namaABMError ? true : false}>
 						<Label>Nama Barang</Label>
 						<Input
 							ref={c => (this.namaABMInput = c)}
@@ -98,6 +106,12 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 							// onBlur={() => form.validateUsername()}
 							onChangeText={e => form.namaABMonChange(e)}
 						/>
+						{/* <Icon
+							active
+							// onPress={() => {}}
+							name="home"
+						/> */}
+						<ModalListStokApotek/>
 					</Item>
 					<Item stackedLabel error={form.jumlahABMError ? true : false}>
 						<Label>Jumlah Barang</Label>
@@ -105,6 +119,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 							ref={c => (this.jumlahABMInput = c)}
 							value={form.jumlahABM}
 							style={{ marginLeft: 10 }}
+							keyboardType="numeric"
 							// onBlur={() => form.validateUsername()}
 							onChangeText={e => form.jumlahABMonChange(e)}
 						/>
@@ -115,6 +130,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 							ref={c => (this.hargaBeliABMInput = c)}
 							value={form.hargaBeliABM}
 							style={{ marginLeft: 10 }}
+							keyboardType="numeric"
 							// onBlur={() => form.validateUsername()}
 							onChangeText={e => form.hargaBeliABMonChange(e)}
 						/>
@@ -128,7 +144,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 						iosHeader="-Pilih Satuan Barang-"
 						mode="dropdown"
 						style={{ marginLeft: 15 }}
-						selectedValue={this.state.satuanABMPilih}
+						selectedValue={form.satuanABMPilih}
 						onValueChange={this._handleValueChangePic1.bind(this)}
 						>
 						{ this._make_list(this.props.inputBarangApotekStore.listSatuanABM, "-Pilih Satuan Barang-")}
@@ -141,7 +157,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 						iosHeader="-Pilih Jenis Barang-"
 						mode="dropdown"
 						style={{ marginLeft: 15 }}
-						selectedValue={this.state.jenisABMPilih}
+						selectedValue={form.jenisABMPilih}
 						onValueChange={this._handleValueChangePic2.bind(this)}
 						>
 						{ this._make_list(this.props.inputBarangApotekStore.listJenisABM, "-Pilih Jenis Barang-")}

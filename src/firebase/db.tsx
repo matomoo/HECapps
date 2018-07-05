@@ -112,6 +112,13 @@ export const doApotekStokxxInput = ( namaAS, jumlahAS, hargaBeliAS, satuanAS, je
 	});
 };
 
+export const doApotekStokxxUpdateStok = ( idAS, jumlahAS ) => {
+	db.ref(`apotekStokBarang/${idAS}`).update ({
+		idAS: idAS,
+		jumlahAS: jumlahAS,
+	});
+};
+
 export const onceGetUsers = () => {
 	db.ref("users").once("value");
 };
@@ -163,5 +170,10 @@ export const getNomorAntrianPasien = ( uid ) => {
 
 export const getIdAS = ( p ) => {
 	const x = db.ref(`apotekStokBarang`).orderByChild("namaAS").equalTo(`${p}`).once("value");
+	return x;
+};
+
+export const getApotekStok = () => {
+	const x = db.ref(`apotekStokBarang`).once("value");
 	return x;
 };

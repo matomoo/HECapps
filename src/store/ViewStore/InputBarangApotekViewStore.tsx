@@ -6,14 +6,16 @@ class InputBarangApotekStore {
 	@observable idAS = "";
 	@observable namaABM = "";
 	@observable namaABMError = "";
-	@observable jumlahABM = "0";
+	@observable jumlahABM = "";
 	@observable jumlahABMError = "";
 	@observable satuanABM = "";
 	@observable listSatuanABM = ["buah", "biji"];
-	@observable hargaBeliABM = "0";
+	@observable hargaBeliABM = "";
 	@observable hargaBeliABMError = "";
 	@observable jenisABM = "";
 	@observable listJenisABM = ["BHP", "Non BHP"];
+	@observable satuanABMPilih: "pilih";
+	@observable jenisABMPilih: "pilih";
 
 	@action
 	namaABMonChange(x) {
@@ -38,6 +40,16 @@ class InputBarangApotekStore {
 	// 		this.idAS = c.val();
 	// 	});
 	// }
+
+	@action
+	modalApotekStok( a, b, c, d, e ) {
+		// console.log(a);
+		this.idABM = a;
+		this.namaABM = b;
+		this.hargaBeliABM = c.toString();
+		this.satuanABMPilih = d;
+		this.jenisABMPilih = e;
+	}
 
 	@action
 	clearStore() {
