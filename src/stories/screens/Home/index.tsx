@@ -52,9 +52,7 @@ class Home extends React.Component<Props, State> {
 							</Body>
 						</CardItem>
 					</Card>
-					<Card>
-						{this.props.selectedCard}
-					</Card>
+					{this.props.selectedCard}
 				</Content>
 			</Container>
 		);

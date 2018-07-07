@@ -7,6 +7,7 @@ import { CardItem,
 			Icon,
 			List,
 			ListItem,
+			Card,
 		} from "native-base";
 
 import Home from "../../stories/screens/Home";
@@ -17,19 +18,32 @@ export interface Props {
 	mainStore: any;
 	authRole: any;
 }
-export interface State {}
+export interface State {
+	myPoli: any;
+	myNomorAntrian: any;
+}
 
 @inject("mainStore")
 @observer
 export default class HomeContainer extends React.Component<Props, State> {
 
-	componentWillMount() {
-		// this.props.mainStore.fetchItems(data);
-		this.onAmbilDataAwalAplikasi();
+	constructor() {
+		super();
+		this.state = {
+			myPoli: "",
+			myNomorAntrian: "",
+		};
 	}
 
-	componentDidMount() {
-			this.onAmbilDataAwalPasien();
+	async componentWillMount() {
+		// console.log("will");
+		await this.onAmbilDataAwalAplikasi();
+		// await this.onAmbilDataAwalPasien();
+	}
+
+	async componentDidMount() {
+		// console.log("did");
+		await this.onAmbilDataAwalPasien();
 	}
 
 	async onAmbilDataAwalAplikasi() {
@@ -39,93 +53,128 @@ export default class HomeContainer extends React.Component<Props, State> {
 			this.props.mainStore.currentUserRole = snapshot.val().role;
 		});
 		// console.log(this.props);
-		this.onAmbilDataAwalPasien();
+		await this.onAmbilDataAwalPasien();
 	}
 
-	onAmbilDataAwalPasien() {
-		const { currentUserRole, currentUid } = this.props.mainStore;
-			if (currentUserRole === "pasien") {
-				db.getNomorAntrianPasien(currentUid)
-					.then(res => {
-						this.props.mainStore.nomorAntrianPoli = res.val();
+	async onAmbilDataAwalPasien() {
+		const { currentUid, currentUserRole, currentUsername } = this.props.mainStore;
+		if (currentUserRole === "pasien") {
+			await db.getNomorAntrianPasien(currentUid)
+				.then(res => {
+					this.props.mainStore.nomorAntrianPoli = res.val();
+					this.setState({ myNomorAntrian: res.val() });
+					// console.log(this.props);
+				});
+		} else if ( currentUserRole === "dokter" ) {
+			db.getPolixxByDokter( currentUsername ).then(c1 => {
+				// console.log(c1.val());
+				const c2 = c1.val();
+				Object.keys(c2).map(c3 => {
+					// console.log(c2);
+					this.setState({
+						myPoli: c2[c3].poli,
 					});
+					// console.log(this.state.myPoli);
+				});
+			});
 		}
 	}
 
 	render() {
 		// const list = this.props.mainStore.items.toJS();
 		const key = this.props.mainStore.currentUid;
-		const { currentUserRole, nomorAntrianPoli } = this.props.mainStore;
+		const { currentUserRole } = this.props.mainStore;
 
 		const cardPasien = (
-			<List>
-				<ListItem
-					key="1"
-					button
-					onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
-					>
-					<Left><Text>Riwayat Rekam Medik</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-				<ListItem
-					key="2"
-					button
-					onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
-					>
-					<Left><Text>Daftar Antrian Poliklinik { nomorAntrianPoli ? " - " + nomorAntrianPoli : " - loading data..." }</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
+			<Card>
+				<List>
+					<ListItem
+						key="1"
+						button
+						onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
+						>
+						<Left><Text>Riwayat Rekam Medik</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+					<ListItem
+						key="2"
+						button
+						onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
+						>
+						<Left><Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+				</List>
+			</Card>
 		);
 
 		const cardResepsionis = (
-			<List>
-				<ListItem
-					key="1"
-					button
-					onPress={() => this.props.navigation.navigate("PoliklinikPage")}
-					>
-					<Left><Text>Pengaturan Poliklinik</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-				{/* <ListItem
-					key="2"
-					button
-					onPress={() => this.props.navigation.navigate("PasienPage")}
-					>
-					<Left><Text>List Daftar Semua Pasien</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem> */}
-				<ListItem
-					key="3"
-					button
-					onPress={() => this.props.navigation.navigate("DaftarTungguPage")}
-					>
-					<Left><Text>List Daftar Tunggu Aktif</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
+			<Card>
+				<List>
+					<ListItem
+						key="1"
+						button
+						onPress={() => this.props.navigation.navigate("PoliklinikPage")}
+						>
+						<Left><Text>Pengaturan Poliklinik</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+					{/* <ListItem
+						key="2"
+						button
+						onPress={() => this.props.navigation.navigate("PasienPage")}
+						>
+						<Left><Text>List Daftar Semua Pasien</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem> */}
+					<ListItem
+						key="3"
+						button
+						onPress={() => this.props.navigation.navigate("DaftarTungguPage")}
+						>
+						<Left><Text>List Daftar Tunggu Aktif</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+				</List>
+			</Card>
 		);
 
 		const cardApotek = (
-			<List>
-				<ListItem
-					key="1"
-					button
-					onPress={() => this.props.navigation.navigate("InputBarangApotekPage")}
-					>
-					<Left><Text>Input Barang ke Apotek</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-				<ListItem
+			<Card>
+				<List>
+					<ListItem
+						key="1"
+						button
+						onPress={() => this.props.navigation.navigate("InputBarangApotekPage")}
+						>
+						<Left><Text>Input Barang ke Apotek</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+					<ListItem
+						key="2"
+						button
+						onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
+						>
+						<Left><Text>List Daftar Obat Apotek</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+				</List>
+			</Card>
+		);
+
+		const cardDokter = (
+			<Card>
+				<CardItem>
+					<Text>Poli : { this.state.myPoli }</Text>
+				</CardItem>
+				<CardItem
 					key="2"
 					button
-					onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
-					>
-					<Left><Text>List Daftar Obat Apotek</Text></Left>
+					onPress={() => this.props.navigation.navigate("DaftarTungguPage")} >
+					<Left><Text>List Daftar Tunggu</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
+				</CardItem>
+			</Card>
 		);
 
 		const cardAdmin = (
@@ -134,15 +183,6 @@ export default class HomeContainer extends React.Component<Props, State> {
 					// onPress={() => this.props.navigation.navigate("PasienPage")}
 					>
 					<Left><Text>Ubah Role</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</CardItem>
-		);
-
-		const cardDokter = (
-				<CardItem
-					button
-					onPress={() => this.props.navigation.navigate("PasienPage")} >
-					<Left><Text>List Daftar Tunggu</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
 		);

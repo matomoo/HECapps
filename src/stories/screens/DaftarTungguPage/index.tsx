@@ -39,7 +39,9 @@ class DaftarTungguPage extends React.Component<Props, State> {
 							{Object.keys(this.props.lists).map(key =>
 								<ListItem
 									key={key}
-									// onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
+									onPress={() => this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} )}
+									// onPress={() => this.props.onPilihPasien({key})}
+									// onPress={() => console.log(key)}
 									>
 									<Left><Text>{this.props.lists[key].profil.username}</Text></Left>
 									{/* <Left><Text>{this.props.lists[key].profil.role}</Text></Left> */}
@@ -54,22 +56,5 @@ class DaftarTungguPage extends React.Component<Props, State> {
 		);
 	}
 }
-
-// const PasienList = ({users}) => {
-// 	console.log(this.props);
-// 	return (
-// 	<List>
-// 		{Object.keys(users).map(key =>
-// 			<ListItem
-// 				key={key}
-// 				onPress={() => this.onPilihPasien(key)  }
-// 				>
-// 				<Left><Text>{users[key].username}</Text></Left>
-// 				<Right><Icon active name="ios-arrow-forward"/></Right>
-// 			</ListItem>,
-// 		)}
-// 	</List>
-// );
-// };
 
 export default DaftarTungguPage;

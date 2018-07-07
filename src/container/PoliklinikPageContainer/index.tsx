@@ -48,15 +48,25 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 	make_list(list, item0) {
 		const d = list.map((data, i) => {
 			return (
-				<Picker.Item label={data} value={i} key={i}/>
+				<Picker.Item label={data} value={data} key={i}/>
 			);
 		});
 		// i did this because no need in ios :P
 		if ( Platform.OS === "android") {
-			d.unshift(<Picker.Item label={item0} value="99999" key="99999"/>);
+			d.unshift(<Picker.Item label={item0} value="Idle" key="99999"/>);
 		}
 		return d;
 		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
+	}
+
+	async componentWillMount() {
+		await db.getPoli().then(c1 => {
+			// console.log(c1);
+			this.setState({
+				selected1: c1.val().poli1.dokter,
+				selected2: c1.val().poli2.dokter,
+			});
+		});
 	}
 
 	render() {
