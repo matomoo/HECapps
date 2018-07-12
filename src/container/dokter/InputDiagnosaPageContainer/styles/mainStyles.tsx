@@ -38,6 +38,7 @@ const styles: any = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "white",
+		height: 50,
 	},
 });
 

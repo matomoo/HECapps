@@ -2,15 +2,23 @@ import * as React from "react";
 // import InputDiagnosaPage from "../../../stories/screens/dokter/InputDiagnosaPage";
 import { db } from "../../../firebase/firebase";
 import { ActivityIndicator,
-			TextInput,
+			// TextInput,
 } from "react-native";
 import { Header, Container, Title, Content, Icon,  Card,
-			// CardItem,
+			CardItem,
 			Button,
 			Toast,
-			Footer } from "native-base";
-import styles from "./styles/mainStyles";
+			Form,
+			Picker,
+			Text,
+			Item,
+			Label,
+			Input,
+			// Footer,
+		} from "native-base";
+// import styles from "./styles/mainStyles";
 import ListItem from "./components/ListItem";
+import { Platform, View } from "react-native";
 
 export interface Props {
 	navigation: any;
@@ -21,6 +29,8 @@ export interface State {
 	newTask;
 	tasks;
 	active;
+	selected1;
+	services;
 }
 export default class InputDiagnosaPageContainer extends React.Component<Props, State> {
 	tasksRef: any;
@@ -34,6 +44,8 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			newTask: "",
 			tasks: [],
 			active: true,
+			selected1: "-Pilih Diagnosa-",
+			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
 			};
 		}
 
@@ -111,6 +123,27 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		this.props.navigation.navigate("Home");
 	}
 
+	onValueChangePoli1(value: string) {
+		this.setState({
+			selected1: value,
+		});
+		// db.doUpdateDokterPoli1(value);
+	}
+
+	make_list(list, item0) {
+		const d = list.map((data, i) => {
+			return (
+				<Picker.Item label={data} value={data} key={i}/>
+			);
+		});
+		// i did this because no need in ios :P
+		if ( Platform.OS === "android") {
+			d.unshift(<Picker.Item label={item0} value="Idle" key="99999"/>);
+		}
+		return d;
+		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
+	}
+
 	render() {
 		// console.log("tasks value", this.state);
 		// If we are loading then we display the indicator, if the account is null and we are not loading
@@ -118,11 +151,11 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		const content = this.state.loading ?
 		<ActivityIndicator size="large"/> :
 			// this.state.user &&
-				<Content>
+				// <Content>
 					<Card dataArray={this.state.tasks}
-					renderRow={(task) => this._renderItem(task)} >
+						renderRow={(task) => this._renderItem(task)} >
 					</Card>
-				</Content>
+				// </Content>
 			;
 		// console.log("loading user", this.state.user, this.state.loading);
 
@@ -137,24 +170,54 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 							<Icon name="ios-arrow-back" />
 					</Button>
 				</Header>
-				{content}
-				<Footer
-					style={styles.footer}
-					>
-					<TextInput
-						value={this.state.newTask}
-						style={styles.textEdit}
-						onChangeText={(text) => this.setState({newTask: text})}
-						placeholder="New Task"
-					/>
-					<Button
-						active={this.state.active}
-						transparent
-						onPress={() => this._addTask()}>
-						<Icon name="md-add"	/>
-					</Button>
-				</Footer>
-
+				<Content contentContainerStyle={{ flexGrow: 1 }} >
+					<View
+						// style={{
+						// 	flex: 1,
+						// 	// width: 100,
+						// 	height: 100,
+						// 	}}
+						>
+						<CardItem
+							// style={{
+							// 	flex: 1,
+							// 	// width: 100,
+							// 	height: 100,
+							// 	}}
+						>
+							<Content>
+								<Form>
+									<Picker
+										iosHeader="Select one"
+										mode="dropdown"
+										selectedValue={this.state.selected1}
+										onValueChange={this.onValueChangePoli1.bind(this)}
+										>
+									{ this.make_list(this.state.services, "-Pilih Diagnosa-") }
+									</Picker>
+									<Item stackedLabel >
+										<Label>Note</Label>
+										<Input
+											// ref={c => (this.hargaBeliABMInput = c)}
+											value={ this.state.newTask }
+											style={{ marginLeft: 5 }}
+											// keyboardType="numeric"
+											// onBlur={() => form.validateUsername()}
+											onChangeText={(text) => this.setState({newTask: text})}
+										/>
+									</Item>
+									<Button block onPress={() => this._addTask()}>
+										<Text>Simpan Data</Text>
+									</Button>
+								</Form>
+							</Content>
+						</CardItem>
+					</View>
+				{/* </Content>
+				<Content> */}
+					{content}
+				</Content>
+				{/* <Footer /> */}
 			</Container>
 		);
 	}
