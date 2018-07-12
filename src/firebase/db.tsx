@@ -121,6 +121,19 @@ export const doApotekStokxxUpdateStok = ( idAS, jumlahAS ) => {
 	});
 };
 
+export const doInputConsDiag = ( namaDiag, hargaDiag ) => {
+	const aid = db.ref(`constant`).push();
+	const akey = aid.key;
+	db.ref(`constant/${akey}`).update ({
+		idDiag: akey,
+		namaDiag: namaDiag,
+		hargaDiag: hargaDiag,
+		flag: "diagnosa",
+	});
+};
+
+// ================= Get Data
+
 export const onceGetUsers = () => {
 	db.ref("users").once("value");
 };

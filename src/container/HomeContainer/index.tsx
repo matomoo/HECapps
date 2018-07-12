@@ -66,7 +66,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 					// console.log(this.props);
 				});
 		} else if ( currentUserRole === "dokter" ) {
-			db.getPolixxByDokter( currentUsername ).then(c1 => {
+			await db.getPolixxByDokter( currentUsername ).then(c1 => {
 				// console.log(c1.val());
 				const c2 = c1.val();
 				Object.keys(c2).map(c3 => {
@@ -75,6 +75,10 @@ export default class HomeContainer extends React.Component<Props, State> {
 						myPoli: c2[c3].poli,
 					});
 					// console.log(this.state.myPoli);
+				});
+			}).catch(() => {
+				this.setState({
+					myPoli: "Idle",
 				});
 			});
 		}
@@ -178,13 +182,15 @@ export default class HomeContainer extends React.Component<Props, State> {
 		);
 
 		const cardAdmin = (
-			<CardItem
+			<Card>
+				<CardItem
 					button
-					// onPress={() => this.props.navigation.navigate("PasienPage")}
+					onPress={() => this.props.navigation.navigate("InputConsDiagPage")}
 					>
-					<Left><Text>Ubah Role</Text></Left>
+					<Left><Text>Input Constant Diagnosa</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
+			</Card>
 		);
 
 		const cardBilling = (

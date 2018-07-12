@@ -20,7 +20,7 @@ export default class DaftarTungguPageContainer extends React.Component<Props, St
 		// const {key} = this.props.navigation.state.params.name ;
 		db.GetLihatDaftarTunggu().then(snapshot => {
 			this.props.pasienStore.itemsPasien = snapshot.val();
-			console.log(snapshot.val());
+			// console.log(snapshot.val());
 		});
 	}
 

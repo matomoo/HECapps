@@ -52,18 +52,6 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 		// console.log("Rekam Medik Pasien Screen");
 		// console.log( this.props.pasienUsername );
 
-		const menuResepsionis = (
-			<List>
-				<ListItem
-					key="3"
-					onPress={() => this.props.onSimpanPasienKeDaftarPeriksa() }
-					>
-					<Left><Text>Input Ke Daftar Tunggu</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
-		);
-
 		const menuDokter = (
 			<List>
 				{/* <ListItem
@@ -75,7 +63,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 				</ListItem> */}
 				<ListItem
 					key="3"
-					onPress={() => this.props.navigation.navigate("InputDiagnosa", {name : {key}} )}
+					onPress={() => this.props.navigation.navigate("InputDiagnosaPage", {name : {key}} )}
 					>
 					<Left><Text>Input Diagnosa</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
@@ -98,7 +86,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 		} else if (this.props.userRole === "pasien") {
 			// selectedCard = cardPasien;
 		} else if (this.props.userRole === "resepsionis") {
-			selectedCard = menuResepsionis;
+			// selectedCard = menuResepsionis;
 		}
 
 		return (
