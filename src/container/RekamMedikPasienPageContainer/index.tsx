@@ -70,9 +70,5 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 					userRole = {currentUserRole}
 					onSimpanPasienKeDaftarPeriksa = {() => this.simpanPasienKeDaftarPeriksa()}
 					/>;
-		// return <RekamMedikPasienPage
-		// 			navigation={this.props.navigation}
-		// 			pasienRekamMedik = {this.props.pasienStore.itemsRekamMedikPasien ? this.props.pasienStore.itemsRekamMedikPasien : undefined }
-		// />;
 	}
 }

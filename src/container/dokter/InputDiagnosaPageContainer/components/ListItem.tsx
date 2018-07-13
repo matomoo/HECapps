@@ -1,7 +1,11 @@
 import React, {
 		Component,
 	} from "react";
-	import {CardItem, Icon, Text} from "native-base";
+	import {CardItem, Icon, Text,
+			Left,
+			Right,
+			Button,
+	} from "native-base";
 	// import styles from "../styles/mainStyles";
 
 	export interface Props {
@@ -13,9 +17,18 @@ import React, {
 		render() {
 			return (
 				<CardItem>
-						<Icon name="md-create" />
-						<Text>{this.props.task.name}</Text>
-						<Icon name="md-checkmark" onPress={() => this.props.onTaskCompletion()}/>
+						{/* <Icon name="md-create" /> */}
+						<Left>
+							<Text>{this.props.task.namaDiag}</Text>
+						</Left>
+						<Right>
+							{/* <Icon name="md-checkmark" onPress={() => this.props.onTaskCompletion()}/> */}
+							<Button transparent
+								style={{ height: 10 }}
+								onPress={() => this.props.onTaskCompletion()}>
+								<Icon name="md-checkmark" />
+							</Button>
+						</Right>
 				</CardItem>
 			);
 		}

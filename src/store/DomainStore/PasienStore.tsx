@@ -1,4 +1,5 @@
 import { observable, action } from "mobx";
+import _ from "lodash";
 
 class PasienStore {
 	@observable hasErrored = false;
@@ -13,6 +14,7 @@ class PasienStore {
 	@observable currentPasienTerpilihUsername = "";
 	@observable analysis = "";
 	@observable obat = "";
+	@observable stoHargaDiag = "";
 
 	@action
 	fetchItems(data) {
@@ -30,6 +32,17 @@ class PasienStore {
 	obatOnChange(param) {
 		this.obat = param;
 		// this.validateEmail();
+	}
+
+	@action
+	_handleNameDiagSelected( p, q ) {
+		try {
+			const a = _.find(q, { namaDiag: p });
+			console.log(a);
+			this.stoHargaDiag = a.hargaDiag;
+		} catch (error) {
+			// console.log(error);
+		}
 	}
 
 }

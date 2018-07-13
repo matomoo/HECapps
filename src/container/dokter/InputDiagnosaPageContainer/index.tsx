@@ -1,5 +1,6 @@
 import * as React from "react";
 // import InputDiagnosaPage from "../../../stories/screens/dokter/InputDiagnosaPage";
+import { observer, inject } from "mobx-react/native";
 import { db } from "../../../firebase/firebase";
 import { ActivityIndicator,
 			// TextInput,
@@ -14,14 +15,20 @@ import { Header, Container, Title, Content, Icon,  Card,
 			Item,
 			Label,
 			Input,
+			Left,
+			Body,
+			Right,
 			// Footer,
 		} from "native-base";
 // import styles from "./styles/mainStyles";
 import ListItem from "./components/ListItem";
 import { Platform, View } from "react-native";
+import firebase from "firebase";
 
 export interface Props {
 	navigation: any;
+	pasienStore;
+	mainStore;
 }
 export interface State {
 	loading;
@@ -31,13 +38,19 @@ export interface State {
 	active;
 	selected1;
 	services;
+	diags;
 }
+
+@inject("pasienStore", "mainStore")
+@observer
 export default class InputDiagnosaPageContainer extends React.Component<Props, State> {
 	tasksRef: any;
+	constDiag: any;
 
 	constructor(props) {
 		super(props);
 		this.tasksRef = db.ref(`rekamMedik`);
+		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa"); // .once("value");
 		this.state = {
 			user: undefined,
 			loading: false,
@@ -46,8 +59,36 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			active: true,
 			selected1: "-Pilih Diagnosa-",
 			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
+			diags: [],
 			};
 		}
+
+	componentWillMount() {
+		this.getFirstData(this.constDiag);
+	}
+
+	getFirstData( constDiag ) {
+		constDiag.once("value")
+			.then((result) => {
+				// this.setState({ diags: result.val() });
+				const r1 = result.val();
+				const diags = [];
+				Object.keys(r1).map(r2 => {
+					// console.log(r1[r2].namaDiag);
+					diags.push({
+						namaDiag: r1[r2].namaDiag,
+						_key: r1[r2].idDiag,
+						hargaDiag: r1[r2].hargaDiag,
+					});
+				});
+				this.setState({
+					diags: diags,
+				});
+				// console.log(r1.namaDiag);
+			}).catch((err) => {
+				console.log(err);
+		});
+	}
 
 	componentDidMount() {
 		// start listening for firebase updates
@@ -60,11 +101,17 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			const tasks = [];
 			dataSnapshot.forEach((child) => {
 				tasks.push({
-				name: child.val().name,
-				_key: child.key,
+					// name: child.val().name,
+					_key: child.key,
+					namaDiag: child.val().namaDiag,
+					hargaDiag: child.val().hargaDiag,
+					pasienId: child.val().pasienId,
+					pasienNama: child.val().pasienNama,
+					dokterPeriksaNama: child.val().dokterPeriksaNama,
+					dokterPeriksaId: child.val().dokterPeriksaId,
+					timestamp: child.val().tiemstamp,
 				});
 			});
-
 			this.setState({
 				tasks: tasks,
 			});
@@ -74,10 +121,20 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 	// add a new task to firebase app
 	_addTask() {
 		// console.log("task value",this.state.newTask);
-		if (this.state.newTask === "") {
+		const { currentPasienTerpilihUid, currentPasienTerpilihUsername, stoHargaDiag } = this.props.pasienStore;
+		const { currentUid, currentUsername } = this.props.mainStore;
+		if (this.state.selected1 === "-Pilih Diagnosa-" || this.state.selected1 === "Idle") {
 			return;
 		}
-		this.tasksRef.push({ name: this.state.newTask});
+		this.tasksRef.push({
+			namaDiag: this.state.selected1,
+			hargaDiag: stoHargaDiag,
+			pasienId: currentPasienTerpilihUid,
+			pasienNama: currentPasienTerpilihUsername,
+			dokterPeriksaId: currentUid,
+			dokterPeriksaNama: currentUsername,
+			timestamp: firebase.database.ServerValue.TIMESTAMP,
+			});
 		this.setState({newTask: ""});
 		Toast.show({
 			text: "Task added succesfully",
@@ -89,6 +146,8 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 
 	_renderItem(task) {
 		// console.log("task",task._key);
+		// console.log("props", this.props);
+
 		const onTaskCompletion = () => {
 			// console.log("clickrecived",this.tasksRef.child(task._key).remove());
 			this.tasksRef.child(task._key).remove().then(
@@ -96,7 +155,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has been completed successfully");
 				Toast.show({
-					text: "The task " + task.name + " has been completed successfully",
+					text: "The task " + task.namaDiag + " has been completed successfully",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -106,7 +165,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has not been removed successfully");
 				Toast.show({
-					text: "The task " + task.name + " has not been removed successfully",
+					text: "The task " + task.namaDiag + " has not been removed successfully",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -120,20 +179,21 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 	}
 
 	logout() {
-		this.props.navigation.navigate("Home");
+		this.props.navigation.goBack();
 	}
 
 	onValueChangePoli1(value: string) {
 		this.setState({
 			selected1: value,
 		});
+		this.props.pasienStore._handleNameDiagSelected(value, this.state.diags);
 		// db.doUpdateDokterPoli1(value);
 	}
 
 	make_list(list, item0) {
 		const d = list.map((data, i) => {
 			return (
-				<Picker.Item label={data} value={data} key={i}/>
+				<Picker.Item label={data.namaDiag} value={data.namaDiag} key={i}/>
 			);
 		});
 		// i did this because no need in ios :P
@@ -146,6 +206,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 
 	render() {
 		// console.log("tasks value", this.state);
+		// console.log("props:", this.props);
 		// If we are loading then we display the indicator, if the account is null and we are not loading
 		// Then we display nothing. If the account is not null then we display the account info.
 		const content = this.state.loading ?
@@ -162,29 +223,19 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		return (
 			<Container>
 				<Header>
-					<Button transparent>
-						<Icon name="ios-menu" />
-					</Button>
-					<Title>To Do</Title>
-					<Button transparent onPress={() => this.logout()}>
+					<Left>
+						<Button transparent onPress={() => this.logout()}>
 							<Icon name="ios-arrow-back" />
-					</Button>
+						</Button>
+					</Left>
+					<Body>
+						<Title>Input Diagnosa</Title>
+					</Body>
+					<Right />
 				</Header>
 				<Content contentContainerStyle={{ flexGrow: 1 }} >
-					<View
-						// style={{
-						// 	flex: 1,
-						// 	// width: 100,
-						// 	height: 100,
-						// 	}}
-						>
-						<CardItem
-							// style={{
-							// 	flex: 1,
-							// 	// width: 100,
-							// 	height: 100,
-							// 	}}
-						>
+					<View>
+						<CardItem>
 							<Content>
 								<Form>
 									<Picker
@@ -193,13 +244,14 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 										selectedValue={this.state.selected1}
 										onValueChange={this.onValueChangePoli1.bind(this)}
 										>
-									{ this.make_list(this.state.services, "-Pilih Diagnosa-") }
+										{ this.make_list(this.state.diags, "-Pilih Diagnosa-") }
 									</Picker>
 									<Item stackedLabel >
 										<Label>Note</Label>
 										<Input
 											// ref={c => (this.hargaBeliABMInput = c)}
-											value={ this.state.newTask }
+											// value={ this.state.newTask }
+											value = { this.props.pasienStore.stoHargaDiag }
 											style={{ marginLeft: 5 }}
 											// keyboardType="numeric"
 											// onBlur={() => form.validateUsername()}
@@ -213,11 +265,8 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 							</Content>
 						</CardItem>
 					</View>
-				{/* </Content>
-				<Content> */}
 					{content}
 				</Content>
-				{/* <Footer /> */}
 			</Container>
 		);
 	}

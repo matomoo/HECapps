@@ -202,3 +202,8 @@ export const getPolixxByDokter = ( p ) => {
 	const x = db.ref(`poliklinik`).orderByChild("dokter").equalTo(`${p}`).once("value");
 	return x;
 };
+
+export const getConstDiag = () => {
+	const x = db.ref(`constant`).orderByChild("flag").equalTo("diagnosa").once("value");
+	return x;
+};
