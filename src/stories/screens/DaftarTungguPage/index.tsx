@@ -40,7 +40,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 								<ListItem
 									key={key}
 									onPress={() => this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} )}
-									// onPress={() => this.props.onPilihPasien({key})}
+									// onPress={() => this.props.onPilihPasien(key)}
 									// onPress={() => console.log(key)}
 									>
 									<Left><Text>{this.props.lists[key].profil.username}</Text></Left>

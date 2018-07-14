@@ -168,6 +168,11 @@ export const GetRekamMedikPasien = (uid) => {
 	return getter;
 };
 
+export const GetRekamMedikPasienX2 = (uid) => {
+	const getter = db.ref(`rekamMedik`).orderByChild("pasienId").equalTo(`${uid}`).once("value");
+	return getter;
+};
+
 export const GetSingleUsers = (uid) => {
 	const resUser = db.ref(`users/${uid}`).once("value");
 	return resUser;

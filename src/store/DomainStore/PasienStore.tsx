@@ -38,8 +38,18 @@ class PasienStore {
 	_handleNameDiagSelected( p, q ) {
 		try {
 			const a = _.find(q, { namaDiag: p });
-			console.log(a);
+			// console.log(a);
 			this.stoHargaDiag = a.hargaDiag;
+		} catch (error) {
+			// console.log(error);
+		}
+	}
+
+	@action
+	_handleGetNameFromKey( p, q ) {
+		try {
+			this.currentPasienTerpilihUid = p;
+			this.currentPasienTerpilihUsername = q.profil.username;
 		} catch (error) {
 			// console.log(error);
 		}

@@ -35,15 +35,15 @@ export default class HomeContainer extends React.Component<Props, State> {
 		};
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
 		// console.log("will");
-		await this.onAmbilDataAwalAplikasi();
+		this.onAmbilDataAwalAplikasi();
 		// await this.onAmbilDataAwalPasien();
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		// console.log("did");
-		await this.onAmbilDataAwalPasien();
+		this.onAmbilDataAwalPasien();
 	}
 
 	async onAmbilDataAwalAplikasi() {
