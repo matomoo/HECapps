@@ -23,7 +23,15 @@ class DaftarAntrianPoliPage extends React.Component<Props, State> {
 						<Title>Daftar Antrian Poliklinik</Title>
 					</Body>
 
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="home"
+								onPress={() => this.props.navigation.navigate("Home")}
+							/>
+						</Button>
+					</Right>
 				</Header>
 
 				<Content padder>

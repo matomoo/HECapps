@@ -22,7 +22,15 @@ class BlankPage extends React.Component<Props, State> {
 						<Title>{param ? param.name.item : "Blank Page"}</Title>
 					</Body>
 
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="home"
+								onPress={() => this.props.navigation.navigate("Home")}
+							/>
+						</Button>
+					</Right>
 				</Header>
 
 				<Content padder>

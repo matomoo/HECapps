@@ -5,6 +5,8 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Bod
 			Card,
 			CardItem,
 			H2,
+			// Footer,
+			// View,
 } from "native-base";
 // import _ from "lodash";
 
@@ -16,6 +18,8 @@ export interface Props {
 	// pasienRekamMedik: any;
 	userRole: any;
 	selectedCard;
+	viewRiwayatRekamMedik;
+	viewRiwayatRekamMedikObat;
 }
 export interface State {}
 class RekamMedikPasienPage extends React.Component<Props, State> {
@@ -36,7 +40,15 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 						<Title>Profil Pasien</Title>
 					</Body>
 
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="home"
+								onPress={() => this.props.navigation.navigate("Home")}
+							/>
+						</Button>
+					</Right>
 				</Header>
 
 				<Content padder>
@@ -52,7 +64,10 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 					<Text><H2>Riwayat Rekam Medik</H2></Text>
 					<Card>
 						<CardItem>
-							<Text>{" emty"}</Text>
+							{ this.props.viewRiwayatRekamMedik }
+						</CardItem>
+						<CardItem>
+							{ this.props.viewRiwayatRekamMedikObat }
 						</CardItem>
 					</Card>
 					<Card>

@@ -25,7 +25,15 @@ class InputBarangApotekPage extends React.Component<Props, State> {
 					<Body style={{ flex: 3 }}>
 						<Title>Input Barang Apotek</Title>
 					</Body>
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="home"
+								onPress={() => this.props.navigation.navigate("Home")}
+							/>
+						</Button>
+					</Right>
 				</Header>
 				<Content padder>
 					{this.props.formInputBarang}

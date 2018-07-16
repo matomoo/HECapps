@@ -18,7 +18,7 @@ import { Header, Container, Title, Content, Icon,  Card,
 			Left,
 			Body,
 			Right,
-			Footer,
+			// Footer,
 		} from "native-base";
 // import styles from "./styles/mainStyles";
 import ListItem from "./components/ListItem";
@@ -40,22 +40,18 @@ export interface State {
 	selected1;
 	services;
 	diags;
-	staPasienRekamMedik;
-	staDokterRekamMedik;
 }
 
 @inject("pasienStore", "mainStore")
 @observer
 export default class InputDiagnosaPageContainer extends React.Component<Props, State> {
 	tasksRef: any;
-	tasksDb: any;
 	constDiag: any;
 
 	constructor(props) {
 		super(props);
 		this.tasksRef = db.ref(`rekamMedik`);
-		this.tasksDb = db.ref(`rekamMedikDb`);
-		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa");
+		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa"); // .once("value");
 		this.state = {
 			user: undefined,
 			loading: false,
@@ -65,23 +61,11 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			selected1: "-Pilih Diagnosa-",
 			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
 			diags: [],
-			staPasienRekamMedik: 0,
-			staDokterRekamMedik: 0,
 			};
 		}
 
 	componentWillMount() {
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.getFirstData(this.constDiag);
-		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
-			.then(c1 => {
-				console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
-				console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
-				this.setState({
-					staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
-					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
-				});
-			});
 	}
 
 	getFirstData( constDiag ) {
@@ -126,10 +110,8 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 					pasienNama: child.val().pasienNama,
 					dokterPeriksaNama: child.val().dokterPeriksaNama,
 					dokterPeriksaId: child.val().dokterPeriksaId,
-					timestamp: child.val().timestamp,
+					timestamp: child.val().tiemstamp,
 					tanggalPeriksa: child.val().tanggalPeriksa,
-					pasienNoRekamMedik: child.val().pasienNoRekamMedik,
-					dokterNoRekamMedik: child.val().dokterNoRekamMedik,
 				});
 			});
 			this.setState({
@@ -155,8 +137,6 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			dokterPeriksaNama: currentUsername,
 			timestamp: firebase.database.ServerValue.TIMESTAMP,
 			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
-			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
-			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
 			});
 		this.setState({newTask: ""});
 		Toast.show({
@@ -165,23 +145,6 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			position: "center",
 			textStyle: { textAlign: "center" },
 		});
-	}
-
-	_handleSaveTasksToFb() {
-		// this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		this.state.tasks.forEach(element => {
-			// console.log(element);
-			this.tasksDb.push(element);
-			this.tasksRef.child(element._key).remove();
-		});
-		db.ref(`pasiens/${currentPasienTerpilihUid}`)
-			.update({
-				pasienRekamMedik: this.state.staPasienRekamMedik,
-				dokterRekamMedik: this.state.staDokterRekamMedik,
-				// flagActivity: "hasilDiagnosaDone",
-			});
-		this.props.navigation.navigate("RekamMedikPasienPage", {name : {currentPasienTerpilihUid}} );
 	}
 
 	_renderItem(task) {
@@ -237,14 +200,16 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 				<Picker.Item label={data.namaDiag} value={data.namaDiag} key={i}/>
 			);
 		});
+		// i did this because no need in ios :P
 		if ( Platform.OS === "android") {
 			d.unshift(<Picker.Item label={item0} value="Idle" key="99999"/>);
 		}
 		return d;
+		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
 	}
 
 	render() {
-		// console.log("tasks value", this.state.tasks);
+		// console.log("tasks value", this.state);
 		// console.log("props:", this.props);
 		// If we are loading then we display the indicator, if the account is null and we are not loading
 		// Then we display nothing. If the account is not null then we display the account info.
@@ -298,7 +263,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 										/>
 									</Item>
 									<Button block onPress={() => this._addTask()}>
-										<Text>Tambah</Text>
+										<Text>Simpan Data</Text>
 									</Button>
 								</Form>
 							</Content>
@@ -306,11 +271,6 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 					</View>
 					{content}
 				</Content>
-				<Footer>
-					<Button block onPress={() => this._handleSaveTasksToFb()}>
-						<Text>Simpan Data</Text>
-					</Button>
-				</Footer>
 			</Container>
 		);
 	}

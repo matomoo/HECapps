@@ -4,6 +4,7 @@ import { Item, Input, Icon, Form, Toast } from "native-base";
 import { observer, inject } from "mobx-react/native";
 import { auth } from "../../firebase";
 import Login from "../../stories/screens/Login";
+import {Keyboard} from "react-native";
 
 export interface Props {
 	navigation: any;
@@ -51,6 +52,7 @@ export default class LoginContainer extends React.Component<Props, State> {
 				textStyle: { textAlign: "center" },
 			});
 		}
+		Keyboard.dismiss();
 	}
 
 	daftarUser() {

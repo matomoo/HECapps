@@ -25,30 +25,6 @@ export interface State {}
 @observer
 export default class RekamMedikPasienPageContainer extends React.Component<Props, State> {
 	selectedCard;
-	// rmDiagTitle: any;
-	// rmDiagContent: any;
-	// rmObatTitle: any;
-	// rmObatContent: any;
-
-	// constructor(props) {
-	// 	super(props);
-	// }
-
-	// listDetailRekamMedik = () => {
-	// 	const { rekamMedik } = this.props.pasienStore.itemsRekamMedikPasien;
-	// 	const aax = rekamMedik;
-	// 	try {
-	// 		Object.keys(aax).map(keyx1 => {
-	// 			this.rmDiagTitle = keyx1;
-	// 			this.rmDiagContent = JSON.parse(aax[keyx1].hasilDiagnosa);
-	// 			this.rmObatTitle = keyx1;
-	// 			this.rmObatContent = JSON.parse(aax[keyx1].hasilObat);
-	// 			},
-	// 		);
-	// 	} catch  (error) {
-	// 		// console.log(error);
-	// 	}
-	// }
 
 	componentWillMount() {
 		// let now = moment().format("YYYY-MMM-DD");
@@ -58,19 +34,35 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	async _getRekamMedik(uKey) {
-		await db.GetRekamMedikPasienX2(uKey).then(snapshot => {
-			// console.log(snapshot.val());
-			this.props.pasienStore.itemsRekamMedikPasien = snapshot.val() ;
-			this.props.pasienStore._handleGetNameFromKey(
-				this.props.navigation.state.params.name.key,
-				this.props.pasienStore.itemsPasien[this.props.navigation.state.params.name.key],
-			);
+		this.props.pasienStore.itemsRekamMedikPasien = [];
+		this.props.pasienStore.itemsRekamMedikObatPasien = [];
+		this.props.pasienStore._handleGetNameFromKey(
+			this.props.navigation.state.params.name.key,
+			this.props.pasienStore.itemsPasien[this.props.navigation.state.params.name.key],
+		);
+		const { currentPasienNomorRekamMedik } = this.props.pasienStore;
+		await db.GetRekamMedikPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(c1 => {
+			// console.log(currentPasienNomorRekamMedik);
+			// const snap = c1.val();
+			// Object.keys(snap).map(c2 => {
+			// 	this.props.pasienStore.itemsRekamMedikPasien.push
+			// })
+			// this.props.pasienStore.itemsRekamMedikPasien = c1.val() ;
+			c1.forEach(c2 => {
+				this.props.pasienStore.itemsRekamMedikPasien.push(c2.val());
+				// console.log(c2.val());
+			});
+		});
+		await db.GetRekamMedikObatPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(d1 => {
+			d1.forEach(d2 => {
+				this.props.pasienStore.itemsRekamMedikObatPasien.push(d2.val());
+			});
 		});
 	}
 
 	render() {
-		// console.log(this.props);
-		const { currentPasienTerpilihUsername, currentPasienTerpilihUid } = this.props.pasienStore;
+		// console.log(this.props.pasienStore);
+		const { currentPasienTerpilihUsername, currentPasienTerpilihUid, itemsRekamMedikPasien, itemsRekamMedikObatPasien } = this.props.pasienStore;
 		const { currentUserRole } = this.props.mainStore;
 		const key = currentPasienTerpilihUid;
 
@@ -85,7 +77,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				</ListItem>
 				<ListItem
 					key="2"
-					onPress={() => this.props.navigation.navigate("InputObat", {name : {key}} )}
+					onPress={() => this.props.navigation.navigate("InputDiagObatPage", {name : {key}} )}
 					>
 					<Left><Text>Input Obat</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
@@ -103,12 +95,54 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			// selectedCard = menuResepsionis;
 		}
 
+		const viewRiwayatRekamMedik = (
+			<List>
+				<ListItem key="0">
+					<Text> { !!itemsRekamMedikPasien.length && itemsRekamMedikPasien[0].tanggalPeriksa }
+					</Text>
+				</ListItem>
+				<ListItem key="1">
+					<Text>Diagnosa</Text>
+				</ListItem>
+				{ itemsRekamMedikPasien.map(el =>
+					<ListItem
+						key={el._key}
+						>
+						<Text>{" - "}{el.namaDiag}</Text>
+					</ListItem>,
+					)
+				}
+			</List>
+		);
+
+		const viewRiwayatRekamMedikObat = (
+			<List>
+				{/* <ListItem key="0">
+					<Text> { !!itemsRekamMedikObatPasien.length && itemsRekamMedikObatPasien[0].tanggalPeriksa }
+					</Text>
+				</ListItem> */}
+				<ListItem key="1">
+					<Text>Obat</Text>
+				</ListItem>
+				{ itemsRekamMedikObatPasien.map(el =>
+					<ListItem
+						key={el._key}
+						>
+						<Text>{" - "}{el.namaObat}</Text>
+					</ListItem>,
+					)
+				}
+			</List>
+		);
+
 		return <RekamMedikPasienPage
 					navigation={this.props.navigation}
 					pasienUsername = {currentPasienTerpilihUsername}
 					// pasienRekamMedik = {this.props.pasienStore.itemsRekamMedikPasien.rekamMedik }
 					userRole = { currentUserRole }
 					selectedCard = { this.selectedCard }
+					viewRiwayatRekamMedik = { viewRiwayatRekamMedik }
+					viewRiwayatRekamMedikObat = { viewRiwayatRekamMedikObat }
 					/>;
 	}
 }

@@ -33,7 +33,15 @@ class InputDiagnosaPage extends React.Component<Props, State> {
 						<Body style={{ flex: 3 }}>
 							<Title>Input Diagnosa</Title>
 						</Body>
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="home"
+								onPress={() => this.props.navigation.navigate("Home")}
+							/>
+						</Button>
+					</Right>
 				</Header>
 
 				<Content>

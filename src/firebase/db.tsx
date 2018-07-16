@@ -14,6 +14,8 @@ export const doCreateUser = ( id, username, email, role ) => {
 	});
 	db.ref(`pasiens/${id}`).update({
 		flagActivity: "userIdle",
+		pasienRekamMedik: 1,
+		dokterRekamMedik: 1,
 	});
 };
 
@@ -169,7 +171,19 @@ export const GetRekamMedikPasien = (uid) => {
 };
 
 export const GetRekamMedikPasienX2 = (uid) => {
-	const getter = db.ref(`rekamMedik`).orderByChild("pasienId").equalTo(`${uid}`).once("value");
+	const getter = db.ref(`rekamMedikDb`).orderByChild("pasienId").equalTo(`${uid}`).once("value");
+	return getter;
+};
+
+export const GetRekamMedikPasienX3 = (uid, q) => {
+	// console.log(q, `${uid}-${q}`);
+	const getter = db.ref(`rekamMedikDb`).orderByChild("pasienNoRekamMedik").equalTo(`${uid}` + `-` + `${q}`).once("value");
+	return getter;
+};
+
+export const GetRekamMedikObatPasienX3 = (uid, q) => {
+	// console.log(q, `${uid}-${q}`);
+	const getter = db.ref(`rekamMedikDbObat`).orderByChild("pasienNoRekamMedik").equalTo(`${uid}` + `-` + `${q}`).once("value");
 	return getter;
 };
 

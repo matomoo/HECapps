@@ -18,6 +18,7 @@ import RekamMedikPasienPage from "./container/RekamMedikPasienPageContainer";
 // import InputDiagnosaPage from "./container/InputDiagnosaPageContainer";
 import InputDiagnosaPage from "./container/dokter/InputDiagnosaPageContainer";
 import InputConsDiagPage from "./container/admin/InputConsDiagPageContainer";
+import InputDiagObatPage from "./container/dokter/InputDiagObatPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -44,6 +45,7 @@ const App = StackNavigator(
 		// InputDiagnosaPage: { screen: InputDiagnosaPage },
 		InputDiagnosaPage: { screen: InputDiagnosaPage },
 		InputConsDiagPage: { screen: InputConsDiagPage },
+		InputDiagObatPage: { screen: InputDiagObatPage },
 	},
 	{
 		initialRouteName: "Login",

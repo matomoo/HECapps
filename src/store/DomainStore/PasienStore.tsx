@@ -5,16 +5,24 @@ class PasienStore {
 	@observable hasErrored = false;
 	@observable isLoading = true;
 	@observable itemsPasien = {};
-	@observable items2Pasien = {};
-	@observable itemsRekamMedikPasien = {};
-	@observable currentPasienUid = "";
-	@observable currentPasienUsername = "";
-	@observable currentPasienRole = "";
+	@observable itemsRekamMedikPasien = [];
+	@observable itemsRekamMedikObatPasien = [];
+	// @observable currentPasienUid = "";
+	// @observable currentPasienUsername = "";
+	// @observable currentPasienRole = "";
 	@observable currentPasienTerpilihUid = "";
 	@observable currentPasienTerpilihUsername = "";
-	@observable analysis = "";
-	@observable obat = "";
+	// @observable analysis = "";
+	// @observable obat = "";
 	@observable stoHargaDiag = "";
+	@observable currentPasienNomorRekamMedik = "";
+	@observable currentDokterNomorRekamMedik = "";
+
+	@observable stoHargaBeliObat: "";
+	@observable stoHargaJualObat: "";
+	@observable stoJumlahObat: "";
+	@observable stoSatuanObat: "";
+	@observable stoJenisObat: "";
 
 	@action
 	fetchItems(data) {
@@ -22,17 +30,17 @@ class PasienStore {
 		this.isLoading = false;
 	}
 
-	@action
-	analysisOnChange(param) {
-		this.analysis = param;
-		// this.validateEmail();
-	}
+	// @action
+	// analysisOnChange(param) {
+	// 	this.analysis = param;
+	// 	// this.validateEmail();
+	// }
 
-	@action
-	obatOnChange(param) {
-		this.obat = param;
-		// this.validateEmail();
-	}
+	// @action
+	// obatOnChange(param) {
+	// 	this.obat = param;
+	// 	// this.validateEmail();
+	// }
 
 	@action
 	_handleNameDiagSelected( p, q ) {
@@ -50,9 +58,39 @@ class PasienStore {
 		try {
 			this.currentPasienTerpilihUid = p;
 			this.currentPasienTerpilihUsername = q.profil.username;
+			this.currentPasienNomorRekamMedik = q.pasienRekamMedik;
+			this.currentDokterNomorRekamMedik = q.dokterRekamMedik;
 		} catch (error) {
 			// console.log(error);
 		}
+	}
+
+	@action
+	_handleNameObatSelected( p, q ) {
+		try {
+			const a = _.find(q, { namaObat: p });
+			// console.log(a);
+			this.stoHargaBeliObat = a.hargaBeliObat;
+			this.stoHargaJualObat = a.hargaJualObat;
+			this.stoJumlahObat = a.jumlahObat.toString();
+			this.stoSatuanObat = a.satuanObat;
+			this.stoJenisObat = a.jenisObat;
+		} catch (error) {
+			// console.log(error);
+		}
+	}
+
+	@action
+	clearStore() {
+		this.hasErrored = false;
+		this.isLoading = true;
+		this.itemsPasien = {};
+		this.itemsRekamMedikPasien = [];
+		this.currentPasienTerpilihUid = "";
+		this.currentPasienTerpilihUsername = "";
+		this.stoHargaDiag = "";
+		this.currentPasienNomorRekamMedik = "";
+		this.currentDokterNomorRekamMedik = "";
 	}
 
 }
