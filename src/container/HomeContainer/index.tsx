@@ -12,18 +12,20 @@ import { CardItem,
 
 import Home from "../../stories/screens/Home";
 import { db } from "../../firebase";
+import { AsyncStorage } from "react-native";
 
 export interface Props {
 	navigation: any;
 	mainStore: any;
 	authRole: any;
+	pasienStore;
 }
 export interface State {
 	myPoli: any;
 	myNomorAntrian: any;
 }
 
-@inject("mainStore")
+@inject("mainStore", "pasienStore")
 @observer
 export default class HomeContainer extends React.Component<Props, State> {
 
@@ -52,8 +54,8 @@ export default class HomeContainer extends React.Component<Props, State> {
 			this.props.mainStore.currentUsername = snapshot.val().username;
 			this.props.mainStore.currentUserRole = snapshot.val().role;
 		});
-		// console.log(this.props);
 		await this.onAmbilDataAwalPasien();
+		await AsyncStorage.setItem("@MySuperStore:xockey", currentUid);
 	}
 
 	async onAmbilDataAwalPasien() {
@@ -64,6 +66,10 @@ export default class HomeContainer extends React.Component<Props, State> {
 					this.props.mainStore.nomorAntrianPoli = res.val();
 					this.setState({ myNomorAntrian: res.val() });
 					// console.log(this.props);
+				});
+			await db.GetRekamMedikPasien( currentUid ).then(snapshot => {
+					this.props.pasienStore.itemsPasien = snapshot.val();
+					// console.log(snapshot.val());
 				});
 		} else if ( currentUserRole === "dokter" ) {
 			await db.getPolixxByDokter( currentUsername ).then(c1 => {
@@ -92,14 +98,17 @@ export default class HomeContainer extends React.Component<Props, State> {
 		const cardPasien = (
 			<Card>
 				<List>
-					<ListItem
+					{/* <ListItem
 						key="1"
 						button
-						onPress={() => this.props.navigation.navigate("RekamMedikPasien", {name: {key}} )}
+						onPress={() => {
+							this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} );
+							// this._getRekamMedik({key});
+						}}
 						>
 						<Left><Text>Riwayat Rekam Medik</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
-					</ListItem>
+					</ListItem> */}
 					<ListItem
 						key="2"
 						button

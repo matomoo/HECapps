@@ -4,7 +4,7 @@ import { Item, Input, Icon, Form, Toast } from "native-base";
 import { observer, inject } from "mobx-react/native";
 import { auth } from "../../firebase";
 import Login from "../../stories/screens/Login";
-import {Keyboard} from "react-native";
+import {Keyboard, AsyncStorage} from "react-native";
 
 export interface Props {
 	navigation: any;
@@ -18,6 +18,17 @@ export interface State {}
 export default class LoginContainer extends React.Component<Props, State> {
 	emailInput: any;
 	pwdinput: any;
+
+	async componentWillMount() {
+		const value = await AsyncStorage.getItem("@MySuperStore:xockey");
+		if (value !== null) {
+			this.props.mainStore.currentUid = value;
+			// this.props.loginForm.clearStore();
+			this.props.navigation.navigate("Drawer");
+			// console.log(value);
+		}
+	}
+
 	login() {
 		this.props.loginForm.validateForm();
 		if (this.props.loginForm.isValid) {

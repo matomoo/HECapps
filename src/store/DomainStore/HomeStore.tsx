@@ -1,5 +1,5 @@
 import { observable,
-			// action
+			// action,
 		} from "mobx";
 // import { db } from "../../firebase";
 
@@ -24,6 +24,11 @@ class HomeStore {
 	// 		.then(res => {
 	// 			this.nomorAntrianPoli = res.val() + 1;
 	// 		});
+	// }
+
+	// @action
+	// handleGetDataPasienById(p) {
+	// 	console.log(p);
 	// }
 
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Text, Container, List, ListItem, Content } from "native-base";
 import { NavigationActions } from "react-navigation";
+import { AsyncStorage } from "react-native";
 
 const routes = [
 	{
@@ -17,10 +18,12 @@ export interface Props {
 	navigation: any;
 }
 export interface State {}
+
 const resetAction = NavigationActions.reset({
 	index: 0,
 	actions: [NavigationActions.navigate({ routeName: "Login" })],
 });
+
 export default class Sidebar extends React.Component<Props, State> {
 	render() {
 		return (
@@ -37,6 +40,7 @@ export default class Sidebar extends React.Component<Props, State> {
 										data.route === "Login"
 											? this.props.navigation.dispatch(resetAction)
 											: this.props.navigation.navigate(data.route);
+										AsyncStorage.clear();
 									}}
 								>
 									<Text>{data.caption}</Text>
