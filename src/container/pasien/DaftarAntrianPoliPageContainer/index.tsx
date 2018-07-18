@@ -1,13 +1,13 @@
 import * as React from "react";
 import { observer, inject } from "mobx-react/native";
-import DaftarAntrianPoliPage from "../../stories/screens/DaftarAntrianPoliPage";
+import DaftarAntrianPoliPage from "../../../stories/screens/pasien/DaftarAntrianPoliPage";
 import {
 	View,
 	Text,
 	Card,
 	CardItem,
 } from "native-base";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 export interface Props {
 	navigation: any;

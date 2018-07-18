@@ -11,7 +11,7 @@ import BlankPage from "./container/BlankPageContainer";
 import Sidebar from "./container/SidebarContainer";
 import DaftarUser from "./container/DaftarUserContainer";
 import PoliklinikPage from "./container/PoliklinikPageContainer";
-import DaftarAntrianPoliPage from "./container/DaftarAntrianPoliPageContainer";
+import DaftarAntrianPoliPage from "./container/pasien/DaftarAntrianPoliPageContainer";
 import DaftarTungguPage from "./container/DaftarTungguPageContainer";
 import InputBarangApotekPage from "./container/InputBarangApotekPageContainer";
 import RekamMedikPasienPage from "./container/RekamMedikPasienPageContainer";
