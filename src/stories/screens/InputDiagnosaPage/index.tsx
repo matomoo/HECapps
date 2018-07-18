@@ -15,6 +15,7 @@ export interface Props {
 	navigationBack: Function;
 	inputDiagnosaForm: any;
 	pilihanDiagnosa: any;
+	navigation;
 }
 export interface State {}
 

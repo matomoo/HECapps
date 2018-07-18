@@ -143,6 +143,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 					navigationBack={this.onNavigationBack}
 					onSimpan={this.onSimpanKeTabelPasien}
 					pilihanDiagnosa={PilihanDiagnosa}
+					navigation={this.props.navigation}
 					/>
 				);
 	}

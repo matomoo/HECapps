@@ -60,16 +60,16 @@ export default class HomeContainer extends React.Component<Props, State> {
 
 	async onAmbilDataAwalPasien() {
 		const { currentUid, currentUserRole, currentUsername } = this.props.mainStore;
-		if (currentUserRole === "pasien") {
+		if ( currentUserRole === "pasien" ) {
 			await db.getNomorAntrianPasien(currentUid)
 				.then(res => {
 					this.props.mainStore.nomorAntrianPoli = res.val();
 					this.setState({ myNomorAntrian: res.val() });
 					// console.log(this.props);
 				});
-			await db.GetRekamMedikPasien( currentUid ).then(snapshot => {
-					this.props.pasienStore.itemsPasien = snapshot.val();
-					// console.log(snapshot.val());
+			await db.getPasienInfoFromFb(currentUid)
+				.then( res => {
+					this.props.pasienStore.stoStatusPasien = res.val().statusPasien;
 				});
 		} else if ( currentUserRole === "dokter" ) {
 			await db.getPolixxByDokter( currentUsername ).then(c1 => {
@@ -115,6 +115,16 @@ export default class HomeContainer extends React.Component<Props, State> {
 						onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
 						>
 						<Left><Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+					<ListItem
+						key="3"
+						button
+						onPress={() => {
+									this.props.navigation.navigate("InputPengaturanPasienPage", {name: {key}} );
+								}}
+						>
+						<Left><Text>Status Pasien - { this.props.pasienStore.stoStatusPasien }</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
 				</List>

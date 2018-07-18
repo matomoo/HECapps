@@ -61,7 +61,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	render() {
-		console.log(this.props.pasienStore, this.props.mainStore);
+		// console.log(this.props.pasienStore, this.props.mainStore);
 		const { currentPasienTerpilihUsername, currentPasienTerpilihUid, itemsRekamMedikPasien, itemsRekamMedikObatPasien } = this.props.pasienStore;
 		const { currentUserRole } = this.props.mainStore;
 		const key = currentPasienTerpilihUid;

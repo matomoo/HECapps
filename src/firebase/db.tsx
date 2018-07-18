@@ -16,6 +16,7 @@ export const doCreateUser = ( id, username, email, role ) => {
 		flagActivity: "userIdle",
 		pasienRekamMedik: 1,
 		dokterRekamMedik: 1,
+		statusPasien: "Umum",
 	});
 };
 
@@ -134,6 +135,13 @@ export const doInputConsDiag = ( namaDiag, hargaDiag ) => {
 	});
 };
 
+export const doUpdateStatusPasien = ( uid, p ) => {
+	const getter = db.ref(`pasiens/${uid}`).update({
+		statusPasien : p,
+	});
+	return getter;
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {
@@ -225,4 +233,9 @@ export const getPolixxByDokter = ( p ) => {
 export const getConstDiag = () => {
 	const x = db.ref(`constant`).orderByChild("flag").equalTo("diagnosa").once("value");
 	return x;
+};
+
+export const getPasienInfoFromFb = (uid) => {
+	const resUser = db.ref(`pasiens/${uid}`).once("value");
+	return resUser;
 };

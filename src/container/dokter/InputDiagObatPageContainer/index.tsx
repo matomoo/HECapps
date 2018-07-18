@@ -202,7 +202,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 
 	_renderItem(task) {
 		// console.log("task",task._key);
-		console.log("props", this.props);
+		// console.log("props", this.props);
 
 		const onTaskCompletion = () => {
 			// console.log("clickrecived",this.tasksRef.child(task._key).remove());

@@ -7,13 +7,8 @@ class PasienStore {
 	@observable itemsPasien = {};
 	@observable itemsRekamMedikPasien = [];
 	@observable itemsRekamMedikObatPasien = [];
-	// @observable currentPasienUid = "";
-	// @observable currentPasienUsername = "";
-	// @observable currentPasienRole = "";
 	@observable currentPasienTerpilihUid = "";
 	@observable currentPasienTerpilihUsername = "";
-	// @observable analysis = "";
-	// @observable obat = "";
 	@observable stoHargaDiag = "";
 	@observable currentPasienNomorRekamMedik = "";
 	@observable currentDokterNomorRekamMedik = "";
@@ -23,6 +18,8 @@ class PasienStore {
 	@observable stoJumlahObat: "";
 	@observable stoSatuanObat: "";
 	@observable stoJenisObat: "";
+
+	@observable stoStatusPasien: "";
 
 	@action
 	fetchItems(data) {
