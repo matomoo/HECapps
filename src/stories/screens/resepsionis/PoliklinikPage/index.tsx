@@ -20,15 +20,14 @@ class PoliklinikPage extends React.Component<Props, State> {
 					</Left>
 
 					<Body style={{ flex: 3 }}>
-						<Title>Poliklinik</Title>
+						<Title>Pengaturan Poliklinik</Title>
 					</Body>
 
 					<Right>
-						<Button transparent>
+						<Button transparent onPress={() => this.props.navigation.navigate("Home")}>
 							<Icon
 								active
 								name="home"
-								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
 					</Right>

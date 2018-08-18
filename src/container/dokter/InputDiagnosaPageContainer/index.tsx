@@ -75,8 +75,8 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		this.getFirstData(this.constDiag);
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
 			.then(c1 => {
-				console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
-				console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
+				// console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
+				// console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
 				this.setState({
 					staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
 					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,

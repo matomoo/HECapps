@@ -75,10 +75,14 @@ export const doUpdateDokterPoli2 = ( dokterName ) => {
 	return getter;
 };
 
-export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian ) => {
+export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa, isTanggalBooking, isStatusPasien ) => {
 	db.ref(`daftarTunggu/${uid}`).update({
 		namaUser: uName,
+		statusPasien: isStatusPasien,
 		nomorAntrianPasien: nomorAntrian,
+		dokterPeriksa: isDokterPeriksa,
+		tanggalBooking: isTanggalBooking,
+		timeStamp: firebase.database.ServerValue.TIMESTAMP,
 	});
 	db.ref(`daftarTunggu`).update({
 		nomorAntrian: nomorAntrian,
@@ -86,7 +90,6 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian ) => {
 	db.ref(`pasiens/${uid}`).update({
 		flagActivity : "antriPoliklinik",
 	});
-
 };
 
 export const doApotekBarangMasukxxInput = ( namaABM, jumlahABM, hargaBeliABM, satuanABM, jenisABM ) => {
@@ -142,6 +145,19 @@ export const doUpdateStatusPasien = ( uid, p ) => {
 	return getter;
 };
 
+export const doUpdatePolidaftarTunggu = ( p, q ) => {
+	db.ref(`daftarTunggu/${p}`).update ({
+		poli: q,
+	});
+};
+
+export const doUpdateFlagActivity = ( uid, p ) => {
+	const getter = db.ref(`pasiens/${uid}`).update({
+		flagActivity : p,
+	});
+	return getter;
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {
@@ -170,6 +186,11 @@ export const GetAllPasienStatusApotekNOK = () => {
 
 export const GetLihatDaftarTunggu = () => {
 	const getter = db.ref("pasiens").orderByChild("flagActivity").equalTo("antriPoliklinik").once("value");
+	return getter;
+};
+
+export const GetLihatDaftarTungguByToday = () => {
+	const getter = db.ref("pasiens").orderByChild("flagActivity").equalTo("antriPoliklinikByToday").once("value");
 	return getter;
 };
 
@@ -206,7 +227,7 @@ export const getNumberLastAntrian = () => {
 };
 
 export const getNomorAntrianPasien = ( uid ) => {
-	const resUser = db.ref(`daftarTunggu/${uid}/nomorAntrianPasien`).once("value");
+	const resUser = db.ref(`daftarTunggu/${uid}`).once("value");
 	return resUser;
 };
 
@@ -238,4 +259,14 @@ export const getConstDiag = () => {
 export const getPasienInfoFromFb = (uid) => {
 	const resUser = db.ref(`pasiens/${uid}`).once("value");
 	return resUser;
+};
+
+export const getListAllDokter = ( ) => {
+	const x = db.ref(`users`).orderByChild("role").equalTo("dokter").once("value");
+	return x;
+};
+
+export const getDaftarTungguxxByTanggal = ( p ) => {
+	const x = db.ref(`daftarTunggu`).orderByChild("tanggalBooking").equalTo(`${p}`).once("value");
+	return x;
 };

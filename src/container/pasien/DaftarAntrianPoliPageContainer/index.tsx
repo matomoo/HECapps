@@ -8,17 +8,24 @@ import {
 	CardItem,
 } from "native-base";
 import { db } from "../../../firebase";
+import moment from "moment";
 
 export interface Props {
 	navigation: any;
 	mainStore: any;
+	pasienStore;
 }
+
 export interface State {
 	chosenDate: any;
 	nomorAntri: any;
+	isStatusPasien;
+	isDokters;
+	isDokterPeriksa;
+	isNomorAntrian;
 }
 
-@inject("mainStore")
+@inject("mainStore", "pasienStore")
 @observer
 export default class DaftarAntrianPoliPageContainer extends React.Component<Props, State> {
 
@@ -27,16 +34,19 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 		this.state = {
 			chosenDate: new Date(),
 			nomorAntri: "",
+			isStatusPasien: "Umum",
+			isDokters: [],
+			isDokterPeriksa: "",
+			isNomorAntrian: "",
 		};
-		// this.setDate = this.setDate.bind(this);
 	}
-
-	// setDate(newDate) {
-	// 	this.setState({ chosenDate: newDate });
-	// }
 
 	componentWillMount() {
 		this.getNoAntri();
+		this.setState({
+			isStatusPasien: this.props.pasienStore.stoStatusPasien,
+		});
+		this._getListDokter();
 	}
 
 	getNoAntri() {
@@ -47,21 +57,71 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 			});
 	}
 
+	_getListDokter() {
+		db.getListAllDokter()
+			.then(c1 => {
+				this.setState({
+					isDokters: this.snapshotToArray(c1),
+				});
+			});
+	}
+
+	snapshotToArray(snapshot) {
+		const returnArr = [];
+		snapshot.forEach(function(childSnapshot) {
+			const item = childSnapshot.val();
+			item.key = childSnapshot.key;
+			returnArr.push(item);
+		});
+		return returnArr;
+	}
+
 	handleAntriPoli( uid, uName) {
 		db.getNumberLastAntrian()
 			.then(res => {
-				db.doPasienDaftarAntrian(uid, uName, res.val() + 1);
+				db.doPasienDaftarAntrian(
+					uid,
+					uName,
+					res.val() + 1,
+					this.state.isDokterPeriksa,
+					moment().format("YYYY-MMM-DD"),
+					this.state.isStatusPasien,
+				);
 				this.setState({ nomorAntri: res.val() + 1 });
 				this.props.mainStore.nomorAntrianPoli = this.state.nomorAntri;
-				// console.log(res.val());
 			});
 		this.props.navigation.navigate("Home");
+		this.setState({ isNomorAntrian: this.state.nomorAntri });
 	}
 
 	render() {
+		console.log(this.state);
 		const { currentUid, currentUsername } = this.props.mainStore;
+
+		const formListDokter = (
+			<Card>
+				{ this.state.isDokters.map(element =>
+					<CardItem button
+						key={element.username}
+						onPress={() => this.setState({ isDokterPeriksa: element.username })}
+					>
+						<Text> {element.username} </Text>
+					</CardItem>,
+				)}
+			</Card>
+		);
+
 		const Forms = (
 			<View>
+				<Card>
+					<CardItem>
+						<View style={{padding: 1, flexDirection: "column"}}>
+							<Text>Dokter Periksa : { this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "belum ada pilihan dokter" }</Text>
+							<Text>Nomor Antrian : { this.state.isNomorAntrian ? this.state.isNomorAntrian : "belum ada pilihan nomor antrian" }</Text>
+						</View>
+					</CardItem>
+				</Card>
+				{ this.state.isStatusPasien === "Umum" ? formListDokter : undefined }
 				<Card>
 					<CardItem footer button
 						onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
@@ -69,9 +129,6 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 						<Text>Daftar Antrian Poli ke - { this.state.nomorAntri ? this.state.nomorAntri : "loading data..." }</Text>
 					</CardItem>
 				</Card>
-				<Text>
-					{/* Date: {this.state.chosenDate.toString().substr(4, 12)} */}
-				</Text>
 			</View>
 		);
 

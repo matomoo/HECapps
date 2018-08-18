@@ -1,7 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react/native";
-import DaftarTungguPage from "../../stories/screens/DaftarTungguPage";
-import { db } from "../../firebase";
+import DaftarTungguPage from "../../../stories/screens/resepsionis/DaftarTungguPage";
+import { db } from "../../../firebase";
+// import moment from "moment";
 
 export interface Props {
 	navigation: any;
@@ -15,12 +16,14 @@ export interface State {}
 export default class DaftarTungguPageContainer extends React.Component<Props, State> {
 
 	componentWillMount() {
-		// console.log(this.props.mainStore.currentUserRole);
-		// const { currentUserRole } = this.props.mainStore;
-		// const {key} = this.props.navigation.state.params.name ;
-		db.GetLihatDaftarTunggu().then(snapshot => {
+		// db.GetLihatDaftarTunggu().then(snapshot => {
+		// 	this.props.pasienStore.itemsPasien = snapshot.val();
+		// });
+		// db.getDaftarTungguxxByTanggal(moment().format("YYYY-MMM-DD")).then(c1 => {
+		// 	this.props.pasienStore.itemsPasien = c1.val();
+		// });
+		db.GetLihatDaftarTungguByToday().then(snapshot => {
 			this.props.pasienStore.itemsPasien = snapshot.val();
-			// console.log(snapshot.val());
 		});
 	}
 

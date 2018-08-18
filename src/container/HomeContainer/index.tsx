@@ -8,6 +8,7 @@ import { CardItem,
 			List,
 			ListItem,
 			Card,
+			View,
 		} from "native-base";
 
 import Home from "../../stories/screens/Home";
@@ -23,6 +24,7 @@ export interface Props {
 export interface State {
 	myPoli: any;
 	myNomorAntrian: any;
+	myDokter;
 }
 
 @inject("mainStore", "pasienStore")
@@ -34,6 +36,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 		this.state = {
 			myPoli: "",
 			myNomorAntrian: "",
+			myDokter: "",
 		};
 	}
 
@@ -64,7 +67,10 @@ export default class HomeContainer extends React.Component<Props, State> {
 			await db.getNomorAntrianPasien(currentUid)
 				.then(res => {
 					this.props.mainStore.nomorAntrianPoli = res.val();
-					this.setState({ myNomorAntrian: res.val() });
+					this.setState({
+						myNomorAntrian: res.val().nomorAntrianPasien,
+						myDokter: res.val().dokterPeriksa,
+					});
 					// console.log(this.props);
 				});
 			await db.getPasienInfoFromFb(currentUid)
@@ -114,7 +120,12 @@ export default class HomeContainer extends React.Component<Props, State> {
 						button
 						onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
 						>
-						<Left><Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text></Left>
+						<Left>
+							<View style={{padding: 1, flexDirection: "column"}}>
+								<Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text>
+								<Text>Dokter periksa: { this.state.myDokter ? this.state.myDokter : "-" }</Text>
+							</View>
+						</Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
 					<ListItem
@@ -169,7 +180,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 						key="1"
 						button
 						onPress={() => this.props.navigation.navigate("InputBarangApotekPage")}
-						>
+					>
 						<Left><Text>Input Barang ke Apotek</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
@@ -177,7 +188,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 						key="2"
 						button
 						onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
-						>
+					>
 						<Left><Text>List Daftar Obat Apotek</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
@@ -217,7 +228,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 				<ListItem
 					button
 					onPress={() => this.props.navigation.navigate("DaftarBillingPage")}
-					>
+				>
 					<Left><Text>List Daftar Billing</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
