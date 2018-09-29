@@ -36,6 +36,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	namaABMInput: any;
 	jumlahABMInput: any;
 	hargaBeliABMInput: any;
+	hargaJualABMInput: any;
 
 	constructor() {
 		super();
@@ -47,8 +48,8 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	}
 
 	_handleInputBarang() {
-		const { namaABM, jumlahABM, hargaBeliABM } = this.props.inputBarangApotekStore;
-		db.doApotekBarangMasukxxInput( namaABM, jumlahABM, hargaBeliABM, this.state.satuanABMPilih, this.state.jenisABMPilih );
+		const { namaABM, jumlahABM, hargaBeliABM, hargaJualABM, satuanABMPilih, jenisABMPilih } = this.props.inputBarangApotekStore;
+		db.doApotekBarangMasukxxInput( namaABM, jumlahABM, hargaBeliABM, hargaJualABM, satuanABMPilih, jenisABMPilih );
 		db.getIdAS(namaABM).then(c1 => {
 			// console.log(c1.val());
 			if (c1.val()) {
@@ -59,7 +60,14 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 					return true;
 				});
 			} else {
-				db.doApotekStokxxInput( namaABM, parseInt(jumlahABM, 10), parseInt(hargaBeliABM, 10), this.state.satuanABMPilih, this.state.jenisABMPilih );
+				db.doApotekStokxxInput(
+					namaABM,
+					parseInt(jumlahABM, 10),
+					parseInt(hargaBeliABM, 10),
+					parseInt(hargaJualABM, 10),
+					satuanABMPilih,
+					jenisABMPilih,
+				);
 			}
 		});
 		this.props.inputBarangApotekStore.clearStore();
@@ -91,7 +99,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	}
 
 	render() {
-		// console.log(this.props);
+		console.log(this.props);
 		const form = this.props.inputBarangApotekStore;
 
 		const FormInputBarang = (
@@ -133,6 +141,17 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 							keyboardType="numeric"
 							// onBlur={() => form.validateUsername()}
 							onChangeText={e => form.hargaBeliABMonChange(e)}
+						/>
+					</Item>
+					<Item stackedLabel error={form.hargaJualABMError ? true : false}>
+						<Label>Harga Jual Barang</Label>
+						<Input
+							ref={c => (this.hargaJualABMInput = c)}
+							value={form.hargaJualABM}
+							style={{ marginLeft: 10 }}
+							keyboardType="numeric"
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => form.hargaJualABMonChange(e)}
 						/>
 					</Item>
 					<Label

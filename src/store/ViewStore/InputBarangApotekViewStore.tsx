@@ -12,6 +12,8 @@ class InputBarangApotekStore {
 	@observable listSatuanABM = ["buah", "biji"];
 	@observable hargaBeliABM = "";
 	@observable hargaBeliABMError = "";
+	@observable hargaJualABM = "";
+	@observable hargaJualABMError = "";
 	@observable jenisABM = "";
 	@observable listJenisABM = ["BHP", "Non BHP"];
 	@observable satuanABMPilih: "pilih";
@@ -31,6 +33,12 @@ class InputBarangApotekStore {
 	@action
 	hargaBeliABMonChange(x) {
 		this.hargaBeliABM = x;
+		// this.validateString();
+	}
+
+	@action
+	hargaJualABMonChange(x) {
+		this.hargaJualABM = x;
 		// this.validateString();
 	}
 
@@ -57,6 +65,7 @@ class InputBarangApotekStore {
 		this.jumlahABM = "";
 		// this.satuanABM = "buah";
 		this.hargaBeliABM = "";
+		this.hargaJualABM = "";
 		// this.jenisABM = "";
 	}
 }

@@ -29,7 +29,10 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	componentWillMount() {
 		// let now = moment().format("YYYY-MMM-DD");
 		// console.log(now, moment().format("LLLL"));
-		this._getRekamMedik(this.props.navigation.state.params.name.key);
+		this._getRekamMedik(
+			this.props.navigation.state.params.name.key ?
+			this.props.navigation.state.params.name.key :
+			this.props.navigation.state.params.name.currentPasienTerpilihUid);
 	}
 
 	async _getRekamMedik(uKey) {
@@ -61,7 +64,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	render() {
-		// console.log(this.props.pasienStore, this.props.mainStore);
+		console.log(this.props.navigation);
 		const { currentPasienTerpilihUsername, currentPasienTerpilihUid, itemsRekamMedikPasien, itemsRekamMedikObatPasien } = this.props.pasienStore;
 		const { currentUserRole } = this.props.mainStore;
 		const key = currentPasienTerpilihUid;

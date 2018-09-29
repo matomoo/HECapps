@@ -57,7 +57,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 							<Left>
 								<Text>
 									{this.props.pasienUsername}
-									</Text>
+								</Text>
 							</Left>
 						</CardItem>
 					</Card>

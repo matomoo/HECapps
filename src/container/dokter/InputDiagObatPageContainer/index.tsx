@@ -260,7 +260,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	render() {
-		console.log("tasks value", this.state.tasks);
+		// console.log("tasks value", this.state.tasks);
 		// console.log("props:", this.props);
 		// If we are loading then we display the indicator, if the account is null and we are not loading
 		// Then we display nothing. If the account is not null then we display the account info.

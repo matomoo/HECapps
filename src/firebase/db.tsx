@@ -92,7 +92,7 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa
 	});
 };
 
-export const doApotekBarangMasukxxInput = ( namaABM, jumlahABM, hargaBeliABM, satuanABM, jenisABM ) => {
+export const doApotekBarangMasukxxInput = ( namaABM, jumlahABM, hargaBeliABM, hargaJualABM, satuanABM, jenisABM ) => {
 	const id = db.ref(`apotekBarangMasuk`).push();
 	const key = id.key;
 	db.ref(`apotekBarangMasuk/${key}`).update ({
@@ -100,13 +100,14 @@ export const doApotekBarangMasukxxInput = ( namaABM, jumlahABM, hargaBeliABM, sa
 		namaABM: namaABM,
 		jumlahABM: jumlahABM,
 		hargaBeliABM: hargaBeliABM,
+		hargaJualABM: hargaJualABM,
 		satuanABM: satuanABM,
 		jenisABM: jenisABM,
 		timestamp: firebase.database.ServerValue.TIMESTAMP,
 	});
 };
 
-export const doApotekStokxxInput = ( namaAS, jumlahAS, hargaBeliAS, satuanAS, jenisAS ) => {
+export const doApotekStokxxInput = ( namaAS, jumlahAS, hargaBeliAS, hargaJualAS, satuanAS, jenisAS ) => {
 	const aid = db.ref(`apotekStokBarang`).push();
 	const akey = aid.key;
 	db.ref(`apotekStokBarang/${akey}`).update ({
@@ -114,7 +115,7 @@ export const doApotekStokxxInput = ( namaAS, jumlahAS, hargaBeliAS, satuanAS, je
 		namaAS: namaAS,
 		jumlahAS: jumlahAS,
 		hargaBeliAS: hargaBeliAS,
-		hargaJualAS: 0,
+		hargaJualAS: hargaJualAS,
 		satuanAS: satuanAS,
 		jenisAS: jenisAS,
 	});

@@ -51,7 +51,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 									// onPress={() => this.props.onPilihPasien(key)}
 									// onPress={() => console.log(key)}
 									>
-									<Left><Text>{this.props.lists[key].profil.username}</Text></Left>
+									<Left><Text>{this.props.lists[key].profil.username}-{key}</Text></Left>
 									{/* <Left><Text>{this.props.lists[key].profil.role}</Text></Left> */}
 									{/* <Right><Icon active name="ios-arrow-forward"/></Right> */}
 								</ListItem>,
