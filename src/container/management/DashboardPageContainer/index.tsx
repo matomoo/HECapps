@@ -13,6 +13,8 @@ import { Form,
 	Button,
 } from "native-base";
 import { db } from "../../../firebase";
+import * as db1 from "../../../firebase/firebase";
+import ManagementViewStore from "../../../store/ViewStore/ManagementViewStore";
 
 export interface Props {
 	navigation: any;
@@ -27,6 +29,38 @@ export default class DashboardPageContainer extends React.Component<Props, State
 	saranaInput;
 	belanjaModalInput;
 	sahamInput;
+	taskManagement;
+
+	constructor(props) {
+		super(props);
+		this.taskManagement = db1.db.ref(`management/percentageOfShare`);
+		this.state = {
+			// jasaMedikInput: this.taskManagement.jasaMedik,
+				};
+	}
+
+	componentWillMount() {
+		// console.log(this.taskManagement);
+		this.getFirstData(this.taskManagement);
+		console.log(ManagementViewStore);
+	}
+
+	getFirstData( p ) {
+		p.once("value")
+			.then((result) => {
+				// console.log(result.val().jasaMedik);
+				const r1 = result.val();
+				this.props.managementViewStore.jasaMedik = r1.jasaMedik;
+				this.props.managementViewStore.sarana = r1.sarana;
+				this.props.managementViewStore.belanjaModal = r1.belanjaModal;
+				this.props.managementViewStore.saham = r1.saham;
+				// Object.keys(r1).map(r2 => {
+				// 	console.log(r1[r2]);
+				// });
+			}).catch((err) => {
+				console.log(err);
+		});
+	}
 
 	_handleInputForm() {
 		const { jasaMedik, sarana, belanjaModal, saham } = this.props.managementViewStore;

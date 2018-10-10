@@ -99,7 +99,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	}
 
 	render() {
-		console.log(this.props);
+		// console.log(this.props);
 		const form = this.props.inputBarangApotekStore;
 
 		const FormInputBarang = (
