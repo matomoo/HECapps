@@ -18,6 +18,7 @@ class PasienStore {
 	@observable stoJumlahObat: "";
 	@observable stoSatuanObat: "";
 	@observable stoJenisObat: "";
+	@observable stoIdObat: "";
 
 	@observable stoStatusPasien: "";
 
@@ -72,6 +73,7 @@ class PasienStore {
 			this.stoJumlahObat = a.jumlahObat.toString();
 			this.stoSatuanObat = a.satuanObat;
 			this.stoJenisObat = a.jenisObat;
+			this.stoIdObat = a._key;
 		} catch (error) {
 			// console.log(error);
 		}

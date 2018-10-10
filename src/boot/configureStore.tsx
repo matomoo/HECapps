@@ -5,6 +5,7 @@ import PasienStore from "../store/DomainStore/PasienStore";
 import InputDiagnosaStore from "../store/ViewStore/InputDiagnosaViewStore";
 import InputBarangApotekStore from "../store/ViewStore/InputBarangApotekViewStore";
 import InputConsDiagStore from "../store/ViewStore/InputConsDiagViewStore";
+import ManagementViewStore from "../store/ViewStore/ManagementViewStore";
 
 export default function() {
 	const mainStore = new MainStore();
@@ -14,6 +15,7 @@ export default function() {
 	const inputDiagnosaStore = new InputDiagnosaStore();
 	const inputBarangApotekStore = new InputBarangApotekStore();
 	const inputConsDiagStore = new InputConsDiagStore();
+	const managementViewStore = new ManagementViewStore();
 
 	return {
 		loginForm,
@@ -23,5 +25,6 @@ export default function() {
 		inputDiagnosaStore,
 		inputBarangApotekStore,
 		inputConsDiagStore,
+		managementViewStore,
 	};
 }

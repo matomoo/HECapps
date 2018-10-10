@@ -159,6 +159,16 @@ export const doUpdateFlagActivity = ( uid, p ) => {
 	return getter;
 };
 
+export const doUpdatePercentageOfShare = ( p, q, r, s ) => {
+	const getter = db.ref(`management/percentageOfShare`).update({
+		jasaMedik : p,
+		sarana: q,
+		belanjaModal: r,
+		saham: s,
+	});
+	return getter;
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {

@@ -122,10 +122,12 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				tasks.push({
 					// name: child.val().name,
 					_key: child.key,
+					idObat: child.val().idObat,
 					namaObat: child.val().namaObat,
 					hargaBeliObat: child.val().hargaBeliObat,
 					hargaJualObat: child.val().hargaJualObat,
-					jumlahObat: child.val().jumlahObat,
+					jumlahObatStok: child.val().jumlahObatStok,
+					jumlahObatKeluar: child.val().jumlahObatKeluar,
 					satuanObat: child.val().satuanObat,
 					jenisObat: child.val().jenisObat,
 					pasienId: child.val().pasienId,
@@ -146,23 +148,29 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 
 	// add a new task to firebase app
 	_addTask() {
-		// console.log("task value",this.state.newJumlahObat);
+		// console.log("_addTask",
+		// 				// this.state.tasks,
+		// 				this.state.newJumlahObat,
+		// 			);
 		const { currentPasienTerpilihUid, currentPasienTerpilihUsername,
 					stoHargaBeliObat,
 					stoHargaJualObat,
-					// stoJumlahObat,
+					stoJumlahObat,
 					stoSatuanObat,
 					stoJenisObat,
+					stoIdObat,
 		} = this.props.pasienStore;
 		const { currentUid, currentUsername } = this.props.mainStore;
 		if (this.state.selected1 === "-Pilih Obat-" || this.state.selected1 === "Idle") {
 			return;
 		}
 		this.tasksRef.push({
+			idObat: stoIdObat,
 			namaObat: this.state.selected1,
 			hargaBeliObat: stoHargaBeliObat,
 			hargaJualObat: stoHargaJualObat,
-			jumlahObat: this.state.newJumlahObat,
+			jumlahObatStok: stoJumlahObat,
+			jumlahObatKeluar: this.state.newJumlahObat,
 			satuanObat: stoSatuanObat,
 			jenisObat: stoJenisObat,
 			pasienId: currentPasienTerpilihUid,
@@ -174,7 +182,6 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
 			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
 			});
-		// this.setState({newJumlahObat: ""});
 		Toast.show({
 			text: "Task added succesfully",
 			duration: 2000,
@@ -184,12 +191,15 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	_handleSaveTasksToFb() {
-		// // this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
+		// this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.state.tasks.forEach(element => {
-			console.log(element);
+			// console.log("_handleSaveTasksToFb => ", element);
 			this.tasksDb.push(element);
 			this.tasksRef.child(element._key).remove();
+			db.ref(`apotekStokBarang/${element.idObat}`).update({
+				jumlahAS : element.jumlahObatStok - element.jumlahObatKeluar,
+			});
 		});
 		// db.ref(`pasiens/${currentPasienTerpilihUid}`)
 		// 	.update({
@@ -201,8 +211,8 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	_renderItem(task) {
-		// console.log("task",task._key);
-		// console.log("props", this.props);
+		// console.log("task", task._key);
+		// console.log("props", this.state.tasks);
 
 		const onTaskCompletion = () => {
 			// console.log("clickrecived",this.tasksRef.child(task._key).remove());
@@ -211,7 +221,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has been completed successfully");
 				Toast.show({
-					text: "The task " + task.namaObat + " has been completed successfully",
+					text: task.namaObat + " di tambah ke list",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -221,7 +231,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has not been removed successfully");
 				Toast.show({
-					text: "The task " + task.namaObat + " has not been removed successfully",
+					text: task.namaObat + " di hapus dari list",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -309,7 +319,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 											value={ this.state.newJumlahObat }
 											// value = { this.props.pasienStore.stoJumlahObat }
 											style={{ marginLeft: 5 }}
-											// keyboardType="numeric"
+											keyboardType="numeric"
 											// onBlur={() => form.validateUsername()}
 											onChangeText={(text) => this.setState({newJumlahObat: text})}
 										/>

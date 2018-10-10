@@ -235,6 +235,18 @@ export default class HomeContainer extends React.Component<Props, State> {
 			</List>
 		);
 
+		const cardManagement = (
+			<List>
+				<ListItem
+					button
+					onPress={() => this.props.navigation.navigate("ManagementPage")}
+				>
+					<Left><Text>Pengaturan Percentage of Share</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+			</List>
+		);
+
 		let selectedCard;
 		if (currentUserRole === "admin") {
 			selectedCard = cardAdmin;
@@ -248,6 +260,8 @@ export default class HomeContainer extends React.Component<Props, State> {
 			selectedCard = cardBilling;
 		} else if (currentUserRole === "apotek") {
 			selectedCard = cardApotek;
+		} else if (currentUserRole === "management") {
+			selectedCard = cardManagement;
 		}
 
 		// console.log(selectedCard);
