@@ -1,5 +1,5 @@
 import { observable,
-			// action,
+			action,
 		} from "mobx";
 // import { db } from "../../firebase";
 
@@ -10,8 +10,13 @@ class HomeStore {
 	@observable currentUid = "";
 	@observable currentUsername = "";
 	@observable currentUserRole = "";
+	@observable transaksiNomorFakturKeluar;
 	// @observable nomorAntrianPoli = "";
 
+	@action
+	transaksiNomorFakturKeluarOnChange(x) {
+		this.transaksiNomorFakturKeluar = x;
+	}
 	// @action
 	// fetchItems(data) {
 	// 	this.items = data;

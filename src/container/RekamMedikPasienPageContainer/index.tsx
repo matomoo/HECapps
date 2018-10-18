@@ -2,6 +2,7 @@ import * as React from "react";
 import { observer, inject } from "mobx-react/native";
 // import _ from "lodash";
 import { db } from "../../firebase";
+import * as db1 from "../../firebase/firebase";
 
 import RekamMedikPasienPage from "../../stories/screens/RekamMedikPasienPage";
 import { List,
@@ -25,10 +26,33 @@ export interface State {}
 @observer
 export default class RekamMedikPasienPageContainer extends React.Component<Props, State> {
 	selectedCard;
+	transaksi;
+
+	constructor(props) {
+		super(props);
+		this.transaksi = db1.db.ref(`transaksi/transaksiNomorFakturKeluar`);
+		// this.state = {
+		// 	// jasaMedikInput: this.taskManagement.jasaMedik,
+		// 		};
+	}
+
+	getFirstData( p ) {
+		p.once("value")
+			.then((result) => {
+				const r1 = result.val();
+				// this.props.mainStore.transaksiNomorFaktur = r1.transaksiNomorFaktur ? 0 : r1.transaksiNomorFaktur ;
+				this.props.mainStore.transaksiNomorFakturKeluarOnChange(r1);
+				// console.log(r1);
+				// console.log(this.props.mainStore);
+			}).catch((err) => {
+				console.log(err);
+		});
+	}
 
 	componentWillMount() {
 		// let now = moment().format("YYYY-MMM-DD");
 		// console.log(now, moment().format("LLLL"));
+		this.getFirstData(this.transaksi);
 		this._getRekamMedik(
 			this.props.navigation.state.params.name.key ?
 			this.props.navigation.state.params.name.key :
@@ -64,9 +88,12 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	render() {
-		console.log(this.props.navigation);
-		const { currentPasienTerpilihUsername, currentPasienTerpilihUid, itemsRekamMedikPasien, itemsRekamMedikObatPasien } = this.props.pasienStore;
-		const { currentUserRole } = this.props.mainStore;
+		// console.log(this.props.navigation);
+		const { currentPasienTerpilihUsername,
+				currentPasienTerpilihUid,
+				itemsRekamMedikPasien,
+				itemsRekamMedikObatPasien } = this.props.pasienStore;
+		const { currentUserRole, transaksiNomorFaktur } = this.props.mainStore;
 		const key = currentPasienTerpilihUid;
 
 		const menuDokter = (
@@ -146,6 +173,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 					selectedCard = { this.selectedCard }
 					viewRiwayatRekamMedik = { viewRiwayatRekamMedik }
 					viewRiwayatRekamMedikObat = { viewRiwayatRekamMedikObat }
+					transaksiNomorFaktur = { transaksiNomorFaktur }
 					/>;
 	}
 }

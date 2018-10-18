@@ -169,6 +169,14 @@ export const doUpdatePercentageOfShare = ( p, q, r, s ) => {
 	return getter;
 };
 
+export const doInputTransaksiNomorFakturKeluar = ( p ) => {
+	// const aid = db.ref(`transaksi`).push();
+	// const akey = aid.key;
+	db.ref(`transaksi`).update ({
+		transaksiNomorFakturKeluar: p,
+	});
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {

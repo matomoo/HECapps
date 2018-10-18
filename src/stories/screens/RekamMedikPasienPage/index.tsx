@@ -20,6 +20,7 @@ export interface Props {
 	selectedCard;
 	viewRiwayatRekamMedik;
 	viewRiwayatRekamMedikObat;
+	transaksiNomorFaktur;
 }
 export interface State {}
 class RekamMedikPasienPage extends React.Component<Props, State> {
@@ -57,6 +58,9 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 							<Left>
 								<Text>
 									{this.props.pasienUsername}
+								</Text>
+								<Text>
+									{this.props.transaksiNomorFaktur}
 								</Text>
 							</Left>
 						</CardItem>

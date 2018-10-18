@@ -82,6 +82,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
 				});
 			});
+		// console.log(this.props.mainStore);
 	}
 
 	getFirstData( constDiag ) {

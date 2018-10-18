@@ -14,7 +14,7 @@ import { Form,
 } from "native-base";
 import { db } from "../../../firebase";
 import * as db1 from "../../../firebase/firebase";
-import ManagementViewStore from "../../../store/ViewStore/ManagementViewStore";
+// import ManagementViewStore from "../../../store/ViewStore/ManagementViewStore";
 
 export interface Props {
 	navigation: any;
@@ -34,15 +34,15 @@ export default class DashboardPageContainer extends React.Component<Props, State
 	constructor(props) {
 		super(props);
 		this.taskManagement = db1.db.ref(`management/percentageOfShare`);
-		this.state = {
-			// jasaMedikInput: this.taskManagement.jasaMedik,
-				};
+		// this.state = {
+		// 	// jasaMedikInput: this.taskManagement.jasaMedik,
+		// 		};
 	}
 
 	componentWillMount() {
 		// console.log(this.taskManagement);
 		this.getFirstData(this.taskManagement);
-		console.log(ManagementViewStore);
+		// console.log(ManagementViewStore);
 	}
 
 	getFirstData( p ) {

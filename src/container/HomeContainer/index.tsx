@@ -208,6 +208,13 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<Left><Text>List Daftar Tunggu</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
+				<CardItem
+					key="3"
+					button
+					onPress={() => this.props.navigation.navigate("ViewDokterPercentageOfShare")} >
+					<Left><Text>View percentage of share</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</CardItem>
 			</Card>
 		);
 
@@ -218,6 +225,13 @@ export default class HomeContainer extends React.Component<Props, State> {
 					onPress={() => this.props.navigation.navigate("InputConsDiagPage")}
 					>
 					<Left><Text>Input Constant Diagnosa</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</CardItem>
+				<CardItem
+					button
+					onPress={() => this.props.navigation.navigate("InputTransaksiNomorFakturPage")}
+					>
+					<Left><Text>Input Transaksi Nomor Faktur</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
 			</Card>

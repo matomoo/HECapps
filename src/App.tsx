@@ -21,6 +21,7 @@ import InputConsDiagPage from "./container/admin/InputConsDiagPageContainer";
 import InputDiagObatPage from "./container/dokter/InputDiagObatPageContainer";
 import InputPengaturanPasienPage from "./container/pasien/PengaturanPageContainer";
 import ManagementPage from "./container/management/DashboardPageContainer";
+import InputTransaksiNomorFakturPage from "./container/admin/InputTransaksiNomorFakturPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -50,6 +51,7 @@ const App = StackNavigator(
 		InputDiagObatPage: { screen: InputDiagObatPage },
 		InputPengaturanPasienPage: { screen: InputPengaturanPasienPage },
 		ManagementPage: { screen: ManagementPage },
+		InputTransaksiNomorFakturPage : { screen: InputTransaksiNomorFakturPage },
 	},
 	{
 		initialRouteName: "Login",

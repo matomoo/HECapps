@@ -28,6 +28,7 @@ export interface Props {
 	navigation: any;
 	pasienStore;
 	mainStore;
+	managementViewStore;
 }
 export interface State {
 	loading;
@@ -42,18 +43,20 @@ export interface State {
 	staDokterRekamMedik;
 }
 
-@inject("pasienStore", "mainStore")
+@inject("pasienStore", "mainStore", "managementViewStore")
 @observer
 export default class InputDiagObatPageContainer extends React.Component<Props, State> {
 	tasksRef: any;
 	tasksDb: any;
 	constObat: any;
+	taskManagement;
 
 	constructor(props) {
 		super(props);
 		this.tasksRef = db.ref(`rekamMedikObatTemp`);
 		this.tasksDb = db.ref(`rekamMedikDbObat`);
 		this.constObat = db.ref("apotekStokBarang");
+		this.taskManagement = db.ref(`management/percentageOfShare`);
 		this.state = {
 			user: undefined,
 			loading: false,
@@ -80,6 +83,24 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 					staDokterRekamMedik: c1.val().dokterRekamMedik,
 				});
 			});
+		this.getFirstDataManagement(this.taskManagement);
+	}
+
+	getFirstDataManagement( p ) {
+		p.once("value")
+			.then((result) => {
+				// console.log(result.val().jasaMedik);
+				const r1 = result.val();
+				this.props.managementViewStore.jasaMedik = r1.jasaMedik;
+				this.props.managementViewStore.sarana = r1.sarana;
+				this.props.managementViewStore.belanjaModal = r1.belanjaModal;
+				this.props.managementViewStore.saham = r1.saham;
+				// Object.keys(r1).map(r2 => {
+				// 	console.log(r1[r2]);
+				// });
+			}).catch((err) => {
+				console.log(err);
+		});
 	}
 
 	getFirstData( constObat ) {
