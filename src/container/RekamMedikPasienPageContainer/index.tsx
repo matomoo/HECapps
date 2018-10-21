@@ -40,8 +40,10 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		p.once("value")
 			.then((result) => {
 				const r1 = result.val();
-				// this.props.mainStore.transaksiNomorFaktur = r1.transaksiNomorFaktur ? 0 : r1.transaksiNomorFaktur ;
 				this.props.mainStore.transaksiNomorFakturKeluarOnChange(r1);
+				db1.db.ref(`transaksi`).update({
+					transaksiNomorFakturKeluar : parseInt(r1, 10) + 1,
+				});
 				// console.log(r1);
 				// console.log(this.props.mainStore);
 			}).catch((err) => {

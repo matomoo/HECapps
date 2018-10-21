@@ -1,4 +1,5 @@
 import * as React from "react";
+// import InputDiagnosaPage from "../../../stories/screens/dokter/InputDiagnosaPage";
 import { observer, inject } from "mobx-react/native";
 import { db } from "../../../firebase/firebase";
 import { ActivityIndicator,
@@ -19,6 +20,7 @@ import { Header, Container, Title, Content, Icon,  Card,
 			Right,
 			Footer,
 		} from "native-base";
+// import styles from "./styles/mainStyles";
 import ListItem from "./components/ListItem";
 import { Platform, View } from "react-native";
 import firebase from "firebase";
@@ -28,44 +30,41 @@ export interface Props {
 	navigation: any;
 	pasienStore;
 	mainStore;
-	managementViewStore;
 }
 export interface State {
 	loading;
 	user;
-	newJumlahObat;
+	newTask;
 	tasks;
 	active;
 	selected1;
-	// services;
-	obats;
+	services;
+	diags;
 	staPasienRekamMedik;
 	staDokterRekamMedik;
 }
 
-@inject("pasienStore", "mainStore", "managementViewStore")
+@inject("pasienStore", "mainStore")
 @observer
-export default class InputDiagObatPageContainer extends React.Component<Props, State> {
+export default class InputDiagnosaPageContainer extends React.Component<Props, State> {
 	tasksRef: any;
 	tasksDb: any;
-	constObat: any;
-	taskManagement;
+	constDiag: any;
 
 	constructor(props) {
 		super(props);
-		this.tasksRef = db.ref(`rekamMedikObatTemp`);
-		this.tasksDb = db.ref(`rekamMedikDbObat`);
-		this.constObat = db.ref("apotekStokBarang");
-		this.taskManagement = db.ref(`management/percentageOfShare`);
+		this.tasksRef = db.ref(`rekamMedik`);
+		this.tasksDb = db.ref(`rekamMedikDb`);
+		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa");
 		this.state = {
 			user: undefined,
 			loading: false,
-			newJumlahObat: "",
+			newTask: "",
 			tasks: [],
 			active: true,
-			selected1: "-Pilih Obat-",
-			// services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
-			obats: [],
+			selected1: "-Pilih Diagnosa-",
+			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
+			diags: [],
 			staPasienRekamMedik: 0,
 			staDokterRekamMedik: 0,
 			};
@@ -73,59 +72,37 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 
 	componentWillMount() {
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		this.getFirstData(this.constObat);
+		this.getFirstData(this.constDiag);
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
 			.then(c1 => {
 				// console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
 				// console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
 				this.setState({
-					staPasienRekamMedik: c1.val().pasienRekamMedik,
-					staDokterRekamMedik: c1.val().dokterRekamMedik,
+					staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
+					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
 				});
 			});
-		this.getFirstDataManagement(this.taskManagement);
-		console.log( this.props.mainStore );
+		console.log(this.props.mainStore);
 	}
 
-	getFirstDataManagement( p ) {
-		p.once("value")
+	getFirstData( constDiag ) {
+		constDiag.once("value")
 			.then((result) => {
-				// console.log(result.val().jasaMedik);
+				// this.setState({ diags: result.val() });
 				const r1 = result.val();
-				this.props.managementViewStore.jasaMedik = r1.jasaMedik;
-				this.props.managementViewStore.sarana = r1.sarana;
-				this.props.managementViewStore.belanjaModal = r1.belanjaModal;
-				this.props.managementViewStore.saham = r1.saham;
-				// Object.keys(r1).map(r2 => {
-				// 	console.log(r1[r2]);
-				// });
-			}).catch((err) => {
-				console.log(err);
-		});
-	}
-
-	getFirstData( constObat ) {
-		constObat.once("value")
-			.then((result) => {
-				// console.log(result.val());
-				const r1 = result.val();
-				const obats = [];
+				const diags = [];
 				Object.keys(r1).map(r2 => {
 					// console.log(r1[r2].namaDiag);
-					obats.push({
-						_key: r1[r2].idAS,
-						namaObat: r1[r2].namaAS,
-						hargaBeliObat: r1[r2].hargaBeliAS,
-						hargaJualObat: r1[r2].hargaJualAS,
-						jumlahObat: r1[r2].jumlahAS,
-						satuanObat: r1[r2].satuanAS,
-						jenisObat: r1[r2].jenisAS,
+					diags.push({
+						namaDiag: r1[r2].namaDiag,
+						_key: r1[r2].idDiag,
+						hargaDiag: r1[r2].hargaDiag,
 					});
 				});
 				this.setState({
-					obats: obats,
+					diags: diags,
 				});
-				// console.log(this.state.obats);
+				// console.log(r1.namaDiag);
 			}).catch((err) => {
 				console.log(err);
 		});
@@ -144,18 +121,12 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				tasks.push({
 					// name: child.val().name,
 					_key: child.key,
-					idObat: child.val().idObat,
-					namaObat: child.val().namaObat,
-					hargaBeliObat: child.val().hargaBeliObat,
-					hargaJualObat: child.val().hargaJualObat,
-					jumlahObatStok: child.val().jumlahObatStok,
-					jumlahObatKeluar: child.val().jumlahObatKeluar,
-					satuanObat: child.val().satuanObat,
-					jenisObat: child.val().jenisObat,
+					namaDiag: child.val().namaDiag,
+					hargaDiag: child.val().hargaDiag,
 					pasienId: child.val().pasienId,
 					pasienNama: child.val().pasienNama,
-					dokterPeriksaId: child.val().dokterPeriksaId,
 					dokterPeriksaNama: child.val().dokterPeriksaNama,
+					dokterPeriksaId: child.val().dokterPeriksaId,
 					timestamp: child.val().timestamp,
 					tanggalPeriksa: child.val().tanggalPeriksa,
 					pasienNoRekamMedik: child.val().pasienNoRekamMedik,
@@ -170,31 +141,15 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 
 	// add a new task to firebase app
 	_addTask() {
-		// console.log("_addTask",
-		// 				// this.state.tasks,
-		// 				this.state.newJumlahObat,
-		// 			);
-		const { currentPasienTerpilihUid, currentPasienTerpilihUsername,
-					stoHargaBeliObat,
-					stoHargaJualObat,
-					stoJumlahObat,
-					stoSatuanObat,
-					stoJenisObat,
-					stoIdObat,
-		} = this.props.pasienStore;
+		// console.log("task value",this.state.newTask);
+		const { currentPasienTerpilihUid, currentPasienTerpilihUsername, stoHargaDiag } = this.props.pasienStore;
 		const { currentUid, currentUsername } = this.props.mainStore;
-		if (this.state.selected1 === "-Pilih Obat-" || this.state.selected1 === "Idle") {
+		if (this.state.selected1 === "-Pilih Diagnosa-" || this.state.selected1 === "Idle") {
 			return;
 		}
 		this.tasksRef.push({
-			idObat: stoIdObat,
-			namaObat: this.state.selected1,
-			hargaBeliObat: stoHargaBeliObat,
-			hargaJualObat: stoHargaJualObat,
-			jumlahObatStok: stoJumlahObat,
-			jumlahObatKeluar: this.state.newJumlahObat,
-			satuanObat: stoSatuanObat,
-			jenisObat: stoJenisObat,
+			namaDiag: this.state.selected1,
+			hargaDiag: stoHargaDiag,
 			pasienId: currentPasienTerpilihUid,
 			pasienNama: currentPasienTerpilihUsername,
 			dokterPeriksaId: currentUid,
@@ -204,6 +159,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
 			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
 			});
+		this.setState({newTask: ""});
 		Toast.show({
 			text: "Task added succesfully",
 			duration: 2000,
@@ -216,25 +172,22 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		// this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.state.tasks.forEach(element => {
-			// console.log("_handleSaveTasksToFb => ", element);
+			// console.log(element);
 			this.tasksDb.push(element);
 			this.tasksRef.child(element._key).remove();
-			db.ref(`apotekStokBarang/${element.idObat}`).update({
-				jumlahAS : element.jumlahObatStok - element.jumlahObatKeluar,
-			});
 		});
-		// db.ref(`pasiens/${currentPasienTerpilihUid}`)
-		// 	.update({
-		// 		pasienRekamMedik: this.state.staPasienRekamMedik,
-		// 		dokterRekamMedik: this.state.staDokterRekamMedik,
-		// 		// flagActivity: "hasilDiagnosaDone",
-		// 	});
+		db.ref(`pasiens/${currentPasienTerpilihUid}`)
+			.update({
+				pasienRekamMedik: this.state.staPasienRekamMedik,
+				dokterRekamMedik: this.state.staDokterRekamMedik,
+				// flagActivity: "hasilDiagnosaDone",
+			});
 		this.props.navigation.navigate("RekamMedikPasienPage", {name : {currentPasienTerpilihUid}} );
 	}
 
 	_renderItem(task) {
-		// console.log("task", task._key);
-		// console.log("props", this.state.tasks);
+		// console.log("task",task._key);
+		// console.log("props", this.props);
 
 		const onTaskCompletion = () => {
 			// console.log("clickrecived",this.tasksRef.child(task._key).remove());
@@ -243,7 +196,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has been completed successfully");
 				Toast.show({
-					text: task.namaObat + " di tambah ke list",
+					text: "The task " + task.namaDiag + " has been completed successfully",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -253,7 +206,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 				// fulfillment
 				// alert("The task " + task.name + " has not been removed successfully");
 				Toast.show({
-					text: task.namaObat + " di hapus dari list",
+					text: "The task " + task.namaDiag + " has not been removed successfully",
 					duration: 2000,
 					position: "center",
 					textStyle: { textAlign: "center" },
@@ -275,14 +228,14 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		this.setState({
 			selected1: value,
 		});
-		this.props.pasienStore._handleNameObatSelected(value, this.state.obats);
+		this.props.pasienStore._handleNameDiagSelected(value, this.state.diags);
 		// db.doUpdateDokterPoli1(value);
 	}
 
 	make_list(list, item0) {
 		const d = list.map((data, i) => {
 			return (
-				<Picker.Item label={data.namaObat} value={data.namaObat} key={i}/>
+				<Picker.Item label={data.namaDiag} value={data.namaDiag} key={i}/>
 			);
 		});
 		if ( Platform.OS === "android") {
@@ -296,7 +249,6 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		// console.log("props:", this.props);
 		// If we are loading then we display the indicator, if the account is null and we are not loading
 		// Then we display nothing. If the account is not null then we display the account info.
-		const { pasienStore } = this.props;
 		const content = this.state.loading ?
 		<ActivityIndicator size="large"/> :
 			// this.state.user &&
@@ -317,7 +269,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 						</Button>
 					</Left>
 					<Body>
-						<Title>Input Obat</Title>
+						<Title>Input Diagnosa</Title>
 					</Body>
 					<Right />
 				</Header>
@@ -332,18 +284,18 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 										selectedValue={this.state.selected1}
 										onValueChange={this.onValueChangePoli1.bind(this)}
 										>
-										{ this.make_list(this.state.obats, "-Pilih Obat-") }
+										{ this.make_list(this.state.diags, "-Pilih Diagnosa-") }
 									</Picker>
 									<Item stackedLabel >
-										<Label>Stok Obat { pasienStore.stoJumlahObat } </Label>
+										<Label>Note</Label>
 										<Input
 											// ref={c => (this.hargaBeliABMInput = c)}
-											value={ this.state.newJumlahObat }
-											// value = { this.props.pasienStore.stoJumlahObat }
+											// value={ this.state.newTask }
+											value = { this.props.pasienStore.stoHargaDiag }
 											style={{ marginLeft: 5 }}
-											keyboardType="numeric"
+											// keyboardType="numeric"
 											// onBlur={() => form.validateUsername()}
-											onChangeText={(text) => this.setState({newJumlahObat: text})}
+											onChangeText={(text) => this.setState({newTask: text})}
 										/>
 									</Item>
 									<Button block onPress={() => this._addTask()}>
@@ -365,7 +317,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	// render() {
-	// 	return <InputDiagObatPage
+	// 	return <InputDiagnosaPage
 	// 				navigation={this.props.navigation}
 	// 			/>;
 	// }

@@ -17,6 +17,7 @@ class HomeStore {
 	transaksiNomorFakturKeluarOnChange(x) {
 		this.transaksiNomorFakturKeluar = x;
 	}
+
 	// @action
 	// fetchItems(data) {
 	// 	this.items = data;

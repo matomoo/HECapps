@@ -48,6 +48,7 @@ export default class LoginContainer extends React.Component<Props, State> {
 				})
 				.catch(error => {
 					// this.props.loginForm.responseFirebase = error.message;
+					console.log(error.message);
 					Toast.show({
 						text: error.message,
 						duration: 5000,

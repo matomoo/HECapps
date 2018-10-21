@@ -32,6 +32,9 @@ export interface Props {
 	mainStore;
 }
 export interface State {
+	consDiags;
+	tasksDiagnosa;
+
 	loading;
 	user;
 	newTask;
@@ -39,7 +42,6 @@ export interface State {
 	active;
 	selected1;
 	services;
-	diags;
 	staPasienRekamMedik;
 	staDokterRekamMedik;
 }
@@ -47,16 +49,25 @@ export interface State {
 @inject("pasienStore", "mainStore")
 @observer
 export default class InputDiagnosaPageContainer extends React.Component<Props, State> {
+	tasksTransaksiKeluar;
+	tasksDiagnosa;
+
 	tasksRef: any;
 	tasksDb: any;
 	constDiag: any;
 
 	constructor(props) {
 		super(props);
+		this.tasksTransaksiKeluar = db.ref(`transaksiKeluar`);
+
 		this.tasksRef = db.ref(`rekamMedik`);
 		this.tasksDb = db.ref(`rekamMedikDb`);
 		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa");
+
 		this.state = {
+			consDiags: [],
+			tasksDiagnosa: [],
+
 			user: undefined,
 			loading: false,
 			newTask: "",
@@ -64,15 +75,15 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			active: true,
 			selected1: "-Pilih Diagnosa-",
 			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
-			diags: [],
 			staPasienRekamMedik: 0,
 			staDokterRekamMedik: 0,
 			};
 		}
 
 	componentWillMount() {
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.getFirstData(this.constDiag);
+
+		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
 			.then(c1 => {
 				// console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
@@ -88,19 +99,19 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 	getFirstData( constDiag ) {
 		constDiag.once("value")
 			.then((result) => {
-				// this.setState({ diags: result.val() });
+				// this.setState({ consDiags: result.val() });
 				const r1 = result.val();
-				const diags = [];
+				const consDiags = [];
 				Object.keys(r1).map(r2 => {
 					// console.log(r1[r2].namaDiag);
-					diags.push({
+					consDiags.push({
 						namaDiag: r1[r2].namaDiag,
 						_key: r1[r2].idDiag,
 						hargaDiag: r1[r2].hargaDiag,
 					});
 				});
 				this.setState({
-					diags: diags,
+					consDiags: consDiags,
 				});
 				// console.log(r1.namaDiag);
 			}).catch((err) => {
@@ -131,6 +142,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 					tanggalPeriksa: child.val().tanggalPeriksa,
 					pasienNoRekamMedik: child.val().pasienNoRekamMedik,
 					dokterNoRekamMedik: child.val().dokterNoRekamMedik,
+					nomorFakturTransaksiKeluar : child.val().nomorFakturTransaksiKeluar,
 				});
 			});
 			this.setState({
@@ -158,6 +170,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
 			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
 			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
+			nomorFakturTransaksiKeluar : this.props.mainStore.nomorFakturTransaksiKeluar,
 			});
 		this.setState({newTask: ""});
 		Toast.show({
@@ -228,7 +241,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		this.setState({
 			selected1: value,
 		});
-		this.props.pasienStore._handleNameDiagSelected(value, this.state.diags);
+		this.props.pasienStore._handleNameDiagSelected(value, this.state.consDiags);
 		// db.doUpdateDokterPoli1(value);
 	}
 
@@ -284,7 +297,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 										selectedValue={this.state.selected1}
 										onValueChange={this.onValueChangePoli1.bind(this)}
 										>
-										{ this.make_list(this.state.diags, "-Pilih Diagnosa-") }
+										{ this.make_list(this.state.consDiags, "-Pilih Diagnosa-") }
 									</Picker>
 									<Item stackedLabel >
 										<Label>Note</Label>
@@ -316,9 +329,4 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		);
 	}
 
-	// render() {
-	// 	return <InputDiagnosaPage
-	// 				navigation={this.props.navigation}
-	// 			/>;
-	// }
 }

@@ -173,7 +173,7 @@ export const doInputTransaksiNomorFakturKeluar = ( p ) => {
 	// const aid = db.ref(`transaksi`).push();
 	// const akey = aid.key;
 	db.ref(`transaksi`).update ({
-		transaksiNomorFakturKeluar: p,
+		transaksiNomorFakturKeluar: parseInt(p, 10),
 	});
 };
 
