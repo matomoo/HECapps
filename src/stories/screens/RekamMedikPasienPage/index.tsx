@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Text,
+			// Button, Icon, Right,
+			Left, Body,
 			// List,
 			// ListItem,
 			Card,
@@ -31,17 +33,17 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 		return (
 			<Container style={styles.container}>
 				<Header>
-					<Left>
+					{/* <Left>
 						<Button transparent onPress={() => this.props.navigation.goBack()}>
 							<Icon name="ios-arrow-back" />
 						</Button>
-					</Left>
+					</Left> */}
 
 					<Body style={{ flex: 3 }}>
 						<Title>Profil Pasien</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -49,7 +51,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
@@ -58,9 +60,6 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 							<Left>
 								<Text>
 									{this.props.pasienUsername}
-								</Text>
-								<Text>
-									{this.props.transaksiNomorFaktur}
 								</Text>
 							</Left>
 						</CardItem>

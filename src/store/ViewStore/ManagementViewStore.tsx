@@ -7,6 +7,10 @@ class ManagementViewStore {
 	@observable sarana = "";
 	@observable belanjaModal = "";
 	@observable saham = "";
+	@observable shareJasaMedik;
+	@observable shareSarana;
+	@observable shareBelanjaModal;
+	@observable shareSaham;
 
 	@action
 	jasaMedikOnChange(x) {
@@ -26,6 +30,26 @@ class ManagementViewStore {
 	@action
 	sahamOnChange(x) {
 		this.saham = x;
+	}
+
+	@action
+	shareJasaMedikOnUpdate(x) {
+		this.shareJasaMedik = x;
+	}
+
+	@action
+	shareSaranaOnUpdate(x) {
+		this.shareSarana = x;
+	}
+
+	@action
+	shareBelanjaModalOnUpdate(x) {
+		this.shareBelanjaModal = x;
+	}
+
+	@action
+	shareSahamOnUpdate(x) {
+		this.shareSaham = x;
 	}
 
 	@action

@@ -29,11 +29,15 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	selectedCard;
 	transaksi;
 	taskManagement;
+	taskShare;
 
 	constructor(props) {
 		super(props);
 		this.transaksi = db1.db.ref(`transaksi/transaksiNomorFakturKeluar`);
 		this.taskManagement = db1.db.ref(`management/percentageOfShare`);
+		const { currentUid } = this.props.mainStore;
+		this.taskShare = db1.db.ref(`management/percentageOfShareDetail/${currentUid}`);
+
 		// this.state = {
 		// 	// jasaMedikInput: this.taskManagement.jasaMedik,
 		// 		};
@@ -43,12 +47,12 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		p.once("value")
 			.then((result) => {
 				const r1 = result.val();
+				if (this.props.mainStore.transaksiNomorFakturKeluar === "ny") {
+					db1.db.ref(`transaksi`).update({
+						transaksiNomorFakturKeluar : parseInt(r1, 10) + 1,
+					});
+				}
 				this.props.mainStore.transaksiNomorFakturKeluarOnChange(r1);
-				db1.db.ref(`transaksi`).update({
-					transaksiNomorFakturKeluar : parseInt(r1, 10) + 1,
-				});
-				// console.log(r1);
-				// console.log(this.props.mainStore);
 			}).catch((err) => {
 				console.log(err);
 		});
@@ -57,15 +61,17 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	componentWillMount() {
 		// let now = moment().format("YYYY-MMM-DD");
 		// console.log(now, moment().format("LLLL"));
+
 		this.getFirstData(this.transaksi);
 		this._getRekamMedik(
 			this.props.navigation.state.params.name.key ?
 			this.props.navigation.state.params.name.key :
 			this.props.navigation.state.params.name.currentPasienTerpilihUid);
-		this.getFirstDataManagement(this.taskManagement);
+		this.getFirstDataManagement(this.taskManagement, this.taskShare);
+		console.log("storeHome", this.props.mainStore);
 	}
 
-	getFirstDataManagement( p ) {
+	getFirstDataManagement( p, q ) {
 		p.once("value")
 			.then((result) => {
 				const r1 = result.val();
@@ -76,6 +82,18 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			}).catch((err) => {
 				console.log(err);
 		});
+
+		q.once("value")
+			.then((rest) => {
+				// console.log("res", res);
+				const res = rest.val();
+				this.props.managementViewStore.shareJasaMedikOnUpdate ( res.shareJasaMedik );
+				this.props.managementViewStore.shareSaranaOnUpdate ( res.shareSarana );
+				this.props.managementViewStore.shareBelanjaModalOnUpdate ( res.shareBelanjaModal );
+				this.props.managementViewStore.shareSahamOnUpdate ( res.shareSaham );
+			}).catch((err) => {
+				console.log(err);
+			});
 	}
 
 	async _getRekamMedik(uKey) {
@@ -106,6 +124,40 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		});
 	}
 
+	_onSimpanRekamMedik() {
+		const { currentUid, transaksiTotalDiag, transaksiTotalObat, transaksiNomorFakturKeluar,
+				transaksiKeluarTimestamp, transaksiKeluarTanggal } = this.props.mainStore;
+		const { jasaMedik, sarana, belanjaModal, saham, shareJasaMedik, shareSarana, shareBelanjaModal, shareSaham } = this.props.managementViewStore;
+
+		db1.db.ref(`management/percentageOfShareDetail/${currentUid}`).update({
+			shareJasaMedik: isNaN(shareJasaMedik)
+							? (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(jasaMedik, 10) / 100
+							: parseInt(shareJasaMedik, 10) + ((parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(jasaMedik, 10) / 100),
+			shareSarana: isNaN(shareSarana)
+							? (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(sarana, 10) / 100
+							: parseInt(shareSarana, 10) + ((parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(sarana, 10) / 100),
+			shareBelanjaModal: isNaN(shareBelanjaModal)
+							? (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(belanjaModal, 10) / 100
+							: parseInt(shareBelanjaModal, 10) + ((parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(belanjaModal, 10) / 100),
+			shareSaham: isNaN(shareSaham)
+							? (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(saham, 10) / 100
+							: parseInt(shareSaham, 10) + ((parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(saham, 10) / 100),
+		});
+
+		db1.db.ref(`management/percentageOfShareDetail/${currentUid}/${transaksiNomorFakturKeluar}`).update({
+			transaksiKeluarTanggal: transaksiKeluarTanggal,
+			transaksiKeluarTimestamp: transaksiKeluarTimestamp,
+			transaksiNomorFakturKeluar: transaksiNomorFakturKeluar,
+			shareJasaMedik: (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(jasaMedik, 10) / 100,
+			shareSarana: (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(sarana, 10) / 100,
+			shareBelanjaModal: (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(belanjaModal, 10) / 100,
+			shareSaham: (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(saham, 10) / 100,
+		});
+		this.props.mainStore.resetNomorFaktur();
+		this.props.navigation.navigate("Home");
+		// console.log(this.props.managementViewStore);
+	}
+
 	render() {
 		// console.log(this.props.navigation);
 		const { currentPasienTerpilihUsername,
@@ -129,6 +181,13 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 					onPress={() => this.props.navigation.navigate("InputDiagObatPage", {name : {key}} )}
 					>
 					<Left><Text>Input Obat</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+				<ListItem
+					key="4"
+					onPress={() => this._onSimpanRekamMedik() }
+					>
+					<Left><Text>Simpan Rekam Medik</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</ListItem>
 			</List>

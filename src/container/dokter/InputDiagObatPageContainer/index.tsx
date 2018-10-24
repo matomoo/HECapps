@@ -149,7 +149,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		// 	position: "center",
 		// 	textStyle: { textAlign: "center" },
 		// });
-		console.log(this.state.tasksObat);
+		// console.log(this.state.tasksObat);
 	}
 
 	componentDidMount() {
@@ -165,7 +165,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	_handleSaveTasksToFb() {
 		const { transaksiKeluarFbKey } = this.props.mainStore;
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
-
+		this.props.mainStore.transaksiTotalObatOnUpdate(this.state.transaksiTotalObat);
 		db.ref(`transaksiKeluar/${transaksiKeluarFbKey}`).update({
 			itemObat: JSON.stringify(this.state.tasksObat),
 			transaksiTotalObat: this.state.transaksiTotalObat,

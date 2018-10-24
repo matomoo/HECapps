@@ -4,19 +4,21 @@ import { observable,
 // import { db } from "../../firebase";
 
 class HomeStore {
-	// @observable hasErrored = false;
-	// @observable isLoading = true;
-	// @observable items = [];
 	@observable currentUid = "";
 	@observable currentUsername = "";
 	@observable currentUserRole = "";
-	@observable transaksiNomorFakturKeluar;
+	@observable transaksiNomorFakturKeluar = "ny";
 	@observable transaksiKeluarFbKey;
-	// @observable nomorAntrianPoli = "";
+	@observable transaksiTotalDiag;
+	@observable transaksiTotalObat;
+	@observable transaksiKeluarTimestamp;
+	@observable transaksiKeluarTanggal;
 
 	@action
 	transaksiNomorFakturKeluarOnChange(x) {
-		this.transaksiNomorFakturKeluar = x;
+		if (this.transaksiNomorFakturKeluar === "ny") {
+			this.transaksiNomorFakturKeluar = x ;
+		}
 	}
 
 	@action
@@ -24,24 +26,29 @@ class HomeStore {
 		this.transaksiKeluarFbKey = x;
 	}
 
-	// @action
-	// fetchItems(data) {
-	// 	this.items = data;
-	// 	this.isLoading = false;
-	// }
+	@action
+	transaksiTotalDiagOnUpdate(x) {
+		this.transaksiTotalDiag = x;
+	}
 
-	// @action
-	// updateNomorAntrianPoli() {
-	// 	db.getNumberLastAntrian()
-	// 		.then(res => {
-	// 			this.nomorAntrianPoli = res.val() + 1;
-	// 		});
-	// }
+	@action
+	transaksiTotalObatOnUpdate(x) {
+		this.transaksiTotalObat = x;
+	}
 
-	// @action
-	// handleGetDataPasienById(p) {
-	// 	console.log(p);
-	// }
+	@action
+	transaksiKeluarTimestampOnUpdate(x) {
+		this.transaksiKeluarTimestamp = x;
+	}
+
+	@action
+	transaksiKeluarTanggalOnUpdate(x) {
+		this.transaksiKeluarTanggal = x;
+	}
+
+	@action resetNomorFaktur() {
+		this.transaksiNomorFakturKeluar = "ny";
+	}
 
 }
 

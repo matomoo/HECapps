@@ -167,7 +167,11 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 
 		const id = this.tasksTransaksiKeluar.push();
 		const key = id.key;
+		let localTimestamp = firebase.database.ServerValue.TIMESTAMP;
 		this.props.mainStore.transaksiKeluarFbKeyOnUpdate(key);
+		this.props.mainStore.transaksiTotalDiagOnUpdate(this.state.transaksiTotalDiag);
+		this.props.mainStore.transaksiKeluarTimestampOnUpdate(localTimestamp);
+		this.props.mainStore.transaksiKeluarTanggalOnUpdate(moment().format("YYYY-MMM-DD"));
 		db.ref(`transaksiKeluar/${key}`).update(
 			{
 			_key: key,
@@ -183,7 +187,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			statusBilling: "Belum",
 			statusApotek: "Belum",
 			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
-			timestamp: firebase.database.ServerValue.TIMESTAMP,
+			timestamp: localTimestamp,
 		});
 
 		db.ref(`pasiens/${currentPasienTerpilihUid}`)
