@@ -7,7 +7,7 @@ import { ActivityIndicator,
 import { Header, Container, Title, Content, Icon,  Card,
 			CardItem,
 			Button,
-			Toast,
+			// Toast,
 			Form,
 			Picker,
 			Text,
@@ -21,16 +21,19 @@ import { Header, Container, Title, Content, Icon,  Card,
 		} from "native-base";
 import ListItem from "./components/ListItem";
 import { Platform, View } from "react-native";
-import firebase from "firebase";
-import moment from "moment";
+// import firebase from "firebase";
+// import moment from "moment";
 
 export interface Props {
 	navigation: any;
 	pasienStore;
 	mainStore;
-	managementViewStore;
 }
 export interface State {
+	consObats;
+	tasksObat;
+	transaksiTotalObat;
+
 	loading;
 	user;
 	newJumlahObat;
@@ -43,28 +46,33 @@ export interface State {
 	staDokterRekamMedik;
 }
 
-@inject("pasienStore", "mainStore", "managementViewStore")
+@inject("pasienStore", "mainStore")
 @observer
 export default class InputDiagObatPageContainer extends React.Component<Props, State> {
+	tasksTransaksiKeluar;
 	tasksRef: any;
 	tasksDb: any;
 	constObat: any;
-	taskManagement;
 
 	constructor(props) {
 		super(props);
+		this.tasksTransaksiKeluar = db.ref(`transaksiKeluar`);
+
 		this.tasksRef = db.ref(`rekamMedikObatTemp`);
 		this.tasksDb = db.ref(`rekamMedikDbObat`);
 		this.constObat = db.ref("apotekStokBarang");
-		this.taskManagement = db.ref(`management/percentageOfShare`);
+
 		this.state = {
+			consObats: [],
+			tasksObat: [],
+			transaksiTotalObat: 0,
+
 			user: undefined,
 			loading: false,
 			newJumlahObat: "",
 			tasks: [],
 			active: true,
 			selected1: "-Pilih Obat-",
-			// services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
 			obats: [],
 			staPasienRekamMedik: 0,
 			staDokterRekamMedik: 0,
@@ -76,43 +84,20 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		this.getFirstData(this.constObat);
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
 			.then(c1 => {
-				// console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
-				// console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
 				this.setState({
 					staPasienRekamMedik: c1.val().pasienRekamMedik,
 					staDokterRekamMedik: c1.val().dokterRekamMedik,
 				});
 			});
-		this.getFirstDataManagement(this.taskManagement);
-		console.log( this.props.mainStore );
 	}
 
-	getFirstDataManagement( p ) {
+	getFirstData( p ) {
 		p.once("value")
 			.then((result) => {
-				// console.log(result.val().jasaMedik);
 				const r1 = result.val();
-				this.props.managementViewStore.jasaMedik = r1.jasaMedik;
-				this.props.managementViewStore.sarana = r1.sarana;
-				this.props.managementViewStore.belanjaModal = r1.belanjaModal;
-				this.props.managementViewStore.saham = r1.saham;
-				// Object.keys(r1).map(r2 => {
-				// 	console.log(r1[r2]);
-				// });
-			}).catch((err) => {
-				console.log(err);
-		});
-	}
-
-	getFirstData( constObat ) {
-		constObat.once("value")
-			.then((result) => {
-				// console.log(result.val());
-				const r1 = result.val();
-				const obats = [];
+				const consObats = [];
 				Object.keys(r1).map(r2 => {
-					// console.log(r1[r2].namaDiag);
-					obats.push({
+					consObats.push({
 						_key: r1[r2].idAS,
 						namaObat: r1[r2].namaAS,
 						hargaBeliObat: r1[r2].hargaBeliAS,
@@ -123,58 +108,16 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 					});
 				});
 				this.setState({
-					obats: obats,
+					consObats: consObats,
 				});
-				// console.log(this.state.obats);
 			}).catch((err) => {
 				console.log(err);
-		});
+			});
 	}
 
-	componentDidMount() {
-		// start listening for firebase updates
-		this.listenForTasks(this.tasksRef);
-		}
-
-	// listener to get data from firebase and update listview accordingly
-	listenForTasks(tasksRef) {
-		tasksRef.on("value", (dataSnapshot) => {
-			const tasks = [];
-			dataSnapshot.forEach((child) => {
-				tasks.push({
-					// name: child.val().name,
-					_key: child.key,
-					idObat: child.val().idObat,
-					namaObat: child.val().namaObat,
-					hargaBeliObat: child.val().hargaBeliObat,
-					hargaJualObat: child.val().hargaJualObat,
-					jumlahObatStok: child.val().jumlahObatStok,
-					jumlahObatKeluar: child.val().jumlahObatKeluar,
-					satuanObat: child.val().satuanObat,
-					jenisObat: child.val().jenisObat,
-					pasienId: child.val().pasienId,
-					pasienNama: child.val().pasienNama,
-					dokterPeriksaId: child.val().dokterPeriksaId,
-					dokterPeriksaNama: child.val().dokterPeriksaNama,
-					timestamp: child.val().timestamp,
-					tanggalPeriksa: child.val().tanggalPeriksa,
-					pasienNoRekamMedik: child.val().pasienNoRekamMedik,
-					dokterNoRekamMedik: child.val().dokterNoRekamMedik,
-				});
-			});
-			this.setState({
-				tasks: tasks,
-			});
-		});
-	}
-
-	// add a new task to firebase app
 	_addTask() {
-		// console.log("_addTask",
-		// 				// this.state.tasks,
-		// 				this.state.newJumlahObat,
-		// 			);
-		const { currentPasienTerpilihUid, currentPasienTerpilihUsername,
+		const {
+					// currentPasienTerpilihUid, currentPasienTerpilihUsername,
 					stoHargaBeliObat,
 					stoHargaJualObat,
 					stoJumlahObat,
@@ -182,11 +125,11 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 					stoJenisObat,
 					stoIdObat,
 		} = this.props.pasienStore;
-		const { currentUid, currentUsername } = this.props.mainStore;
+		// const { currentUid, currentUsername } = this.props.mainStore;
 		if (this.state.selected1 === "-Pilih Obat-" || this.state.selected1 === "Idle") {
 			return;
 		}
-		this.tasksRef.push({
+		this.state.tasksObat.push({
 			idObat: stoIdObat,
 			namaObat: this.state.selected1,
 			hargaBeliObat: stoHargaBeliObat,
@@ -195,72 +138,66 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 			jumlahObatKeluar: this.state.newJumlahObat,
 			satuanObat: stoSatuanObat,
 			jenisObat: stoJenisObat,
-			pasienId: currentPasienTerpilihUid,
-			pasienNama: currentPasienTerpilihUsername,
-			dokterPeriksaId: currentUid,
-			dokterPeriksaNama: currentUsername,
-			timestamp: firebase.database.ServerValue.TIMESTAMP,
-			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
-			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
-			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
 			});
-		Toast.show({
-			text: "Task added succesfully",
-			duration: 2000,
-			position: "center",
-			textStyle: { textAlign: "center" },
+		this.setState({
+			newJumlahObat: "",
+			transaksiTotalObat: (parseInt(this.state.newJumlahObat, 10) * parseInt(stoHargaJualObat, 10)) + parseInt(this.state.transaksiTotalObat, 10),
+		});
+		// Toast.show({
+		// 	text: "Task added succesfully",
+		// 	duration: 2000,
+		// 	position: "center",
+		// 	textStyle: { textAlign: "center" },
+		// });
+		console.log(this.state.tasksObat);
+	}
+
+	componentDidMount() {
+		this.listenForTasks(this.state.tasksObat);
+	}
+
+	listenForTasks(p) {
+		this.setState({
+			tasksObat: p,
 		});
 	}
 
 	_handleSaveTasksToFb() {
-		// this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
+		const { transaksiKeluarFbKey } = this.props.mainStore;
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		this.state.tasks.forEach(element => {
-			// console.log("_handleSaveTasksToFb => ", element);
-			this.tasksDb.push(element);
-			this.tasksRef.child(element._key).remove();
+
+		db.ref(`transaksiKeluar/${transaksiKeluarFbKey}`).update({
+			itemObat: JSON.stringify(this.state.tasksObat),
+			transaksiTotalObat: this.state.transaksiTotalObat,
+		});
+
+		this.state.tasksObat.forEach(element => {
 			db.ref(`apotekStokBarang/${element.idObat}`).update({
-				jumlahAS : element.jumlahObatStok - element.jumlahObatKeluar,
+				jumlahAS : parseInt(element.jumlahObatStok, 10) - parseInt(element.jumlahObatKeluar, 10),
 			});
 		});
-		// db.ref(`pasiens/${currentPasienTerpilihUid}`)
-		// 	.update({
-		// 		pasienRekamMedik: this.state.staPasienRekamMedik,
-		// 		dokterRekamMedik: this.state.staDokterRekamMedik,
-		// 		// flagActivity: "hasilDiagnosaDone",
-		// 	});
+
 		this.props.navigation.navigate("RekamMedikPasienPage", {name : {currentPasienTerpilihUid}} );
 	}
 
+	deleteItem = key => {
+		const filteredItems = this.state.tasksObat.filter(item => {
+			return item.namaObat !== key;
+		});
+		let sum = 0;
+		filteredItems.forEach(function(obj) {
+			return sum += parseInt(obj.hargaJualObat, 10);
+		});
+		this.setState({
+			tasksObat: filteredItems,
+			transaksiTotalObat: sum,
+		});
+	}
+
 	_renderItem(task) {
-		// console.log("task", task._key);
-		// console.log("props", this.state.tasks);
-
 		const onTaskCompletion = () => {
-			// console.log("clickrecived",this.tasksRef.child(task._key).remove());
-			this.tasksRef.child(task._key).remove().then(
-				function() {
-				// fulfillment
-				// alert("The task " + task.name + " has been completed successfully");
-				Toast.show({
-					text: task.namaObat + " di tambah ke list",
-					duration: 2000,
-					position: "center",
-					textStyle: { textAlign: "center" },
-				});
-			},
-			function() {
-				// fulfillment
-				// alert("The task " + task.name + " has not been removed successfully");
-				Toast.show({
-					text: task.namaObat + " di hapus dari list",
-					duration: 2000,
-					position: "center",
-					textStyle: { textAlign: "center" },
-				});
-			});
-			};
-
+			this.deleteItem(task.namaObat);
+		};
 		return (
 			<ListItem task={task} onTaskCompletion={onTaskCompletion} />
 		);
@@ -275,7 +212,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		this.setState({
 			selected1: value,
 		});
-		this.props.pasienStore._handleNameObatSelected(value, this.state.obats);
+		this.props.pasienStore._handleNameObatSelected(value, this.state.consObats);
 		// db.doUpdateDokterPoli1(value);
 	}
 
@@ -292,21 +229,13 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	render() {
-		// console.log("tasks value", this.state.tasks);
-		// console.log("props:", this.props);
-		// If we are loading then we display the indicator, if the account is null and we are not loading
-		// Then we display nothing. If the account is not null then we display the account info.
 		const { pasienStore } = this.props;
 		const content = this.state.loading ?
-		<ActivityIndicator size="large"/> :
-			// this.state.user &&
-				// <Content>
-					<Card dataArray={this.state.tasks}
-						renderRow={(task) => this._renderItem(task)} >
-					</Card>
-				// </Content>
+			<ActivityIndicator size="large"/> :
+			<Card dataArray={this.state.tasksObat}
+				renderRow={(task) => this._renderItem(task)} >
+			</Card>
 			;
-		// console.log("loading user", this.state.user, this.state.loading);
 
 		return (
 			<Container>
@@ -332,7 +261,7 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 										selectedValue={this.state.selected1}
 										onValueChange={this.onValueChangePoli1.bind(this)}
 										>
-										{ this.make_list(this.state.obats, "-Pilih Obat-") }
+										{ this.make_list(this.state.consObats, "-Pilih Obat-") }
 									</Picker>
 									<Item stackedLabel >
 										<Label>Stok Obat { pasienStore.stoJumlahObat } </Label>
@@ -364,9 +293,4 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 		);
 	}
 
-	// render() {
-	// 	return <InputDiagObatPage
-	// 				navigation={this.props.navigation}
-	// 			/>;
-	// }
 }

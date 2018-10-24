@@ -2,13 +2,14 @@ import * as React from "react";
 // import InputDiagnosaPage from "../../../stories/screens/dokter/InputDiagnosaPage";
 import { observer, inject } from "mobx-react/native";
 import { db } from "../../../firebase/firebase";
+// import * as db1 from "../../../../firebase/firebase";
 import { ActivityIndicator,
 			// TextInput,
 } from "react-native";
 import { Header, Container, Title, Content, Icon,  Card,
 			CardItem,
 			Button,
-			Toast,
+			// Toast,
 			Form,
 			Picker,
 			Text,
@@ -23,6 +24,7 @@ import { Header, Container, Title, Content, Icon,  Card,
 // import styles from "./styles/mainStyles";
 import ListItem from "./components/ListItem";
 import { Platform, View } from "react-native";
+// import _ from "lodash";
 import firebase from "firebase";
 import moment from "moment";
 
@@ -34,6 +36,7 @@ export interface Props {
 export interface State {
 	consDiags;
 	tasksDiagnosa;
+	transaksiTotalDiag;
 
 	loading;
 	user;
@@ -59,14 +62,15 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 	constructor(props) {
 		super(props);
 		this.tasksTransaksiKeluar = db.ref(`transaksiKeluar`);
+		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa");
 
 		this.tasksRef = db.ref(`rekamMedik`);
 		this.tasksDb = db.ref(`rekamMedikDb`);
-		this.constDiag = db.ref("constant").orderByChild("flag").equalTo("diagnosa");
 
 		this.state = {
 			consDiags: [],
 			tasksDiagnosa: [],
+			transaksiTotalDiag: 0,
 
 			user: undefined,
 			loading: false,
@@ -77,118 +81,111 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			services: ["Dokter A", "Dokter B", "Dokter C", "Dokter D", "Dokter E"],
 			staPasienRekamMedik: 0,
 			staDokterRekamMedik: 0,
-			};
-		}
+		};
+	}
 
 	componentWillMount() {
-		this.getFirstData(this.constDiag);
+		this.getFirstData(
+			this.constDiag,
+			// this.tasksTransaksiKeluar
+		);
 
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
 			.then(c1 => {
-				// console.log("pasienRekamMedik: ", c1.val().pasienRekamMedik);
-				// console.log("dokterRekamMedik: ", c1.val().dokterRekamMedik);
 				this.setState({
 					staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
 					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
 				});
 			});
-		// console.log(this.props.mainStore);
 	}
 
-	getFirstData( constDiag ) {
-		constDiag.once("value")
+	getFirstData( p ) {
+		p.once("value")
 			.then((result) => {
-				// this.setState({ consDiags: result.val() });
 				const r1 = result.val();
 				const consDiags = [];
 				Object.keys(r1).map(r2 => {
-					// console.log(r1[r2].namaDiag);
 					consDiags.push({
-						namaDiag: r1[r2].namaDiag,
 						_key: r1[r2].idDiag,
+						namaDiag: r1[r2].namaDiag,
 						hargaDiag: r1[r2].hargaDiag,
 					});
 				});
 				this.setState({
 					consDiags: consDiags,
 				});
-				// console.log(r1.namaDiag);
 			}).catch((err) => {
 				console.log(err);
 		});
 	}
 
-	componentDidMount() {
-		// start listening for firebase updates
-		this.listenForTasks(this.tasksRef);
-		}
-
-	// listener to get data from firebase and update listview accordingly
-	listenForTasks(tasksRef) {
-		tasksRef.on("value", (dataSnapshot) => {
-			const tasks = [];
-			dataSnapshot.forEach((child) => {
-				tasks.push({
-					// name: child.val().name,
-					_key: child.key,
-					namaDiag: child.val().namaDiag,
-					hargaDiag: child.val().hargaDiag,
-					pasienId: child.val().pasienId,
-					pasienNama: child.val().pasienNama,
-					dokterPeriksaNama: child.val().dokterPeriksaNama,
-					dokterPeriksaId: child.val().dokterPeriksaId,
-					timestamp: child.val().timestamp,
-					tanggalPeriksa: child.val().tanggalPeriksa,
-					pasienNoRekamMedik: child.val().pasienNoRekamMedik,
-					dokterNoRekamMedik: child.val().dokterNoRekamMedik,
-					nomorFakturTransaksiKeluar : child.val().nomorFakturTransaksiKeluar,
-				});
-			});
-			this.setState({
-				tasks: tasks,
-			});
-		});
-	}
-
-	// add a new task to firebase app
 	_addTask() {
-		// console.log("task value",this.state.newTask);
-		const { currentPasienTerpilihUid, currentPasienTerpilihUsername, stoHargaDiag } = this.props.pasienStore;
-		const { currentUid, currentUsername } = this.props.mainStore;
+		const {
+			// currentPasienTerpilihUid, currentPasienTerpilihUsername,
+			stoHargaDiag } = this.props.pasienStore;
+		// const { currentUid, currentUsername, transaksiNomorFakturKeluar } = this.props.mainStore;
 		if (this.state.selected1 === "-Pilih Diagnosa-" || this.state.selected1 === "Idle") {
 			return;
 		}
-		this.tasksRef.push({
+
+		this.state.tasksDiagnosa.push({
 			namaDiag: this.state.selected1,
 			hargaDiag: stoHargaDiag,
-			pasienId: currentPasienTerpilihUid,
-			pasienNama: currentPasienTerpilihUsername,
-			dokterPeriksaId: currentUid,
-			dokterPeriksaNama: currentUsername,
-			timestamp: firebase.database.ServerValue.TIMESTAMP,
-			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
-			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
-			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
-			nomorFakturTransaksiKeluar : this.props.mainStore.nomorFakturTransaksiKeluar,
-			});
-		this.setState({newTask: ""});
-		Toast.show({
-			text: "Task added succesfully",
-			duration: 2000,
-			position: "center",
-			textStyle: { textAlign: "center" },
 		});
+		// const sum = parseInt(stoHargaDiag);
+		this.setState({
+			newTask: "",
+			transaksiTotalDiag: parseInt(stoHargaDiag, 10) + parseInt(this.state.transaksiTotalDiag, 10),
+		});
+
+		// Toast.show({
+		// 	text: "Task added succesfully",
+		// 	duration: 2000,
+		// 	position: "center",
+		// 	textStyle: { textAlign: "center" },
+		// });
+	}
+
+	componentDidMount() {
+
+		this.listenForTasks(
+			// this.tasksRef
+				this.state.tasksDiagnosa,
+			);
+		}
+
+	listenForTasks(p) {
+			this.setState({
+				tasksDiagnosa: p,
+			});
 	}
 
 	_handleSaveTasksToFb() {
-		// this.tasksDb.push(this.state.tasks);  // this will save array into Fbase
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		this.state.tasks.forEach(element => {
-			// console.log(element);
-			this.tasksDb.push(element);
-			this.tasksRef.child(element._key).remove();
+		const {	currentPasienTerpilihUid, currentPasienTerpilihUsername } = this.props.pasienStore;
+		const { currentUid, currentUsername, transaksiNomorFakturKeluar } = this.props.mainStore;
+
+		const id = this.tasksTransaksiKeluar.push();
+		const key = id.key;
+		this.props.mainStore.transaksiKeluarFbKeyOnUpdate(key);
+		db.ref(`transaksiKeluar/${key}`).update(
+			{
+			_key: key,
+			transaksiNomorFakturKeluar : transaksiNomorFakturKeluar,
+			dokterPeriksaId: currentUid,
+			dokterPeriksaNama: currentUsername,
+			pasienId: currentPasienTerpilihUid,
+			pasienNama: currentPasienTerpilihUsername,
+			itemDiag: JSON.stringify(this.state.tasksDiagnosa),
+			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
+			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
+			transaksiTotalDiag: this.state.transaksiTotalDiag,
+			statusBilling: "Belum",
+			statusApotek: "Belum",
+			tanggalPeriksa: moment().format("YYYY-MMM-DD"),
+			timestamp: firebase.database.ServerValue.TIMESTAMP,
 		});
+
 		db.ref(`pasiens/${currentPasienTerpilihUid}`)
 			.update({
 				pasienRekamMedik: this.state.staPasienRekamMedik,
@@ -198,35 +195,24 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		this.props.navigation.navigate("RekamMedikPasienPage", {name : {currentPasienTerpilihUid}} );
 	}
 
+	deleteItem = key => {
+		const filteredItems = this.state.tasksDiagnosa.filter(item => {
+			return item.namaDiag !== key;
+		});
+		let sum = 0;
+		filteredItems.forEach(function(obj) {
+			return sum += parseInt(obj.hargaDiag, 10);
+		});
+		this.setState({
+			tasksDiagnosa: filteredItems,
+			transaksiTotalDiag: sum,
+		});
+	}
+
 	_renderItem(task) {
-		// console.log("task",task._key);
-		// console.log("props", this.props);
-
 		const onTaskCompletion = () => {
-			// console.log("clickrecived",this.tasksRef.child(task._key).remove());
-			this.tasksRef.child(task._key).remove().then(
-				function() {
-				// fulfillment
-				// alert("The task " + task.name + " has been completed successfully");
-				Toast.show({
-					text: "The task " + task.namaDiag + " has been completed successfully",
-					duration: 2000,
-					position: "center",
-					textStyle: { textAlign: "center" },
-				});
-			},
-			function() {
-				// fulfillment
-				// alert("The task " + task.name + " has not been removed successfully");
-				Toast.show({
-					text: "The task " + task.namaDiag + " has not been removed successfully",
-					duration: 2000,
-					position: "center",
-					textStyle: { textAlign: "center" },
-				});
-			});
+			this.deleteItem(task.namaDiag);
 			};
-
 		return (
 			<ListItem task={task} onTaskCompletion={onTaskCompletion} />
 		);
@@ -242,7 +228,6 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			selected1: value,
 		});
 		this.props.pasienStore._handleNameDiagSelected(value, this.state.consDiags);
-		// db.doUpdateDokterPoli1(value);
 	}
 
 	make_list(list, item0) {
@@ -258,20 +243,12 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 	}
 
 	render() {
-		// console.log("tasks value", this.state.tasks);
-		// console.log("props:", this.props);
-		// If we are loading then we display the indicator, if the account is null and we are not loading
-		// Then we display nothing. If the account is not null then we display the account info.
 		const content = this.state.loading ?
-		<ActivityIndicator size="large"/> :
-			// this.state.user &&
-				// <Content>
-					<Card dataArray={this.state.tasks}
-						renderRow={(task) => this._renderItem(task)} >
-					</Card>
-				// </Content>
+			<ActivityIndicator size="large"/> :
+			<Card dataArray={this.state.tasksDiagnosa}
+				renderRow={(task) => this._renderItem(task)} >
+			</Card>
 			;
-		// console.log("loading user", this.state.user, this.state.loading);
 
 		return (
 			<Container>

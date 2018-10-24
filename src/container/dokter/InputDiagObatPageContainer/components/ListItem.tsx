@@ -24,9 +24,9 @@ import React, {
 						<Right>
 							{/* <Icon name="md-checkmark" onPress={() => this.props.onTaskCompletion()}/> */}
 							<Button transparent
-								style={{ height: 10 }}
+								style={{ height: 30, width: 30 }}
 								onPress={() => this.props.onTaskCompletion()}>
-								<Icon name="md-checkmark" />
+								<Icon name="ios-close-circle-outline" />
 							</Button>
 						</Right>
 				</CardItem>

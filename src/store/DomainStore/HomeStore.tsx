@@ -11,11 +11,17 @@ class HomeStore {
 	@observable currentUsername = "";
 	@observable currentUserRole = "";
 	@observable transaksiNomorFakturKeluar;
+	@observable transaksiKeluarFbKey;
 	// @observable nomorAntrianPoli = "";
 
 	@action
 	transaksiNomorFakturKeluarOnChange(x) {
 		this.transaksiNomorFakturKeluar = x;
+	}
+
+	@action
+	transaksiKeluarFbKeyOnUpdate(x) {
+		this.transaksiKeluarFbKey = x;
 	}
 
 	// @action

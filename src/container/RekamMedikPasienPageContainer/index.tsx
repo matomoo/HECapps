@@ -18,19 +18,22 @@ export interface Props {
 	navigation: any;
 	pasienStore: any;
 	mainStore: any;
+	managementViewStore;
 }
 
 export interface State {}
 
-@inject ("pasienStore", "mainStore")
+@inject ("pasienStore", "mainStore", "managementViewStore")
 @observer
 export default class RekamMedikPasienPageContainer extends React.Component<Props, State> {
 	selectedCard;
 	transaksi;
+	taskManagement;
 
 	constructor(props) {
 		super(props);
 		this.transaksi = db1.db.ref(`transaksi/transaksiNomorFakturKeluar`);
+		this.taskManagement = db1.db.ref(`management/percentageOfShare`);
 		// this.state = {
 		// 	// jasaMedikInput: this.taskManagement.jasaMedik,
 		// 		};
@@ -59,6 +62,20 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			this.props.navigation.state.params.name.key ?
 			this.props.navigation.state.params.name.key :
 			this.props.navigation.state.params.name.currentPasienTerpilihUid);
+		this.getFirstDataManagement(this.taskManagement);
+	}
+
+	getFirstDataManagement( p ) {
+		p.once("value")
+			.then((result) => {
+				const r1 = result.val();
+				this.props.managementViewStore.jasaMedik = r1.jasaMedik;
+				this.props.managementViewStore.sarana = r1.sarana;
+				this.props.managementViewStore.belanjaModal = r1.belanjaModal;
+				this.props.managementViewStore.saham = r1.saham;
+			}).catch((err) => {
+				console.log(err);
+		});
 	}
 
 	async _getRekamMedik(uKey) {
