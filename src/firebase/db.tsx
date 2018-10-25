@@ -235,6 +235,17 @@ export const GetRekamMedikObatPasienX3 = (uid, q) => {
 	return getter;
 };
 
+export const GetRekamMedikPasienX4 = (uid) => {
+	const getter = db.ref(`transaksiKeluar`).orderByChild("pasienId").equalTo(`${uid}`).once("value");
+	return getter;
+};
+
+// export const GetRekamMedikObatPasienX4 = (uid, q) => {
+// 	// console.log(q, `${uid}-${q}`);
+// 	const getter = db.ref(`transaksiKeluar`).orderByChild("pasienId").equalTo(`${uid}` + `-` + `${q}`).once("value");
+// 	return getter;
+// };
+
 export const GetSingleUsers = (uid) => {
 	const resUser = db.ref(`users/${uid}`).once("value");
 	return resUser;

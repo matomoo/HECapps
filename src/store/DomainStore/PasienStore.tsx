@@ -6,6 +6,7 @@ class PasienStore {
 	@observable isLoading = true;
 	@observable itemsPasien = {};
 	@observable itemsRekamMedikPasien = [];
+	@observable itemsRekamMedikDiagPasien = [];
 	@observable itemsRekamMedikObatPasien = [];
 	@observable currentPasienTerpilihUid = "";
 	@observable currentPasienTerpilihUsername = "";
@@ -27,18 +28,6 @@ class PasienStore {
 		this.itemsPasien = data;
 		this.isLoading = false;
 	}
-
-	// @action
-	// analysisOnChange(param) {
-	// 	this.analysis = param;
-	// 	// this.validateEmail();
-	// }
-
-	// @action
-	// obatOnChange(param) {
-	// 	this.obat = param;
-	// 	// this.validateEmail();
-	// }
 
 	@action
 	_handleNameDiagSelected( p, q ) {
@@ -84,7 +73,7 @@ class PasienStore {
 		this.hasErrored = false;
 		this.isLoading = true;
 		this.itemsPasien = {};
-		this.itemsRekamMedikPasien = [];
+		this.itemsRekamMedikDiagPasien = [];
 		this.currentPasienTerpilihUid = "";
 		this.currentPasienTerpilihUsername = "";
 		this.stoHargaDiag = "";

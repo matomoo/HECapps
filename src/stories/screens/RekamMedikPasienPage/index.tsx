@@ -21,7 +21,7 @@ export interface Props {
 	userRole: any;
 	selectedCard;
 	viewRiwayatRekamMedik;
-	viewRiwayatRekamMedikObat;
+	// viewRiwayatRekamMedikObat;
 	transaksiNomorFaktur;
 }
 export interface State {}
@@ -65,14 +65,14 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 						</CardItem>
 					</Card>
 					<Text><H2>Riwayat Rekam Medik</H2></Text>
-					<Card>
-						<CardItem>
+					{/* <Card> */}
+						{/* <CardItem> */}
 							{ this.props.viewRiwayatRekamMedik }
-						</CardItem>
-						<CardItem>
+						{/* </CardItem> */}
+						{/* <CardItem>
 							{ this.props.viewRiwayatRekamMedikObat }
-						</CardItem>
-					</Card>
+						</CardItem> */}
+					{/* </Card> */}
 					<Card>
 						{ this.props.selectedCard }
 					</Card>

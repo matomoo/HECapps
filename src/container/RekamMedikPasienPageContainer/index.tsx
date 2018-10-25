@@ -11,7 +11,10 @@ import { List,
 			Right,
 			Text,
 			Icon,
+			Card, CardItem,
+			View,
 } from "native-base";
+// import Content from "../../theme/components/Content";
 // import moment from "moment";
 
 export interface Props {
@@ -59,16 +62,13 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	componentWillMount() {
-		// let now = moment().format("YYYY-MMM-DD");
-		// console.log(now, moment().format("LLLL"));
-
 		this.getFirstData(this.transaksi);
 		this._getRekamMedik(
 			this.props.navigation.state.params.name.key ?
 			this.props.navigation.state.params.name.key :
 			this.props.navigation.state.params.name.currentPasienTerpilihUid);
 		this.getFirstDataManagement(this.taskManagement, this.taskShare);
-		console.log("storeHome", this.props.mainStore);
+		// console.log("storeHome", this.props.mainStore);
 	}
 
 	getFirstDataManagement( p, q ) {
@@ -96,31 +96,45 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			});
 	}
 
+	// async _getRekamMedik(uKey) {
+	// 	this.props.pasienStore.itemsRekamMedikPasien = [];
+	// 	this.props.pasienStore.itemsRekamMedikObatPasien = [];
+	// 	this.props.pasienStore._handleGetNameFromKey(
+	// 		// this.props.navigation.state.params.name.key,
+	// 		uKey,
+	// 		this.props.pasienStore.itemsPasien[uKey],
+	// 	);
+	// 	const { currentPasienNomorRekamMedik } = this.props.pasienStore;
+	// 	await db.GetRekamMedikPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(c1 => {
+	// 		c1.forEach(c2 => {
+	// 			this.props.pasienStore.itemsRekamMedikPasien.push(c2.val());
+	// 		});
+	// 	});
+	// 	await db.GetRekamMedikObatPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(d1 => {
+	// 		d1.forEach(d2 => {
+	// 			this.props.pasienStore.itemsRekamMedikObatPasien.push(d2.val());
+	// 		});
+	// 	});
+	// }
+
 	async _getRekamMedik(uKey) {
-		this.props.pasienStore.itemsRekamMedikPasien = [];
+		// console.log("storeHome", this.props);
+		this.props.pasienStore.itemsRekamMedikDiagPasien = [];
 		this.props.pasienStore.itemsRekamMedikObatPasien = [];
 		this.props.pasienStore._handleGetNameFromKey(
-			// this.props.navigation.state.params.name.key,
 			uKey,
 			this.props.pasienStore.itemsPasien[uKey],
 		);
-		const { currentPasienNomorRekamMedik } = this.props.pasienStore;
-		await db.GetRekamMedikPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(c1 => {
-			// console.log(currentPasienNomorRekamMedik);
-			// const snap = c1.val();
-			// Object.keys(snap).map(c2 => {
-			// 	this.props.pasienStore.itemsRekamMedikPasien.push
-			// })
-			// this.props.pasienStore.itemsRekamMedikPasien = c1.val() ;
+		// const { currentPasienNomorRekamMedik } = this.props.pasienStore;
+		await db.GetRekamMedikPasienX4(uKey).then(c1 => {
 			c1.forEach(c2 => {
-				this.props.pasienStore.itemsRekamMedikPasien.push(c2.val());
-				// console.log(c2.val());
+				const res = c2.val();
+				console.log("res", res);
+				this.props.pasienStore.itemsRekamMedikPasien.push( res );
+				this.props.pasienStore.itemsRekamMedikDiagPasien.push( JSON.parse(res.itemDiag) );
+				this.props.pasienStore.itemsRekamMedikObatPasien.push( JSON.parse(res.itemObat) );
 			});
-		});
-		await db.GetRekamMedikObatPasienX3(uKey, currentPasienNomorRekamMedik.toString()).then(d1 => {
-			d1.forEach(d2 => {
-				this.props.pasienStore.itemsRekamMedikObatPasien.push(d2.val());
-			});
+			// console.log("pasienStore", this.props.pasienStore);
 		});
 	}
 
@@ -162,9 +176,11 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		// console.log(this.props.navigation);
 		const { currentPasienTerpilihUsername,
 				currentPasienTerpilihUid,
-				itemsRekamMedikPasien,
-				itemsRekamMedikObatPasien } = this.props.pasienStore;
+				// itemsRekamMedikDiagPasien,
+				// itemsRekamMedikObatPasien
+				} = this.props.pasienStore;
 		const { currentUserRole, transaksiNomorFaktur } = this.props.mainStore;
+		const { itemsRekamMedikPasien } = this.props.pasienStore;
 		const key = currentPasienTerpilihUid;
 
 		const menuDokter = (
@@ -204,44 +220,68 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		}
 
 		const viewRiwayatRekamMedik = (
-			<List>
-				<ListItem key="0">
-					<Text> { !!itemsRekamMedikPasien.length && itemsRekamMedikPasien[0].tanggalPeriksa }
-					</Text>
-				</ListItem>
-				<ListItem key="1">
-					<Text>Diagnosa</Text>
-				</ListItem>
-				{ itemsRekamMedikPasien.map(el =>
-					<ListItem
-						key={el._key}
-						>
-						<Text>{" - "}{el.namaDiag}</Text>
-					</ListItem>,
-					)
-				}
-			</List>
+			// console.log("pasienStore", this.props.pasienStore)
+			<View>
+			{ itemsRekamMedikPasien.map(el =>
+					<Card key={el.transaksiNomorFakturKeluar}>
+						<CardItem>
+							<Text>{el.tanggalPeriksa}</Text>
+						</CardItem>
+						<CardItem>
+							{ JSON.parse(el.itemDiag).map( el1 =>
+								<Text key={el1.namaDiag}>{ el1.namaDiag }</Text>,
+							) }
+						</CardItem>
+						<CardItem>
+							{ JSON.parse(el.itemObat).map( el1 =>
+								<Text key={el1.namaObat}>{ el1.namaObat }</Text>,
+							) }
+						</CardItem>
+					</Card>,
+				)
+			}
+			</View>
 		);
 
-		const viewRiwayatRekamMedikObat = (
-			<List>
-				{/* <ListItem key="0">
-					<Text> { !!itemsRekamMedikObatPasien.length && itemsRekamMedikObatPasien[0].tanggalPeriksa }
-					</Text>
-				</ListItem> */}
-				<ListItem key="1">
-					<Text>Obat</Text>
-				</ListItem>
-				{ itemsRekamMedikObatPasien.map(el =>
-					<ListItem
-						key={el._key}
-						>
-						<Text>{" - "}{el.namaObat}</Text>
-					</ListItem>,
-					)
-				}
-			</List>
-		);
+		// const viewRiwayatRekamMedik = (
+		// 	<List>
+		// 		<ListItem key="0">
+		// 			<Text> { !!itemsRekamMedikDiagPasien.length && itemsRekamMedikDiagPasien[0].tanggalPeriksa }
+		// 			</Text>
+		// 		</ListItem>
+		// 		<ListItem key="1">
+		// 			<Text>Diagnosa</Text>
+		// 		</ListItem>
+		// 		{ itemsRekamMedikDiagPasien.map(el =>
+		// 			<ListItem
+		// 				key={el.namaDiag}
+		// 				>
+		// 				<Text>{" - "}{el.namaDiag}</Text>
+		// 			</ListItem>,
+		// 			)
+		// 		}
+		// 	</List>
+		// );
+
+		// const viewRiwayatRekamMedikObat = (
+		// 	<List>
+		// 		{/* <ListItem key="0">
+		// 			<Text> { !!itemsRekamMedikObatPasien.length && itemsRekamMedikObatPasien[0].tanggalPeriksa }
+		// 			</Text>
+		// 		</ListItem> */}
+		// 		<ListItem key="1">
+		// 			<Text>Obat</Text>
+		// 		</ListItem>
+		// 		{ itemsRekamMedikObatPasien.map(el =>
+		// 			<ListItem
+		// 				key={el.namaObat}
+		// 				>
+		// 				<Text>{" - "}{el.namaObat}</Text>
+		// 			</ListItem>,
+		// 			)
+		// 		}
+		// 	</List>
+		// );
 
 		return <RekamMedikPasienPage
 					navigation={this.props.navigation}
@@ -250,7 +290,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 					userRole = { currentUserRole }
 					selectedCard = { this.selectedCard }
 					viewRiwayatRekamMedik = { viewRiwayatRekamMedik }
-					viewRiwayatRekamMedikObat = { viewRiwayatRekamMedikObat }
+					// viewRiwayatRekamMedikObat = { viewRiwayatRekamMedikObat }
 					transaksiNomorFaktur = { transaksiNomorFaktur }
 					/>;
 	}
