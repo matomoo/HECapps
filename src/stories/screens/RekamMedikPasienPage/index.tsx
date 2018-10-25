@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Container, Header, Title, Content, Text,
-			// Button, Icon, Right,
+			Button, Icon, Right,
 			Left, Body,
 			// List,
 			// ListItem,
@@ -43,7 +43,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 						<Title>Profil Pasien</Title>
 					</Body>
 
-					{/* <Right>
+					<Right>
 						<Button transparent>
 							<Icon
 								active
@@ -51,7 +51,7 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right> */}
+					</Right>
 				</Header>
 
 				<Content padder>

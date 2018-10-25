@@ -240,12 +240,6 @@ export const GetRekamMedikPasienX4 = (uid) => {
 	return getter;
 };
 
-// export const GetRekamMedikObatPasienX4 = (uid, q) => {
-// 	// console.log(q, `${uid}-${q}`);
-// 	const getter = db.ref(`transaksiKeluar`).orderByChild("pasienId").equalTo(`${uid}` + `-` + `${q}`).once("value");
-// 	return getter;
-// };
-
 export const GetSingleUsers = (uid) => {
 	const resUser = db.ref(`users/${uid}`).once("value");
 	return resUser;

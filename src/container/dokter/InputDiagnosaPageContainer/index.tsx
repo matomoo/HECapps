@@ -181,6 +181,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			pasienId: currentPasienTerpilihUid,
 			pasienNama: currentPasienTerpilihUsername,
 			itemDiag: JSON.stringify(this.state.tasksDiagnosa),
+			itemObat: JSON.stringify(["-"]),
 			pasienNoRekamMedik: currentPasienTerpilihUid + "-" + this.state.staPasienRekamMedik,
 			dokterNoRekamMedik: currentUid + "-" + this.state.staDokterRekamMedik,
 			transaksiTotalDiag: this.state.transaksiTotalDiag,
