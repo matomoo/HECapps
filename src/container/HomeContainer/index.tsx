@@ -211,7 +211,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 				<CardItem
 					key="3"
 					button
-					onPress={() => this.props.navigation.navigate("ViewDokterPercentageOfShare")} >
+					onPress={() => this.props.navigation.navigate("POfSharePage")} >
 					<Left><Text>View percentage of share</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
