@@ -104,7 +104,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 		const cardPasien = (
 			<Card>
 				<List>
-					{/* <ListItem
+					<ListItem
 						key="1"
 						button
 						onPress={() => {
@@ -114,7 +114,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 						>
 						<Left><Text>Riwayat Rekam Medik</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
-					</ListItem> */}
+					</ListItem>
 					<ListItem
 						key="2"
 						button

@@ -66,8 +66,13 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		if (currentUserRole === "dokter") {
 			this.getFirstData(this.transaksi);
 			this.getFirstDataManagement(this.taskManagement, this.taskShare);
+		} else if (currentUserRole === "pasien") {
+			db.GetRekamMedikPasien(this.props.navigation.state.params.name.key).then(snapshot => {
+				this.props.pasienStore.itemsPasien = snapshot.val();
+				this.props.pasienStore.currentPasienTerpilihUsername = snapshot.val().profil.username;
+			});
 		}
-		// console.log("storeHome", this.props.mainStore);
+		// console.log("props", this.props.navigation.state.params.name.key);
 	}
 
 	componentDidMount() {
@@ -120,7 +125,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				// this.props.pasienStore.itemsRekamMedikDiagPasien.push( JSON.parse(res.itemDiag) );
 				// this.props.pasienStore.itemsRekamMedikObatPasien.push( JSON.parse(res.itemObat) );
 			});
-			// console.log("pasienStore", this.props.pasienStore);
+			console.log("pasienStore", this.props.pasienStore);
 		});
 	}
 
@@ -265,8 +270,9 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				{ itemsRekamMedikPasien.map(el =>
 						(currentUserRole === "dokter"
 						|| currentUserRole === "apotek" && el.statusApotek === "Belum"
-						|| currentUserRole === "billing" && el.statusBilling === "Belum")
-						&&
+						|| currentUserRole === "billing" && el.statusBilling === "Belum"
+						|| currentUserRole === "pasien"
+						) &&
 						<Card key={el.transaksiNomorFakturKeluar}>
 							<CardItem>
 								<Text>{el.tanggalPeriksa} ({el.transaksiNomorFakturKeluar})</Text>
