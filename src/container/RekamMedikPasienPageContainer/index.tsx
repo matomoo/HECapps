@@ -62,8 +62,11 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	componentWillMount() {
-		this.getFirstData(this.transaksi);
-		this.getFirstDataManagement(this.taskManagement, this.taskShare);
+		const { currentUserRole } = this.props.mainStore;
+		if (currentUserRole === "dokter") {
+			this.getFirstData(this.transaksi);
+			this.getFirstDataManagement(this.taskManagement, this.taskShare);
+		}
 		// console.log("storeHome", this.props.mainStore);
 	}
 
@@ -125,6 +128,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		const { currentUid, transaksiTotalDiag, transaksiTotalObat, transaksiNomorFakturKeluar,
 				transaksiKeluarTimestamp, transaksiKeluarTanggal } = this.props.mainStore;
 		const { jasaMedik, sarana, belanjaModal, saham, shareJasaMedik, shareSarana, shareBelanjaModal, shareSaham } = this.props.managementViewStore;
+		const { currentPasienTerpilihUid } = this.props.pasienStore;
 
 		db1.db.ref(`management/percentageOfShareDetail/${currentUid}`).update({
 			shareJasaMedik: isNaN(shareJasaMedik)
@@ -151,20 +155,41 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			shareSaham: (parseInt(transaksiTotalDiag, 10) + parseInt(transaksiTotalObat, 10)) * parseInt(saham, 10) / 100,
 		});
 		this.props.mainStore.resetNomorFaktur();
+		db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
+			.update({
+				flagActivity: "updateRekamMedikDone",
+			});
 		this.props.navigation.navigate("Home");
 		// console.log(this.props.managementViewStore);
+	}
+
+	_onApotekSimpanData( p ) {
+		// console.log( p );
+		const { currentPasienTerpilihUid } = this.props.pasienStore;
+		db1.db.ref(`transaksiKeluar/${p}`).update({
+			statusApotek: "Sudah",
+		});
+		db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
+			.update({
+				flagActivity: "updateApotekDone",
+		});
+		this.props.navigation.navigate("Home");
+	}
+
+	_onBillingSimpanData() {
+		console.log();
 	}
 
 	render() {
 		// console.log(this.props.navigation);
 		const { currentPasienTerpilihUsername,
 				currentPasienTerpilihUid,
+				itemsRekamMedikPasien,
 				// itemsRekamMedikDiagPasien, itemsRekamMedikObatPasien
 				} = this.props.pasienStore;
 		const { currentUserRole, transaksiNomorFaktur } = this.props.mainStore;
-		const { itemsRekamMedikPasien } = this.props.pasienStore;
 		const key = currentPasienTerpilihUid;
-
+		// console.log( itemsRekamMedikPasien);
 		const menuDokter = (
 			<List>
 				<ListItem
@@ -191,12 +216,36 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			</List>
 		);
 
-		if (currentUserRole === "admin") {
-			// selectedCard = cardAdmin;
+		// const menuApotek = (
+		// 	<List>
+		// 		<ListItem
+		// 			key="5"
+		// 			// onPress={() => this._onApotekSimpanData() }
+		// 			>
+		// 			<Left><Text>Simpan Data</Text></Left>
+		// 			<Right><Icon active name="ios-arrow-forward"/></Right>
+		// 		</ListItem>
+		// 	</List>
+		// );
+
+		const menuBilling = (
+			<List>
+				<ListItem
+					key="6"
+					onPress={() => this._onBillingSimpanData() }
+					>
+					<Left><Text>Simpan Data</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
+			</List>
+		);
+
+		if (currentUserRole === "apotek") {
+			// this.selectedCard = menuApotek;
 		} else if (currentUserRole === "dokter") {
 			this.selectedCard = menuDokter;
-		} else if (currentUserRole === "pasien") {
-			// selectedCard = cardPasien;
+		} else if (currentUserRole === "billing") {
+			this.selectedCard = menuBilling;
 		} else if (currentUserRole === "resepsionis") {
 			// selectedCard = menuResepsionis;
 		}
@@ -204,23 +253,31 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		const viewRiwayatRekamMedik = (
 			// console.log("pasienStore", this.props.pasienStore)
 			<View>
-			{ itemsRekamMedikPasien.map(el =>
-					<Card key={el.transaksiNomorFakturKeluar}>
-						<CardItem>
-							<Text>{el.tanggalPeriksa} ({el.transaksiNomorFakturKeluar})</Text>
-						</CardItem>
-						<CardItem>
-							<Text>Diag: { JSON.parse(el.itemDiag).map( el1 => el1.namaDiag ).join(", ") }</Text>
-						</CardItem>
-						<CardItem>
-							<Text>Obat : { typeof el.itemObat !== "undefined" &&
-										JSON.parse(el.itemObat).map( el1 => el1.namaObat ).join(", ")
-									}
-							</Text>
-						</CardItem>
-					</Card>,
-				)
-			}
+				{ itemsRekamMedikPasien.map(el =>
+						(currentUserRole === "dokter"
+						|| currentUserRole === "apotek" && el.statusApotek === "Belum"
+						|| currentUserRole === "billing" && el.statusBilling === "Belum")
+						&&
+						<Card key={el.transaksiNomorFakturKeluar}>
+							<CardItem>
+								<Text>{el.tanggalPeriksa} ({el.transaksiNomorFakturKeluar})</Text>
+							</CardItem>
+							<CardItem>
+								<Text>Diag: { JSON.parse(el.itemDiag).map( el1 => el1.namaDiag ).join(", ") }</Text>
+							</CardItem>
+							<CardItem>
+								<Text>Obat : { typeof el.itemObat !== "undefined" &&
+											JSON.parse(el.itemObat).map( el1 => el1.namaObat ).join(", ")
+										}
+								</Text>
+							</CardItem>
+							<CardItem button
+								onPress={() => this._onApotekSimpanData(el._key) } >
+								<Text>Status Apotek: { el.statusApotek }</Text>
+							</CardItem>
+						</Card>,
+					)
+				}
 			</View>
 		);
 

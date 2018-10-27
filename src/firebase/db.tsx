@@ -199,7 +199,7 @@ export const GetAllPasienStatusBillingNOK = () => {
 };
 
 export const GetAllPasienStatusApotekNOK = () => {
-	const getter = db.ref(`pasiens`).orderByChild("flagActivity").equalTo("hasilObatDone").once("value");
+	const getter = db.ref(`pasiens`).orderByChild("flagActivity").equalTo("updateRekamMedikDone").once("value");
 	return getter;
 };
 

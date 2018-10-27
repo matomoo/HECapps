@@ -9,10 +9,10 @@ import styles from "./styles";
 export interface Props {
 	navigation: any;
 	lists: any;
-	onPilihPasien: Function;
+	onClickconfirmObat: Function;
 }
 export interface State {}
-class DaftarTungguPage extends React.Component<Props, State> {
+class AntriApotekPage extends React.Component<Props, State> {
 
 	render() {
 		return (
@@ -25,7 +25,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 					</Left>
 
 					<Body style={{ flex: 3 }}>
-						<Title>List Daftar Tunggu Poliklinik</Title>
+						<Title>Antri Apotek</Title>
 					</Body>
 
 					<Right>
@@ -41,19 +41,14 @@ class DaftarTungguPage extends React.Component<Props, State> {
 
 				<Content padder>
 					<Card>
-					{/* <Text>Berisikan daftar pasien</Text> */}
 					{ !!this.props.lists &&
 						<List>
 							{Object.keys(this.props.lists).map(key =>
 								<ListItem
 									key={key}
 									onPress={() => this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} )}
-									// onPress={() => this.props.onPilihPasien(key)}
-									// onPress={() => console.log(key)}
 									>
 									<Left><Text>{this.props.lists[key].profil.username}</Text></Left>
-									{/* <Left><Text>{this.props.lists[key].profil.role}</Text></Left> */}
-									{/* <Right><Icon active name="ios-arrow-forward"/></Right> */}
 								</ListItem>,
 							)}
 						</List>
@@ -65,4 +60,4 @@ class DaftarTungguPage extends React.Component<Props, State> {
 	}
 }
 
-export default DaftarTungguPage;
+export default AntriApotekPage;
