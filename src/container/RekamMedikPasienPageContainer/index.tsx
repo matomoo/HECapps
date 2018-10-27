@@ -176,8 +176,17 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		this.props.navigation.navigate("Home");
 	}
 
-	_onBillingSimpanData() {
-		console.log();
+	_onBillingSimpanData( p ) {
+		// console.log( p );
+		const { currentPasienTerpilihUid } = this.props.pasienStore;
+		db1.db.ref(`transaksiKeluar/${p}`).update({
+			statusBilling: "Sudah",
+		});
+		db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
+			.update({
+				flagActivity: "userIdle",
+		});
+		this.props.navigation.navigate("Home");
 	}
 
 	render() {
@@ -228,24 +237,24 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		// 	</List>
 		// );
 
-		const menuBilling = (
-			<List>
-				<ListItem
-					key="6"
-					onPress={() => this._onBillingSimpanData() }
-					>
-					<Left><Text>Simpan Data</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
-		);
+		// const menuBilling = (
+		// 	<List>
+		// 		<ListItem
+		// 			key="6"
+		// 			onPress={() => this._onBillingSimpanData() }
+		// 			>
+		// 			<Left><Text>Simpan Data</Text></Left>
+		// 			<Right><Icon active name="ios-arrow-forward"/></Right>
+		// 		</ListItem>
+		// 	</List>
+		// );
 
 		if (currentUserRole === "apotek") {
 			// this.selectedCard = menuApotek;
 		} else if (currentUserRole === "dokter") {
 			this.selectedCard = menuDokter;
 		} else if (currentUserRole === "billing") {
-			this.selectedCard = menuBilling;
+			// this.selectedCard = menuBilling;
 		} else if (currentUserRole === "resepsionis") {
 			// selectedCard = menuResepsionis;
 		}
@@ -271,9 +280,14 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 										}
 								</Text>
 							</CardItem>
+							<CardItem></CardItem>
 							<CardItem button
 								onPress={() => this._onApotekSimpanData(el._key) } >
 								<Text>Status Apotek: { el.statusApotek }</Text>
+							</CardItem>
+							<CardItem button
+								onPress={() => this._onBillingSimpanData(el._key) } >
+								<Text>Status Billing: { el.statusBilling }</Text>
 							</CardItem>
 						</Card>,
 					)

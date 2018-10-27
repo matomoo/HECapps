@@ -246,15 +246,17 @@ export default class HomeContainer extends React.Component<Props, State> {
 		);
 
 		const cardBilling = (
-			<List>
-				<ListItem
-					button
-					onPress={() => this.props.navigation.navigate("DaftarBillingPage")}
-				>
-					<Left><Text>List Daftar Billing</Text></Left>
-					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-			</List>
+			<Card>
+				<List>
+					<ListItem
+						button
+						onPress={() => this.props.navigation.navigate("AntriBillingPage")}
+					>
+						<Left><Text>Antri Billing</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+					</ListItem>
+				</List>
+			</Card>
 		);
 
 		const cardManagement = (
