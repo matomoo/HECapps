@@ -294,3 +294,8 @@ export const getDaftarTungguxxByTanggal = ( p ) => {
 	const x = db.ref(`daftarTunggu`).orderByChild("tanggalBooking").equalTo(`${p}`).once("value");
 	return x;
 };
+
+export const getDaftarObatApotek = ( ) => {
+	const x = db.ref(`apotekStokBarang`).once("value");
+	return x;
+};

@@ -187,7 +187,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<ListItem
 						key="2"
 						button
-						onPress={() => this.props.navigation.navigate("DaftarApotekPage")}
+						onPress={() => this.props.navigation.navigate("DaftarObatApotekPage")}
 					>
 						<Left><Text>List Daftar Obat Apotek</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>

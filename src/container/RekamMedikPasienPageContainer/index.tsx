@@ -169,29 +169,33 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 	}
 
 	_onApotekSimpanData( p ) {
-		// console.log( p );
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		db1.db.ref(`transaksiKeluar/${p}`).update({
-			statusApotek: "Sudah",
-		});
-		db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
+		const { currentUserRole } = this.props.mainStore;
+		if (currentUserRole === "apotek" || currentUserRole === "billing") {
+			const { currentPasienTerpilihUid } = this.props.pasienStore;
+			db1.db.ref(`transaksiKeluar/${p}`).update({
+				statusApotek: "Sudah",
+			});
+			db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
 			.update({
 				flagActivity: "updateApotekDone",
-		});
-		this.props.navigation.navigate("Home");
+			});
+			this.props.navigation.navigate("Home");
+		}
 	}
 
 	_onBillingSimpanData( p ) {
-		// console.log( p );
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		db1.db.ref(`transaksiKeluar/${p}`).update({
-			statusBilling: "Sudah",
-		});
-		db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
-			.update({
-				flagActivity: "userIdle",
-		});
-		this.props.navigation.navigate("Home");
+		const { currentUserRole } = this.props.mainStore;
+		if (currentUserRole === "apotek" || currentUserRole === "billing") {
+			const { currentPasienTerpilihUid } = this.props.pasienStore;
+			db1.db.ref(`transaksiKeluar/${p}`).update({
+				statusBilling: "Sudah",
+			});
+			db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
+				.update({
+					flagActivity: "userIdle",
+			});
+			this.props.navigation.navigate("Home");
+		}
 	}
 
 	render() {
