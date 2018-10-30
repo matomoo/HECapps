@@ -50,13 +50,15 @@ class InputBarangApotekStore {
 	// }
 
 	@action
-	modalApotekStok( a, b, c, d, e ) {
+	modalApotekStok( a, b, c, d, e, f?, g?) {
 		// console.log(a);
 		this.idABM = a;
 		this.namaABM = b;
 		this.hargaBeliABM = c.toString();
 		this.satuanABMPilih = d;
 		this.jenisABMPilih = e;
+		this.jumlahABM = f.toString();
+		this.hargaJualABM = g.toString();
 	}
 
 	@action

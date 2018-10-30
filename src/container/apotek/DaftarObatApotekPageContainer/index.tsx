@@ -4,12 +4,9 @@ import DaftarObatApotekPage from "../../../stories/screens/apotek/DaftarObatApot
 // import { db } from "../../../firebase";
 import * as db1 from "../../../firebase/firebase";
 
-import { List,
-	ListItem,
-	Left,
-	Right,
+import {
+	// List, ListItem, Left, Right, Icon,
 	Text,
-	Icon,
 	Card, CardItem,
 	View,
 } from "native-base";
@@ -59,6 +56,13 @@ export default class DaftarObatApotekPageContainer extends React.Component<Props
 		this.getFirstData(this.taskObat);
 	}
 
+	_onApotekUbahData( p ) {
+		this.props.inputBarangApotekStore.modalApotekStok( p.idAS, p.namaAS, p.hargaBeliAS,
+			p.satuanAS, p.jenisAS, p.jumlahAS, p.hargaJualAS,
+		);
+		this.props.navigation.navigate("InputBarangApotekPage");
+	}
+
 	render() {
 		console.log(this.state.listObats);
 		const {listObats } = this.state;
@@ -77,6 +81,10 @@ export default class DaftarObatApotekPageContainer extends React.Component<Props
 							</CardItem>
 							<CardItem>
 								<Text>Harga Jual: {el.hargaJualAS}</Text>
+							</CardItem>
+							<CardItem button
+								onPress={() => this._onApotekUbahData(el) } >
+								<Text>Ubah Data Obat</Text>
 							</CardItem>
 						</Card>,
 					)

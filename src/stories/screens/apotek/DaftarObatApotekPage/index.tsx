@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body,
-			// List, ListItem,
-			Card,
+import { Container, Header, Title, Content, Button, Icon, Left, Right, Body,
+			// List, ListItem, Text, Card,
 } from "native-base";
 
 import styles from "./styles";

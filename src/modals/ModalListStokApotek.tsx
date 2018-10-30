@@ -43,7 +43,7 @@ class ModalExample extends Component<Props> {
 		// console.log(this.props);
 		// console.log(a);
 		this.props.inputBarangApotekStore.modalApotekStok( a.idAS, a.namaAS, a.hargaBeliAS,
-				a.satuanAS, a.jenisAS,
+				a.satuanAS, a.jenisAS, a.jumlahAS, a.hargaJualAS,
 			);
 		this.toggleModal(!this.state.modalVisible);
 	}

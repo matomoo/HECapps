@@ -1,5 +1,5 @@
 import * as React from "react";
-import InputBarangApotekPage from "../../stories/screens/InputBarangApotekPage";
+import InputBarangApotekPage from "../../../stories/screens/apotek/InputBarangApotekPage";
 import {
 	Card,
 	Form,
@@ -15,8 +15,8 @@ import {
 } from "native-base";
 import { Platform } from "react-native";
 import { observer, inject } from "mobx-react/native";
-import { db } from "../../firebase";
-import ModalListStokApotek from "../../modals/ModalListStokApotek";
+import { db } from "../../../firebase";
+import ModalListStokApotek from "../../../modals/ModalListStokApotek";
 
 export interface Props {
 	navigation: any;

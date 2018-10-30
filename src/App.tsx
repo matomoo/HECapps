@@ -13,7 +13,7 @@ import DaftarUser from "./container/DaftarUserContainer";
 import PoliklinikPage from "./container/resepsionis/PoliklinikPageContainer";
 import DaftarAntrianPoliPage from "./container/pasien/DaftarAntrianPoliPageContainer";
 import DaftarTungguPage from "./container/resepsionis/DaftarTungguPageContainer";
-import InputBarangApotekPage from "./container/InputBarangApotekPageContainer";
+import InputBarangApotekPage from "./container/apotek/InputBarangApotekPageContainer";
 import RekamMedikPasienPage from "./container/RekamMedikPasienPageContainer";
 // import InputDiagnosaPage from "./container/InputDiagnosaPageContainer";
 import InputDiagnosaPage from "./container/dokter/InputDiagnosaPageContainer";
