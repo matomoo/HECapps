@@ -60,7 +60,8 @@ export default class DaftarObatApotekPageContainer extends React.Component<Props
 		this.props.inputBarangApotekStore.modalApotekStok( p.idAS, p.namaAS, p.hargaBeliAS,
 			p.satuanAS, p.jenisAS, p.jumlahAS, p.hargaJualAS,
 		);
-		this.props.navigation.navigate("InputBarangApotekPage");
+		// this.props.inputBarangApotekStore.flagActionUpdate("update");
+		this.props.navigation.navigate("InputBarangApotekPage", {action: "update"});
 	}
 
 	render() {

@@ -17,6 +17,7 @@ export const doCreateUser = ( id, username, email, role ) => {
 		pasienRekamMedik: 1,
 		dokterRekamMedik: 1,
 		statusPasien: "Umum",
+		_key: id,
 	});
 };
 

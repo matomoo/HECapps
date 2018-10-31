@@ -47,6 +47,15 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 		};
 	}
 
+	componentDidMount() {
+		console.log(this.props.navigation);
+		const form = this.props.inputBarangApotekStore;
+		// const action = this.props.navigation.params.
+		if (this.props.navigation.state.params.action === "new") {
+			form.clearStore();
+		}
+	}
+
 	_handleInputBarang() {
 		const { namaABM, jumlahABM, hargaBeliABM, hargaJualABM, satuanABMPilih, jenisABMPilih } = this.props.inputBarangApotekStore;
 		db.doApotekBarangMasukxxInput( namaABM, jumlahABM, hargaBeliABM, hargaJualABM, satuanABMPilih, jenisABMPilih );
@@ -101,6 +110,7 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 	render() {
 		// console.log(this.props);
 		const form = this.props.inputBarangApotekStore;
+		// form.clearStore();
 
 		const FormInputBarang = (
 			<Card>

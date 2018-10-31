@@ -179,7 +179,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<ListItem
 						key="1"
 						button
-						onPress={() => this.props.navigation.navigate("InputBarangApotekPage")}
+						onPress={() => this.props.navigation.navigate("InputBarangApotekPage", {action: "new"} )}
 					>
 						<Left><Text>Input Barang ke Apotek</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
@@ -240,6 +240,13 @@ export default class HomeContainer extends React.Component<Props, State> {
 					onPress={() => this.props.navigation.navigate("InputTransaksiNomorFakturPage")}
 					>
 					<Left><Text>Input Transaksi Nomor Faktur</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</CardItem>
+				<CardItem
+					button
+					onPress={() => this.props.navigation.navigate("DaftarUserPage")}
+					>
+					<Left><Text>Daftar User</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
 			</Card>

@@ -26,6 +26,7 @@ import POfSharePage from "./container/dokter/pOfSharePageContainer";
 import AntriApotekPage from "./container/apotek/AntriApotekPageContainer";
 import AntriBillingPage from "./container/billing/AntriBillingPageContainer";
 import DaftarObatApotekPage from "./container/apotek/DaftarObatApotekPageContainer";
+import DaftarUserPage from "./container/admin/DaftarUserPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -60,6 +61,7 @@ const App = StackNavigator(
 		AntriApotekPage: { screen: AntriApotekPage },
 		AntriBillingPage: { screen: AntriBillingPage },
 		DaftarObatApotekPage: { screen: DaftarObatApotekPage },
+		DaftarUserPage: { screen: DaftarUserPage },
 	},
 	{
 		initialRouteName: "Login",

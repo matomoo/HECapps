@@ -63,12 +63,13 @@ class InputBarangApotekStore {
 
 	@action
 	clearStore() {
+		this.idABM = "";
 		this.namaABM = "";
-		this.jumlahABM = "";
-		// this.satuanABM = "buah";
 		this.hargaBeliABM = "";
+		this.jumlahABM = "";
+		this.satuanABMPilih = "pilih";
+		this.jenisABMPilih = "pilih";
 		this.hargaJualABM = "";
-		// this.jenisABM = "";
 	}
 }
 
