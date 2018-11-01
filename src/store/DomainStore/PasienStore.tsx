@@ -23,6 +23,13 @@ class PasienStore {
 
 	@observable stoStatusPasien: "";
 
+	@observable Users = [];
+
+	@action
+	_handleUserUpdate ( p ) {
+		this.Users = p;
+	}
+
 	@action
 	fetchItems(data) {
 		this.itemsPasien = data;

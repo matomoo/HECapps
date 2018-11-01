@@ -178,6 +178,12 @@ export const doInputTransaksiNomorFakturKeluar = ( p ) => {
 	});
 };
 
+export const doPasienxxUpdateRole = ( p, q ) => {
+	db.ref(`pasiens/${p}/profil`).update ({
+		role: q,
+	});
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {

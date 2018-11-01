@@ -55,15 +55,13 @@ export default class DaftarUserPageContainer extends React.Component<Props, Stat
 		this.getFirstData(this.taskUser);
 	}
 
-	_onApotekUbahData( p ) {
-		// this.props.inputBarangApotekStore.modalApotekStok( p.idAS, p.namaAS, p.hargaBeliAS,
-		// 	p.satuanAS, p.jenisAS, p.jumlahAS, p.hargaJualAS,
-		// );
-		// this.props.navigation.navigate("InputBarangApotekPage");
+	_onUpdateUserRole( p ) {
+		this.props.pasienStore._handleUserUpdate(p);
+		this.props.navigation.navigate("UpdateUserPage");
 	}
 
 	render() {
-		console.log(this.state.listUsers);
+		// console.log(this.state.listUsers);
 		const {listUsers } = this.state;
 		const viewUsers = (
 			<View>
@@ -77,6 +75,10 @@ export default class DaftarUserPageContainer extends React.Component<Props, Stat
 							</CardItem>
 							<CardItem>
 								<Text>{el.profil.role}</Text>
+							</CardItem>
+							<CardItem button
+								onPress={() => this._onUpdateUserRole(el) } >
+								<Text>Ubah Role</Text>
 							</CardItem>
 						</Card>,
 					)
