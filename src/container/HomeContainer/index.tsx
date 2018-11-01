@@ -58,7 +58,10 @@ export default class HomeContainer extends React.Component<Props, State> {
 			this.props.mainStore.currentUserRole = snapshot.val().role;
 		});
 		await this.onAmbilDataAwalPasien();
+		// const value = AsyncStorage.getItem("@MySuperStore:xockey");
+		// if (value !== null ) {
 		await AsyncStorage.setItem("@MySuperStore:xockey", currentUid);
+		// }
 	}
 
 	async onAmbilDataAwalPasien() {

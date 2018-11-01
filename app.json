@@ -1,10 +1,10 @@
 {
   "expo": {
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "slug": "hec",
     "loading": {
       "hideExponentText": false,
-      "icon": "./assets/loading.png"
+      "icon": "./assets/HEC_icon_w1024.png"
     },
     "orientation": "portrait",
     "primaryColor": "#cccccc",
@@ -20,6 +20,10 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#334393"
+    },
+    "splash": {
+      "image": "./assets/HEC_splash2.png",
+      "backgroundColor": "#ffffff"
     },
     "name": "HEC",
     "version": "1.1.0",

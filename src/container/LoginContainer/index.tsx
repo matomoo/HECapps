@@ -21,7 +21,8 @@ export default class LoginContainer extends React.Component<Props, State> {
 
 	async componentWillMount() {
 		const value = await AsyncStorage.getItem("@MySuperStore:xockey");
-		if (value !== null) {
+		// console.log(value);
+		if (value !== "nok") {
 			this.props.mainStore.currentUid = value;
 			// this.props.loginForm.clearStore();
 			this.props.navigation.navigate("Drawer");

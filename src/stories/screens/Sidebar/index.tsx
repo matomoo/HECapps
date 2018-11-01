@@ -37,10 +37,11 @@ export default class Sidebar extends React.Component<Props, State> {
 								<ListItem
 									button
 									onPress={() => {
+										AsyncStorage.setItem("@MySuperStore:xockey", "nok");
 										data.route === "Login"
 											? this.props.navigation.dispatch(resetAction)
 											: this.props.navigation.navigate(data.route);
-										AsyncStorage.clear();
+										// console.log(data.route);
 									}}
 								>
 									<Text>{data.caption}</Text>
