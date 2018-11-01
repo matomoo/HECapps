@@ -5,7 +5,8 @@ import DaftarObatApotekPage from "../../../stories/screens/apotek/DaftarObatApot
 import * as db1 from "../../../firebase/firebase";
 
 import {
-	// List, ListItem, Left, Right, Icon,
+	// List, ListItem, Left, Right,
+	Icon,
 	Text,
 	Card, CardItem,
 	View,
@@ -85,7 +86,7 @@ export default class DaftarObatApotekPageContainer extends React.Component<Props
 							</CardItem>
 							<CardItem button
 								onPress={() => this._onApotekUbahData(el) } >
-								<Text>Ubah Data Obat</Text>
+								<Icon active name="md-send" /><Text>Ubah Data Obat</Text>
 							</CardItem>
 						</Card>,
 					)

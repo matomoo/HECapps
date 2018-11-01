@@ -5,7 +5,8 @@ import DaftarUserPage from "../../../stories/screens/admin/DaftarUserPage";
 import * as db1 from "../../../firebase/firebase";
 
 import {
-	// List, ListItem, Left, Right, Icon,
+	// List, ListItem, Left, Right,
+	Icon,
 	Text,
 	Card, CardItem,
 	View,
@@ -78,7 +79,7 @@ export default class DaftarUserPageContainer extends React.Component<Props, Stat
 							</CardItem>
 							<CardItem button
 								onPress={() => this._onUpdateUserRole(el) } >
-								<Text>Ubah Role</Text>
+								<Icon active name="md-send" /><Text>Ubah Role</Text>
 							</CardItem>
 						</Card>,
 					)
