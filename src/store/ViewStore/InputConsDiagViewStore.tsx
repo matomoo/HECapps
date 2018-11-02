@@ -5,6 +5,7 @@ class InputConsDiagStore {
 	// @observable id = "";
 	@observable namaDiag = "";
 	@observable hargaDiag = "";
+	@observable daftarDiag = [];
 
 	@action
 	namaDiagOnChange(x) {
@@ -15,6 +16,11 @@ class InputConsDiagStore {
 	hargaDiagOnChange(x) {
 		this.hargaDiag = x;
 		// this.validateString();
+	}
+
+	@action
+	daftarDiagOnUpdate(x) {
+		this.daftarDiag = x;
 	}
 
 	@action

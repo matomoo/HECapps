@@ -187,6 +187,13 @@ export const doPasienxxUpdateRole = ( p, q ) => {
 	});
 };
 
+export const doUpdateDiags = ( p, q, r ) => {
+	db.ref(`constant/${p}`).update ({
+		namaDiag: q,
+		hargaDiag: r,
+	});
+};
+
 // ================= Get Data
 
 export const onceGetUsers = () => {

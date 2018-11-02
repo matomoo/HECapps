@@ -13,6 +13,9 @@
         "ttf"
       ]
     },
+    "ios": {
+      "bundleIdentifier": "com.mmto.hec"
+    },
     "android": {
       "package": "com.mmto.hec"
     },

@@ -233,7 +233,14 @@ export default class HomeContainer extends React.Component<Props, State> {
 			<Card>
 				<CardItem
 					button
-					onPress={() => this.props.navigation.navigate("InputConsDiagPage")}
+					onPress={() => this.props.navigation.navigate("DaftarDiagPage")}
+					>
+					<Left><Text>Daftar Diagnosis</Text></Left>
+					<Right><Icon active name="ios-arrow-forward"/></Right>
+				</CardItem>
+				<CardItem
+					button
+					onPress={() => this.props.navigation.navigate("InputConsDiagPage", {flagAction: "new"})}
 					>
 					<Left><Text>Input Constant Diagnosa</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
