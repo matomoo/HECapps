@@ -79,18 +79,6 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 			};
 		}
 
-	componentDidMount() {
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		this.getFirstData(this.constObat);
-		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
-			.then(c1 => {
-				this.setState({
-					staPasienRekamMedik: c1.val().pasienRekamMedik,
-					staDokterRekamMedik: c1.val().dokterRekamMedik,
-				});
-			});
-	}
-
 	getFirstData( p ) {
 		p.once("value")
 			.then((result) => {
@@ -153,7 +141,16 @@ export default class InputDiagObatPageContainer extends React.Component<Props, S
 	}
 
 	componentDidMount() {
+		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.listenForTasks(this.state.tasksObat);
+		this.getFirstData(this.constObat);
+		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
+			.then(c1 => {
+				this.setState({
+					staPasienRekamMedik: c1.val().pasienRekamMedik,
+					staDokterRekamMedik: c1.val().dokterRekamMedik,
+				});
+			});
 	}
 
 	listenForTasks(p) {

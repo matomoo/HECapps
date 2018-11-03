@@ -84,22 +84,6 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 		};
 	}
 
-	componentDidMount() {
-		this.getFirstData(
-			this.constDiag,
-			// this.tasksTransaksiKeluar
-		);
-
-		const { currentPasienTerpilihUid } = this.props.pasienStore;
-		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
-			.then(c1 => {
-				this.setState({
-					staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
-					staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
-				});
-			});
-	}
-
 	getFirstData( p ) {
 		p.once("value")
 			.then((result) => {
@@ -153,6 +137,20 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			// this.tasksRef
 				this.state.tasksDiagnosa,
 			);
+
+			this.getFirstData(
+				this.constDiag,
+				// this.tasksTransaksiKeluar
+			);
+
+			const { currentPasienTerpilihUid } = this.props.pasienStore;
+			db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")
+				.then(c1 => {
+					this.setState({
+						staPasienRekamMedik: c1.val().pasienRekamMedik + 1,
+						staDokterRekamMedik: c1.val().dokterRekamMedik + 1,
+					});
+				});
 		}
 
 	listenForTasks(p) {

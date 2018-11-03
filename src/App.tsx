@@ -3,7 +3,7 @@ import { StackNavigator, DrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import { Dimensions } from "react-native";
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 const deviceWidth = Dimensions.get("window").width;
 

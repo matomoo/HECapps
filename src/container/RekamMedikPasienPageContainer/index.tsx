@@ -72,14 +72,11 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				this.props.pasienStore.currentPasienTerpilihUsername = snapshot.val().profil.username;
 			});
 		}
-		// console.log("props", this.props.navigation.state.params.name.key);
-	}
-
-	componentDidMount() {
 		this._getRekamMedik(
 			this.props.navigation.state.params.name.key ?
 			this.props.navigation.state.params.name.key :
 			this.props.navigation.state.params.name.currentPasienTerpilihUid);
+		// console.log("props", this.props.navigation.state.params.name.key);
 	}
 
 	getFirstDataManagement( p, q ) {
