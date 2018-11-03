@@ -19,7 +19,7 @@ export default class LoginContainer extends React.Component<Props, State> {
 	emailInput: any;
 	pwdinput: any;
 
-	async componentWillMount() {
+	async componentDidMount() {
 		const value = await AsyncStorage.getItem("@MySuperStore:xockey");
 		// console.log(value);
 		if (value !== "nok") {

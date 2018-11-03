@@ -61,7 +61,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 		});
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		const { currentUserRole } = this.props.mainStore;
 		if (currentUserRole === "dokter") {
 			this.getFirstData(this.transaksi);

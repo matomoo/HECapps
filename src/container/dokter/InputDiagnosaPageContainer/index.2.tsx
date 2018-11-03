@@ -70,7 +70,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			};
 		}
 
-	componentWillMount() {
+	componentDidMount() {
 		const { currentPasienTerpilihUid } = this.props.pasienStore;
 		this.getFirstData(this.constDiag);
 		db.ref(`pasiens/${currentPasienTerpilihUid}`).once("value")

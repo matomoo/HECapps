@@ -42,7 +42,7 @@ export default class UpdateUserPageContainer extends React.Component<Props, Stat
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		console.log(this.props.navigation);
 		// const form = this.props.pasienStore;
 		// if (this.props.navigation.state.params.action === "new") {

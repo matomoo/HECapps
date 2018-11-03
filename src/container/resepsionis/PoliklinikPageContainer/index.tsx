@@ -83,7 +83,7 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		db.getPoli().then(c1 => {
 			// console.log(c1);
 			this.setState({

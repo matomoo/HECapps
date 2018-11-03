@@ -39,7 +39,7 @@ export default class DashboardPageContainer extends React.Component<Props, State
 		// 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		// console.log(this.taskManagement);
 		this.getFirstData(this.taskManagement);
 		// console.log(ManagementViewStore);

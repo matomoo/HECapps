@@ -41,7 +41,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getNoAntri();
 		this.setState({
 			isStatusPasien: this.props.pasienStore.stoStatusPasien,

@@ -53,7 +53,7 @@ export default class DaftarObatApotekPageContainer extends React.Component<Props
 		});
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getFirstData(this.taskObat);
 	}
 

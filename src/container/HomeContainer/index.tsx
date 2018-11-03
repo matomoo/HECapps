@@ -40,14 +40,9 @@ export default class HomeContainer extends React.Component<Props, State> {
 		};
 	}
 
-	componentWillMount() {
-		// console.log("will");
-		this.onAmbilDataAwalAplikasi();
-		// await this.onAmbilDataAwalPasien();
-	}
-
 	componentDidMount() {
 		// console.log("did");
+		this.onAmbilDataAwalAplikasi();
 		this.onAmbilDataAwalPasien();
 	}
 

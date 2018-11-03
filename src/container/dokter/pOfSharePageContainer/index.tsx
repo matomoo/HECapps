@@ -42,7 +42,7 @@ export default class POfSharePageContainer extends React.Component<Props, State>
 			};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getFirstData(this.taskManagement);
 	}
 

@@ -15,7 +15,7 @@ export interface State {}
 @observer
 export default class AntriBillingPageContainer extends React.Component<Props, State> {
 
-	componentWillMount() {
+	componentDidMount() {
 		db.GetAllPasienStatusBillingNOK().then(snapshot => {
 			this.props.pasienStore.itemsPasien = snapshot.val();
 		});

@@ -58,7 +58,7 @@ class ModalExample extends Component<Props> {
 		return returnArr;
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this._handleGetListApotekStok();
 	}
 

@@ -15,7 +15,7 @@ export interface State {}
 @observer
 export default class DaftarTungguPageContainer extends React.Component<Props, State> {
 
-	componentWillMount() {
+	componentDidMount() {
 		db.GetLihatDaftarTungguByToday().then(snapshot => {
 			this.props.pasienStore.itemsPasien = snapshot.val();
 		});

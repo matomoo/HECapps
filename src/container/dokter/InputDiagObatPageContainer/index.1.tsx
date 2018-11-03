@@ -64,7 +64,7 @@ export default class InputDiagnosaPageContainer extends React.Component<Props, S
 			};
 		}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getFirstData(this.constDiag);
 	}
 

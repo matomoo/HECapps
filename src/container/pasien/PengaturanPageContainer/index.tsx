@@ -56,7 +56,7 @@ export default class PengaturanPageContainer extends React.Component<Props, Stat
 		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		await db.getPasienInfoFromFb(this.props.navigation.state.params.name.key).then(c1 => {
 			// console.log(c1);
 			this.setState({

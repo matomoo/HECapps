@@ -52,7 +52,7 @@ export default class DaftarDiagPageContainer extends React.Component<Props, Stat
 		});
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getFirstData(this.taskDiag);
 	}
 

@@ -21,7 +21,7 @@ export default function(stores) {
 				isReady: false,
 			};
 		}
-		componentWillMount() {
+		componentDidMount() {
 			this.loadFonts();
 		}
 		async loadFonts() {
