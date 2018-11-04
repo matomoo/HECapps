@@ -3,7 +3,12 @@ import { StackNavigator, DrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import { Dimensions } from "react-native";
 
-// console.disableYellowBox = true;
+try {
+	console.disableYellowBox = true;
+} catch (error) {
+	console.log(error);
+}
+// YellowBox.ignoreWarnings = [];
 
 const deviceWidth = Dimensions.get("window").width;
 
@@ -31,6 +36,7 @@ import DaftarObatApotekPage from "./container/apotek/DaftarObatApotekPageContain
 import DaftarUserPage from "./container/admin/DaftarUserPageContainer";
 import UpdateUserPage from "./container/admin/UpdateUserPageContainer";
 import DaftarDiagPage from "./container/admin/DaftarDiagPageContainer";
+import ProfileDokterPage from "./container/dokter/ProfileDokterPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -68,6 +74,7 @@ const App = StackNavigator(
 		DaftarUserPage: { screen: DaftarUserPage },
 		UpdateUserPage: { screen: UpdateUserPage },
 		DaftarDiagPage: { screen: DaftarDiagPage },
+		ProfileDokterPage: { screen: ProfileDokterPage },
 	},
 	{
 		initialRouteName: "Login",
