@@ -23,7 +23,7 @@ class PasienStore {
 
 	@observable stoStatusPasien: "";
 
-	@observable Users = [];
+	@observable Users;
 
 	@action
 	_handleUserUpdate ( p ) {

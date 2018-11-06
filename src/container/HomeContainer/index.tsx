@@ -15,6 +15,8 @@ import Home from "../../stories/screens/Home";
 import { db } from "../../firebase";
 import { AsyncStorage } from "react-native";
 
+console.disableYellowBox = true;
+
 export interface Props {
 	navigation: any;
 	mainStore: any;

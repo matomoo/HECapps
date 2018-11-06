@@ -15,6 +15,7 @@ import {
 } from "native-base";
 
 import styles from "./styles";
+
 export interface Props {
 	navigation: any;
 	// list: any;

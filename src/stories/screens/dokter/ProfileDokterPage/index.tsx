@@ -3,29 +3,30 @@ import { Container, Header, Title, Content, Button, Icon, Left, Right, Body,
 			// List, ListItem, Text, Card,
 } from "native-base";
 import {
-	// StyleSheet,
+	// StyleSheet, TouchableOpacity,
 	Text,
 	View,
 	Image,
-	// TouchableOpacity,
 } from "react-native";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
-	viewUsers;
 	Users;
+	handleUpdateDokter;
 }
 export interface State {}
 class ProfileDokterPage extends React.Component<Props, State> {
 
 	render() {
-		console.log(this.props.Users);
+		// console.log(this.props.Users);
 		const { Users } = this.props;
 		return (
 			<Container style={styles.container}>
 				<Header>
 					<Left>
-						<Button transparent onPress={() => this.props.navigation.goBack()}>
+						<Button transparent onPress={() =>
+							this.props.navigation.goBack()
+						}>
 							<Icon name="ios-arrow-back" />
 						</Button>
 					</Left>
@@ -38,8 +39,10 @@ class ProfileDokterPage extends React.Component<Props, State> {
 						<Button transparent>
 							<Icon
 								active
-								name="home"
-								onPress={() => this.props.navigation.navigate("Home")}
+								name="md-create"
+								onPress={() =>
+									this.props.handleUpdateDokter(this.props.Users)
+								}
 							/>
 						</Button>
 					</Right>
@@ -54,6 +57,7 @@ class ProfileDokterPage extends React.Component<Props, State> {
 									<View style={styles.bodyContent}>
 									<Text style={styles.namex}>{ el.profil.username }</Text>
 									<Text style={styles.info}>{ el.profil.email }</Text>
+									<Text style={styles.description}>{ el.profil.gender }</Text>
 									<Text style={styles.description}>{ el.profil.description }</Text>
 									{/* <TouchableOpacity style={styles.buttonContainer}>
 										<Text>Opcion 1</Text>

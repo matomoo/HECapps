@@ -187,6 +187,17 @@ export const doPasienxxUpdateRole = ( p, q ) => {
 	});
 };
 
+export const doPasienxxUpdateProfilDokter = ( p, a, b, c, d, e, f ) => {
+	db.ref(`pasiens/${p}/profil`).update ({
+		username: a,
+		email: b,
+		gender: c,
+		handphone: d,
+		alamat: e,
+		description: f,
+	});
+};
+
 export const doUpdateDiags = ( p, q, r ) => {
 	db.ref(`constant/${p}`).update ({
 		namaDiag: q,

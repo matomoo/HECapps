@@ -3,14 +3,14 @@ import UpdateProfileDokterPage from "../../../stories/screens/dokter/UpdateProfi
 import {
 	Card,
 	Form,
-	// Item,
-	CardItem,
-	// Input,
+	Item,
+	// CardItem,
+	Input,
 	Picker,
 	Label,
 	// Button,
 	// Icon,
-	Text,
+	// Text,
 	// Right,
 	// Left,
 } from "native-base";
@@ -24,6 +24,15 @@ export interface Props {
 	pasienStore: any;
 }
 export interface State {
+	sttKey;
+	sttUsername;
+	sttEmail;
+	sttRole;
+	sttGender;
+	sttHandphone;
+	sttAlamat;
+	sttDescription;
+	Genders;
 	userRolePilih;
 	roles;
 }
@@ -32,22 +41,83 @@ export interface State {
 @observer
 export default class UpdateProfileDokterPageContainer extends React.Component<Props, State> {
 	// idASInput: any;
+	inpUsername;
+	inpEmail;
+	inpRole;
+	inpGender;
+	inpHandphone;
+	inpAlamat;
+	inpDescription;
 	userRoleInput: any;
 
 	constructor() {
 		super();
 		this.state = {
+			sttKey: "",
+			sttUsername: "",
+			sttEmail: "",
+			sttRole: "",
+			sttGender: "",
+			sttHandphone: "",
+			sttAlamat: "",
+			sttDescription: "",
+			Genders: ["Pria", "Wanita"],
 			userRolePilih: "",
 			roles: ["dokter", "pasien", "apotek", "billing", "resepsionis"],
 		};
 	}
 
 	componentDidMount() {
-		console.log(this.props.navigation);
-		// const form = this.props.pasienStore;
-		// if (this.props.navigation.state.params.action === "new") {
-		// 	form.clearStore2();
-		// }
+		// console.log(this.props.pasienStore);
+		const { Users } = this.props.pasienStore;
+		Users.forEach(el => {
+			this.setState({
+				sttKey: el.profil._key,
+				sttUsername: el.profil.username,
+				sttEmail: el.profil.email,
+				sttRole: el.profil.role,
+				sttGender: el.profil.gender,
+				sttHandphone: el.profil.handphone,
+				sttAlamat: el.profil.alamat,
+				sttDescription: el.profil.description,
+			});
+		});
+	}
+
+	_handleUsernameChange( p ) {
+		this.setState({
+			sttUsername: p,
+		});
+	}
+
+	_handleEmailChange( p ) {
+		this.setState({
+			sttEmail: p,
+		});
+	}
+
+	_handleGenderChange( p ) {
+		this.setState({
+			sttGender: p,
+		});
+	}
+
+	_handleHandphoneChange( p ) {
+		this.setState({
+			sttHandphone: p,
+		});
+	}
+
+	_handleAlamatChange( p ) {
+		this.setState({
+			sttAlamat: p,
+		});
+	}
+
+	_handleDescriptionChange( p ) {
+		this.setState({
+			sttDescription: p,
+		});
 	}
 
 	_handleInputBarang() {
@@ -91,47 +161,98 @@ export default class UpdateProfileDokterPageContainer extends React.Component<Pr
 		// and that's how you are ready to go, because this issue isn't fixed yet (checked on 28-Dec-2017)
 	}
 
-	_handlePilihRole( p) {
-		// console.log( p );
-		this.setState ({
-			userRolePilih: p,
-		});
-	}
+	// _handlePilihRole( p) {
+	// 	// console.log( p );
+	// 	this.setState ({
+	// 		userRolePilih: p,
+	// 	});
+	// }
 
-	_handleUpdateUserRole() {
-		const form = this.props.pasienStore;
-		db.doPasienxxUpdateRole(form.Users.profil._key, this.state.userRolePilih);
+	_handleUpdateProfileDokter() {
+		// const form = this.props.pasienStore;
+		db.doPasienxxUpdateProfilDokter(this.state.sttKey,
+			this.state.sttUsername,
+			this.state.sttEmail,
+			this.state.sttGender,
+			this.state.sttHandphone,
+			this.state.sttAlamat,
+			this.state.sttDescription,
+			);
 		this.props.navigation.navigate("Home");
 	}
 
 	render() {
-		// console.log(this.props.pasienStore);
-		const form = this.props.pasienStore;
+		console.log(this.state);
+		// const form = this.props.pasienStore;
 		// form.clearStore();
 
 		const FormInputBarang = (
 			<Card>
-					<CardItem>
-						<Text>Nama User : { form.Users.profil.username}</Text>
-					</CardItem>
-					<CardItem>
-						<Text>Email User: { form.Users.profil.email}</Text>
-					</CardItem>
 				<Form>
+					<Item stackedLabel >
+						<Label>Username</Label>
+						<Input
+							ref={c => (this.inpUsername = c)}
+							value={this.state.sttUsername}
+							style={{ marginLeft: 10 }}
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => this._handleUsernameChange(e)}
+						/>
+					</Item>
+					<Item stackedLabel >
+						<Label>Email</Label>
+						<Input
+							ref={c => (this.inpEmail = c)}
+							value={this.state.sttEmail}
+							style={{ marginLeft: 10 }}
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => this._handleEmailChange(e)}
+						/>
+					</Item>
 					<Label
 						style={{ marginLeft: 15, marginTop: 5,  color: "#575757" }}
-						>User Role ({ form.Users.profil.role})
+						>Gender
 					</Label>
 					<Picker
-						placeholder="User Role"
-						iosHeader="-Pilih User Role-"
+						placeholder="Gender"
+						iosHeader="-Pilih Gender-"
 						mode="dropdown"
 						style={{ marginLeft: 15 }}
-						selectedValue={this.state.userRolePilih}
-						onValueChange={this._handlePilihRole.bind(this)}
+						selectedValue={this.state.sttGender}
+						onValueChange={this._handleGenderChange.bind(this)}
 						>
-						{ this._make_list(this.state.roles, "-Pilih User Role-")}
+						{ this._make_list(this.state.Genders, "-Pilih Gender-")}
 					</Picker>
+					<Item stackedLabel >
+						<Label>Handphone</Label>
+						<Input
+							ref={c => (this.inpHandphone = c)}
+							value={this.state.sttHandphone}
+							style={{ marginLeft: 10 }}
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => this._handleHandphoneChange(e)}
+						/>
+					</Item>
+					<Item stackedLabel >
+						<Label>Alamat</Label>
+						<Input
+							ref={c => (this.inpAlamat = c)}
+							value={this.state.sttAlamat}
+							style={{ marginLeft: 10 }}
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => this._handleAlamatChange(e)}
+						/>
+					</Item>
+					<Item stackedLabel >
+						<Label>Deskripsi</Label>
+						<Input
+							ref={c => (this.inpDescription = c)}
+							value={this.state.sttDescription}
+							style={{ marginLeft: 10 }}
+							// onBlur={() => form.validateUsername()}
+							onChangeText={e => this._handleDescriptionChange(e)}
+						/>
+					</Item>
 				</Form>
 			</Card>
 		);
@@ -139,7 +260,7 @@ export default class UpdateProfileDokterPageContainer extends React.Component<Pr
 		return <UpdateProfileDokterPage
 					navigation={this.props.navigation}
 					formInputBarang={FormInputBarang}
-					handleUpdateRole={() => this._handleUpdateUserRole()}
+					handleUpdateRole={() => this._handleUpdateProfileDokter()}
 				/>;
 	}
 }
