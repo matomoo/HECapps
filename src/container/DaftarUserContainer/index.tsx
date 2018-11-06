@@ -21,6 +21,8 @@ export default class DaftarUserContainer extends React.Component<Props, State> {
 	pwdTwoinput: any;
 
 	login() {
+		const { usernameError, emailError, passwordOneError, passwordTwoError } = this.props.daftarUserForm;
+		const message = [];
 		this.props.daftarUserForm.validateForm();
 		if (this.props.daftarUserForm.isValid) {
 			auth.doCreateUserWithEmailAndPassword(this.props.daftarUserForm.email, this.props.daftarUserForm.passwordOne)
@@ -38,8 +40,16 @@ export default class DaftarUserContainer extends React.Component<Props, State> {
 					});
 				});
 		} else {
+			// console.log(this.props);
+			message.push(
+				usernameError === undefined	? "" : usernameError,
+				emailError === undefined ? "" : emailError,
+				passwordOneError === undefined ? "" : passwordOneError,
+				passwordTwoError === undefined ? "" : passwordTwoError,
+			);
 			Toast.show({
-				text: "Enter Valid Email & password!",
+				text:
+					message.join(", "),
 				duration: 2000,
 				position: "top",
 				textStyle: { textAlign: "center" },
@@ -54,7 +64,7 @@ export default class DaftarUserContainer extends React.Component<Props, State> {
 		const form = this.props.daftarUserForm;
 		const Fields = (
 			<Form>
-				<Item error={form.UsernameError ? true : false}>
+				<Item error={form.usernameError ? true : false}>
 					<Icon active name="person" />
 					<Input
 						placeholder="Username"
@@ -75,7 +85,7 @@ export default class DaftarUserContainer extends React.Component<Props, State> {
 						onChangeText={e => form.emailOnChange(e)}
 					/>
 				</Item>
-				<Item error={form.passworOnedError ? true : false}>
+				<Item error={form.passwordOneError ? true : false}>
 					<Icon active name="unlock" />
 					<Input
 						placeholder="Password"
@@ -90,7 +100,7 @@ export default class DaftarUserContainer extends React.Component<Props, State> {
 					<Icon active name="unlock" />
 					<Input
 						placeholder="Konfirmasi Password"
-						ref={c => (this.pwdOneinput = c)}
+						ref={c => (this.pwdTwoinput = c)}
 						value={form.passwordTwo}
 						onBlur={() => form.validatePasswordTwo()}
 						onChangeText={e => form.passwordTwoOnChange(e)}

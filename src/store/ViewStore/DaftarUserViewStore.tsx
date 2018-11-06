@@ -21,17 +21,17 @@ class DaftarUserStore {
 
 	@action
 	validateUsername() {
-		const alphaNumeric = /[^a-zA-Z0-9 ]/i.test(this.username)
-			? "Only alphanumeric characters"
-			: undefined;
+		// const alphaNumeric = /[^a-zA-Z0-9 ]/i.test(this.username)
+		// 	? "Only alphanumeric characters"
+		// 	: undefined;
 		const maxLength =
-			this.username.length > 20 ? "Must be 20 characters or less" : undefined;
+			this.username.length > 20 ? "Username must be 20 characters or less" : undefined;
 		const minLength =
-			this.username.length < 5 ? "Must be 5 characters or more" : undefined;
+			this.username.length < 5 ? "Username must be 5 characters or more" : undefined;
 		const required = this.username ? undefined : "Required";
 		this.usernameError = required
 			? required
-			: alphaNumeric ? alphaNumeric : maxLength ? maxLength : minLength;
+			: maxLength ? maxLength : minLength;
 	}
 
 	@action
@@ -61,9 +61,9 @@ class DaftarUserStore {
 			? "Only alphanumeric characters"
 			: undefined;
 		const maxLength =
-			this.passwordOne.length > 15 ? "Must be 15 characters or less" : undefined;
+			this.passwordOne.length > 15 ? "Password one must be 15 characters or less" : undefined;
 		const minLength =
-			this.passwordOne.length < 8 ? "Must be 8 characters or more" : undefined;
+			this.passwordOne.length < 8 ? "Password one must be 8 characters or more" : undefined;
 		const required = this.passwordOne ? undefined : "Required";
 		this.passwordOneError = required
 			? required
@@ -82,9 +82,9 @@ class DaftarUserStore {
 			? "Only alphanumeric characters"
 			: undefined;
 		const maxLength =
-			this.passwordTwo.length > 15 ? "Must be 15 characters or less" : undefined;
+			this.passwordTwo.length > 15 ? "Password two must be 15 characters or less" : undefined;
 		const minLength =
-			this.passwordTwo.length < 8 ? "Must be 8 characters or more" : undefined;
+			this.passwordTwo.length < 8 ? "Password two must be 8 characters or more" : undefined;
 		const required = this.passwordTwo ? undefined : "Required";
 		this.passwordTwoError = required
 			? required

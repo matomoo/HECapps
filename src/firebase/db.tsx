@@ -8,16 +8,20 @@ export const doCreateUser = ( id, username, email, role ) => {
 		role,
 	});
 	db.ref(`pasiens/${id}/profil`).update({
+		_key: id,
 		username,
 		email,
 		role,
+		alamat: "",
+		description: "",
+		gender: "",
+		handphone: "",
 	});
 	db.ref(`pasiens/${id}`).update({
 		flagActivity: "userIdle",
 		pasienRekamMedik: 1,
 		dokterRekamMedik: 1,
 		statusPasien: "Umum",
-		_key: id,
 	});
 };
 
