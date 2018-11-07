@@ -50,6 +50,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	getNoAntri() {
+		// console.log(this.props);
 		db.getNumberLastAntrian()
 			.then(res => {
 				this.setState({ nomorAntri: res.val() + 1 });
@@ -90,12 +91,12 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 				this.setState({ nomorAntri: res.val() + 1 });
 				this.props.mainStore.nomorAntrianPoli = this.state.nomorAntri;
 			});
-		this.props.navigation.navigate("Home");
-		this.setState({ isNomorAntrian: this.state.nomorAntri });
+			this.setState({ isNomorAntrian: this.state.nomorAntri });
+			this.props.navigation.navigate("Home");
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		const { currentUid, currentUsername } = this.props.mainStore;
 
 		const formListDokter = (

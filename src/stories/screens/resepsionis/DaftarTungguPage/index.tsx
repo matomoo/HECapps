@@ -4,7 +4,7 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Bod
 			ListItem,
 			Card,
 } from "native-base";
-
+import moment from "moment";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -40,20 +40,16 @@ class DaftarTungguPage extends React.Component<Props, State> {
 				</Header>
 
 				<Content padder>
+					<Text>{ moment().format("YYYY-MMM-DD") }</Text>
 					<Card>
-					{/* <Text>Berisikan daftar pasien</Text> */}
 					{ !!this.props.lists &&
 						<List>
 							{Object.keys(this.props.lists).map(key =>
 								<ListItem
 									key={key}
 									onPress={() => this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} )}
-									// onPress={() => this.props.onPilihPasien(key)}
-									// onPress={() => console.log(key)}
 									>
 									<Left><Text>{this.props.lists[key].profil.username}</Text></Left>
-									{/* <Left><Text>{this.props.lists[key].profil.role}</Text></Left> */}
-									{/* <Right><Icon active name="ios-arrow-forward"/></Right> */}
 								</ListItem>,
 							)}
 						</List>

@@ -200,6 +200,9 @@ export const doPasienxxUpdateProfilDokter = ( p, a, b, c, d, e, f ) => {
 		alamat: e,
 		description: f,
 	});
+	db.ref(`users/${p}`).update ({
+		username: a,
+	});
 };
 
 export const doUpdateDiags = ( p, q, r ) => {

@@ -63,29 +63,35 @@ export default class POfSharePageContainer extends React.Component<Props, State>
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 
 		// const items = this.props.managementViewStore;
 
+		const { taskShare } = this.state;
+		// console.log( taskShare);
+
 		const forms = (
 			<View>
-				<Card>
-					<CardItem header>
-						<Text>View Percentage of Share</Text>
-					</CardItem>
-					<CardItem>
-						<Text>Jasa Medik: Rp. { this.state.taskShare.map(el => el.shareJasaMedik) }</Text>
-					</CardItem>
-					<CardItem>
-						<Text>Sarana: Rp. { this.state.taskShare.map(el => el.shareSarana) }</Text>
-					</CardItem>
-					<CardItem>
-						<Text>Belanja Modal: Rp. { this.state.taskShare.map(el => el.shareBelanjaModal) }</Text>
-					</CardItem>
-					<CardItem>
-						<Text>Saham: Rp. { this.state.taskShare.map(el => el.shareSaham) }</Text>
-					</CardItem>
-				</Card>
+				{ taskShare.map ( el =>
+					el !== null &&
+					<Card>
+						<CardItem header>
+							<Text>View Percentage of Share</Text>
+						</CardItem>
+						<CardItem>
+							<Text>Jasa Medik: Rp. { el.shareJasaMedik }</Text>
+						</CardItem>
+						<CardItem>
+							<Text>Sarana: Rp. { el.shareSarana }</Text>
+						</CardItem>
+						<CardItem>
+							<Text>Belanja Modal: Rp. { el.shareBelanjaModal }</Text>
+						</CardItem>
+						<CardItem>
+							<Text>Saham: Rp. { el.shareSaham }</Text>
+						</CardItem>
+					</Card>,
+				) }
 			</View>
 		);
 

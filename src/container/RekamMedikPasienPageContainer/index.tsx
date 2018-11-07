@@ -167,7 +167,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 
 	_onApotekSimpanData( p ) {
 		const { currentUserRole } = this.props.mainStore;
-		if (currentUserRole === "apotek" || currentUserRole === "billing") {
+		if (currentUserRole === "apotek") {
 			const { currentPasienTerpilihUid } = this.props.pasienStore;
 			db1.db.ref(`transaksiKeluar/${p}`).update({
 				statusApotek: "Sudah",
@@ -182,7 +182,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 
 	_onBillingSimpanData( p ) {
 		const { currentUserRole } = this.props.mainStore;
-		if (currentUserRole === "apotek" || currentUserRole === "billing") {
+		if (currentUserRole === "billing") {
 			const { currentPasienTerpilihUid } = this.props.pasienStore;
 			db1.db.ref(`transaksiKeluar/${p}`).update({
 				statusBilling: "Sudah",
@@ -191,6 +191,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				.update({
 					flagActivity: "userIdle",
 			});
+			db1.db.ref(`daftarTunggu`).child(`${currentPasienTerpilihUid}`).remove();
 			this.props.navigation.navigate("Home");
 		}
 	}
