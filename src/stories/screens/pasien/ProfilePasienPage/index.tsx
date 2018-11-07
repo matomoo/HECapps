@@ -12,10 +12,10 @@ import styles from "./styles";
 export interface Props {
 	navigation: any;
 	Users;
-	handleUpdateDokter;
+	handleUpdatePasien;
 }
 export interface State {}
-class ProfileDokterPage extends React.Component<Props, State> {
+class ProfilePasienPage extends React.Component<Props, State> {
 
 	render() {
 		// console.log(this.props.Users);
@@ -32,7 +32,7 @@ class ProfileDokterPage extends React.Component<Props, State> {
 					</Left>
 
 					<Body style={{ flex: 3 }}>
-						<Title>Profile Dokter</Title>
+						<Title>Profile Pasien</Title>
 					</Body>
 
 					<Right>
@@ -41,7 +41,7 @@ class ProfileDokterPage extends React.Component<Props, State> {
 								active
 								name="md-create"
 								onPress={() =>
-									this.props.handleUpdateDokter(this.props.Users)
+									this.props.handleUpdatePasien(this.props.Users)
 								}
 							/>
 						</Button>
@@ -78,4 +78,4 @@ class ProfileDokterPage extends React.Component<Props, State> {
 	}
 }
 
-export default ProfileDokterPage;
+export default ProfilePasienPage;

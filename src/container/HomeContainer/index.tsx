@@ -138,6 +138,13 @@ export default class HomeContainer extends React.Component<Props, State> {
 						<Left><Text>Status Pasien - { this.props.pasienStore.stoStatusPasien }</Text></Left>
 						<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
+					<ListItem
+						key="4"
+						button
+						onPress={() => this.props.navigation.navigate("ProfilePasienPage")} >
+						<Left><Text>Profil Pasien</Text></Left>
+						<Right><Icon active name="ios-arrow-forward"/></Right>
+				</ListItem>
 				</List>
 			</Card>
 		);

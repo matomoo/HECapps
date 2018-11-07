@@ -15,7 +15,6 @@ import DaftarAntrianPoliPage from "./container/pasien/DaftarAntrianPoliPageConta
 import DaftarTungguPage from "./container/resepsionis/DaftarTungguPageContainer";
 import InputBarangApotekPage from "./container/apotek/InputBarangApotekPageContainer";
 import RekamMedikPasienPage from "./container/RekamMedikPasienPageContainer";
-// import InputDiagnosaPage from "./container/InputDiagnosaPageContainer";
 import InputDiagnosaPage from "./container/dokter/InputDiagnosaPageContainer";
 import InputConsDiagPage from "./container/admin/InputConsDiagPageContainer";
 import InputDiagObatPage from "./container/dokter/InputDiagObatPageContainer";
@@ -31,6 +30,8 @@ import UpdateUserPage from "./container/admin/UpdateUserPageContainer";
 import DaftarDiagPage from "./container/admin/DaftarDiagPageContainer";
 import ProfileDokterPage from "./container/dokter/ProfileDokterPageContainer";
 import UpdateProfileDokterPage from "./container/dokter/UpdateProfileDokterPageContainer";
+import ProfilePasienPage from "./container/pasien/ProfilePasienPageContainer";
+import UpdateProfilePasienPage from "./container/pasien/UpdateProfilePasienPageContainer";
 
 const Drawer = DrawerNavigator(
 	{
@@ -54,7 +55,6 @@ const App = StackNavigator(
 		DaftarTungguPage: { screen: DaftarTungguPage},
 		InputBarangApotekPage: { screen: InputBarangApotekPage },
 		RekamMedikPasienPage: { screen: RekamMedikPasienPage },
-		// InputDiagnosaPage: { screen: InputDiagnosaPage },
 		InputDiagnosaPage: { screen: InputDiagnosaPage },
 		InputConsDiagPage: { screen: InputConsDiagPage },
 		InputDiagObatPage: { screen: InputDiagObatPage },
@@ -70,6 +70,8 @@ const App = StackNavigator(
 		DaftarDiagPage: { screen: DaftarDiagPage },
 		ProfileDokterPage: { screen: ProfileDokterPage },
 		UpdateProfileDokterPage: { screen: UpdateProfileDokterPage },
+		ProfilePasienPage: { screen: ProfilePasienPage },
+		UpdateProfilePasienPage: { screen: UpdateProfilePasienPage },
 	},
 	{
 		initialRouteName: "Login",
