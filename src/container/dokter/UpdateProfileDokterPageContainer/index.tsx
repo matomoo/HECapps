@@ -182,7 +182,7 @@ export default class UpdateProfileDokterPageContainer extends React.Component<Pr
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		// const form = this.props.pasienStore;
 		// form.clearStore();
 

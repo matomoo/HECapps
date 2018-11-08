@@ -64,12 +64,15 @@ export const doUpdateStatusApotekPasien = ( uid ) => {
 	return getter;
 };
 
-export const doUpdateDokterPoli1 = ( dokterName ) => {
-	const getter = db.ref(`poliklinik/poli1`).update({
-		dokter : dokterName,
-		poli: "Poli1",
+export const doUpdateScheduleOfPoli = ( p, a, b ) => {
+	const id = db.ref(`poliklinik/scheduleOfPoli`).push();
+	const key = id.key;
+	db.ref(`poliklinik/scheduleOfPoli/${key}`).update({
+		_key: key,
+		tanggal: p,
+		poli1DokterName: a,
+		poli2DokterName: b,
 	});
-	return getter;
 };
 
 export const doUpdateDokterPoli2 = ( dokterName ) => {

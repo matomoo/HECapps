@@ -5,6 +5,7 @@ import styles from "./styles";
 export interface Props {
 	navigation: any;
 	forms: any;
+	skedul;
 }
 export interface State {}
 class PoliklinikPage extends React.Component<Props, State> {
@@ -35,6 +36,7 @@ class PoliklinikPage extends React.Component<Props, State> {
 
 				<Content padder>
 					{ this.props.forms }
+					{ this.props.skedul }
 				</Content>
 			</Container>
 		);
