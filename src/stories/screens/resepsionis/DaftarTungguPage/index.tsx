@@ -40,7 +40,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 				</Header>
 
 				<Content padder>
-					<Text>{ moment().format("YYYY-MMM-DD") }</Text>
+					<Text>{ moment().format("YYYY-MM-DD") }</Text>
 					<Card>
 					{ !!this.props.lists &&
 						<List>

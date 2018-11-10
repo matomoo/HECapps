@@ -85,7 +85,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 					uName,
 					res.val() + 1,
 					this.state.isDokterPeriksa,
-					moment().format("YYYY-MMM-DD"),
+					moment().format("YYYY-MM-DD"),
 					this.state.isStatusPasien,
 				);
 				this.setState({ nomorAntri: res.val() + 1 });

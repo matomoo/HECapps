@@ -96,13 +96,6 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 	}
 
 	componentDidMount() {
-		// db.getPoli().then(c1 => {
-		// 	// console.log(c1);
-		// 	this.setState({
-		// 		selected1: c1.val().poli1.dokter,
-		// 		selected2: c1.val().poli2.dokter,
-		// 	});
-		// });
 		this.getScheduleOfPoli(this.scheduleOfPoli);
 		this._getListDokter();
 	}
@@ -116,14 +109,13 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 				result.forEach(el => {
 					r2.push(el.val());
 				});
+				r2.sort(( a, b ) =>
+					Date.parse(b.tanggal) - Date.parse(a.tanggal),
+				);
 				this.setState({
 					sttSchedule: r2,
 				});
 				console.log(this.state.sttSchedule);
-				// this.props.managementViewStore.jasaMedik = r1.jasaMedik;
-				// this.props.managementViewStore.sarana = r1.sarana;
-				// this.props.managementViewStore.belanjaModal = r1.belanjaModal;
-				// this.props.managementViewStore.saham = r1.saham;
 			}).catch((err) => {
 				console.log(err);
 		});
@@ -131,8 +123,8 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 
 	_handlePoli() {
 		const { selected1, selected2, chosenDate } = this.state;
-		db.doUpdateScheduleOfPoli(moment(chosenDate).format("YYYY-MMM-DD"), selected1, selected2);
-		db.getDaftarTungguxxByTanggal(moment().format("YYYY-MMM-DD"))
+		db.doUpdateScheduleOfPoli(moment(chosenDate).format("YYYY-MM-DD"), selected1, selected2);
+		db.getDaftarTungguxxByTanggal(moment().format("YYYY-MM-DD"))
 			.then(c1 => {
 				const tasks = [];
 				c1.forEach(c2 => {
@@ -144,29 +136,8 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 				});
 				this.setState({ tasks: tasks });
 			});
-		// console.log("tasks", this.state.tasks, moment().format("YYYY-MMM-DD"));
+		this.props.navigation.navigate("Home");
 	}
-
-	// _handlePoli1(value) {
-	// 	db.doUpdateDokterPoli1(value);
-	// 	db.getDaftarTungguxxByTanggal(moment().format("YYYY-MMM-DD"))
-	// 		.then(c1 => {
-	// 			const tasks = [];
-	// 			c1.forEach(c2 => {
-	// 				tasks.push({
-	// 					_key: c2.key,
-	// 				});
-	// 				db.doUpdatePolidaftarTunggu(c2.key, "Poli1");
-	// 				db.doUpdateFlagActivity(c2.key, "antriPoliklinikByToday");
-	// 			});
-	// 			this.setState({ tasks: tasks });
-	// 		});
-	// 		console.log("tasks", this.state.tasks, moment().format("YYYY-MMM-DD"));
-	// }
-
-	// _handlePoli2(value) {
-	// 	db.doUpdateDokterPoli2(value);
-	// }
 
 	render() {
 		// console.log(this.state);
