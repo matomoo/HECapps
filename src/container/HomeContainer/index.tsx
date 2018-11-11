@@ -9,9 +9,11 @@ import { CardItem,
 			ListItem,
 			Card,
 			View,
+			// Content,
 		} from "native-base";
 
 import Home from "../../stories/screens/Home";
+import AntrianPasien from "../pasien/AntrianPasienContainer";
 import { db } from "../../firebase";
 import { AsyncStorage } from "react-native";
 
@@ -35,6 +37,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 
 	constructor() {
 		super();
+		// prepare to disable all state
 		this.state = {
 			myPoli: "",
 			myNomorAntrian: "",
@@ -45,7 +48,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 	componentDidMount() {
 		// console.log("did");
 		this.onAmbilDataAwalAplikasi();
-		this.onAmbilDataAwalPasien();
+		// this.onAmbilDataAwalPasien();
 	}
 
 	async onAmbilDataAwalAplikasi() {
@@ -54,99 +57,102 @@ export default class HomeContainer extends React.Component<Props, State> {
 			this.props.mainStore.currentUsername = snapshot.val().username;
 			this.props.mainStore.currentUserRole = snapshot.val().role;
 		});
-		await this.onAmbilDataAwalPasien();
+		// await this.onAmbilDataAwalPasien();
 		// const value = AsyncStorage.getItem("@MySuperStore:xockey");
 		// if (value !== null ) {
 		await AsyncStorage.setItem("@MySuperStore:xockey", currentUid);
 		// }
 	}
-
-	async onAmbilDataAwalPasien() {
-		const { currentUid, currentUserRole, currentUsername } = this.props.mainStore;
-		if ( currentUserRole === "pasien" ) {
-			await db.getNomorAntrianPasien(currentUid)
-				.then(res => {
-					this.props.mainStore.nomorAntrianPoli = res.val();
-					this.setState({
-						myNomorAntrian: res.val().nomorAntrianPasien,
-						myDokter: res.val().dokterPeriksa,
-					});
-					// console.log(this.props);
-				});
-			await db.getPasienInfoFromFb(currentUid)
-				.then( res => {
-					this.props.pasienStore.stoStatusPasien = res.val().statusPasien;
-				});
-		} else if ( currentUserRole === "dokter" ) {
-			await db.getPolixxByDokter( currentUsername ).then(c1 => {
-				// console.log(c1.val());
-				const c2 = c1.val();
-				Object.keys(c2).map(c3 => {
-					// console.log(c2);
-					this.setState({
-						myPoli: c2[c3].poli,
-					});
-					// console.log(this.state.myPoli);
-				});
-			}).catch(() => {
-				this.setState({
-					myPoli: "Idle",
-				});
-			});
-		}
-	}
+	// prepare to delete this
+	// async onAmbilDataAwalPasien() {
+	// 	const { currentUid, currentUserRole, currentUsername } = this.props.mainStore;
+	// 	if ( currentUserRole === "pasien" ) {
+	// 		await db.getNomorAntrianPasien(currentUid)
+	// 			.then(res => {
+	// 				this.props.mainStore.nomorAntrianPoli = res.val();
+	// 				this.setState({
+	// 					myNomorAntrian: res.val().nomorAntrianPasien,
+	// 					myDokter: res.val().dokterPeriksa,
+	// 				});
+	// 				// console.log(this.props);
+	// 			});
+	// 		await db.getPasienInfoFromFb(currentUid)
+	// 			.then( res => {
+	// 				this.props.pasienStore.stoStatusPasien = res.val().statusPasien;
+	// 			});
+	// 	} else if ( currentUserRole === "dokter" ) {
+	// 		await db.getPolixxByDokter( currentUsername ).then(c1 => {
+	// 			// console.log(c1.val());
+	// 			const c2 = c1.val();
+	// 			Object.keys(c2).map(c3 => {
+	// 				// console.log(c2);
+	// 				this.setState({
+	// 					myPoli: c2[c3].poli,
+	// 				});
+	// 				// console.log(this.state.myPoli);
+	// 			});
+	// 		}).catch(() => {
+	// 			this.setState({
+	// 				myPoli: "Idle",
+	// 			});
+	// 		});
+	// 	}
+	// }
 
 	render() {
-		// const list = this.props.mainStore.items.toJS();
+		console.log(this.props);
 		const key = this.props.mainStore.currentUid;
 		const { currentUserRole } = this.props.mainStore;
 
 		const cardPasien = (
-			<Card>
-				<List>
-					<ListItem
-						key="1"
-						button
-						onPress={() => {
-							this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} );
-							// this._getRekamMedik({key});
-						}}
-						>
-						<Left><Text>Riwayat Rekam Medik</Text></Left>
-						<Right><Icon active name="ios-arrow-forward"/></Right>
+			<View>
+				<Card>
+					<List>
+						<ListItem
+							key="1"
+							button
+							onPress={() => {
+								this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} );
+								// this._getRekamMedik({key});
+							}}
+							>
+							<Left><Text>Riwayat Rekam Medik</Text></Left>
+							<Right><Icon active name="ios-arrow-forward"/></Right>
+						</ListItem>
+						{/* <ListItem
+							key="2"
+							button
+							onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
+							>
+							<Left>
+								<View style={{padding: 1, flexDirection: "column"}}>
+									<Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text>
+									<Text>Dokter periksa: { this.state.myDokter ? this.state.myDokter : "-" }</Text>
+								</View>
+							</Left>
+							<Right><Icon active name="ios-arrow-forward"/></Right>
+						</ListItem> */}
+						{/* <ListItem
+							key="3"
+							button
+							onPress={() => {
+										this.props.navigation.navigate("InputPengaturanPasienPage", {name: {key}} );
+									}}
+							>
+							<Left><Text>Status Pasien - { this.props.pasienStore.stoStatusPasien }</Text></Left>
+							<Right><Icon active name="ios-arrow-forward"/></Right>
+						</ListItem> */}
+						<ListItem
+							key="4"
+							button
+							onPress={() => this.props.navigation.navigate("ProfilePasienPage")} >
+							<Left><Text>Profil Pasien</Text></Left>
+							<Right><Icon active name="ios-arrow-forward"/></Right>
 					</ListItem>
-					<ListItem
-						key="2"
-						button
-						onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )}
-						>
-						<Left>
-							<View style={{padding: 1, flexDirection: "column"}}>
-								<Text>Daftar Antrian Poliklinik { this.state.myNomorAntrian ? " - " + this.state.myNomorAntrian : " - loading data..." }</Text>
-								<Text>Dokter periksa: { this.state.myDokter ? this.state.myDokter : "-" }</Text>
-							</View>
-						</Left>
-						<Right><Icon active name="ios-arrow-forward"/></Right>
-					</ListItem>
-					<ListItem
-						key="3"
-						button
-						onPress={() => {
-									this.props.navigation.navigate("InputPengaturanPasienPage", {name: {key}} );
-								}}
-						>
-						<Left><Text>Status Pasien - { this.props.pasienStore.stoStatusPasien }</Text></Left>
-						<Right><Icon active name="ios-arrow-forward"/></Right>
-					</ListItem>
-					<ListItem
-						key="4"
-						button
-						onPress={() => this.props.navigation.navigate("ProfilePasienPage")} >
-						<Left><Text>Profil Pasien</Text></Left>
-						<Right><Icon active name="ios-arrow-forward"/></Right>
-				</ListItem>
-				</List>
-			</Card>
+					</List>
+				</Card>
+				<AntrianPasien />
+			</View>
 		);
 
 		const cardResepsionis = (

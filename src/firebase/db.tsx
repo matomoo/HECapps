@@ -84,7 +84,12 @@ export const doUpdateDokterPoli2 = ( dokterName ) => {
 };
 
 export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa, isTanggalBooking, isStatusPasien ) => {
+	db.ref(`pasiens/${uid}`).update({
+		flagActivity : "antriPoliklinik",
+		nomorAntrianPasien: nomorAntrian,
+	});
 	db.ref(`daftarTunggu/${uid}`).update({
+		Uid: uid,
 		namaUser: uName,
 		statusPasien: isStatusPasien,
 		nomorAntrianPasien: nomorAntrian,
@@ -93,10 +98,7 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa
 		timeStamp: firebase.database.ServerValue.TIMESTAMP,
 	});
 	db.ref(`daftarTunggu`).update({
-		nomorAntrian: nomorAntrian,
-	});
-	db.ref(`pasiens/${uid}`).update({
-		flagActivity : "antriPoliklinik",
+		nomorAntrian: parseInt(nomorAntrian, 10) + 1,
 	});
 };
 

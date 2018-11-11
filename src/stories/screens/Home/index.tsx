@@ -12,9 +12,12 @@ import {
 	Right,
 	Card,
 	CardItem,
+	// Footer,
+	View,
 } from "native-base";
 
 import styles from "./styles";
+// import Footer from "../../../theme/components/Footer";
 
 export interface Props {
 	navigation: any;
@@ -45,16 +48,21 @@ class Home extends React.Component<Props, State> {
 					</Body>
 					<Right />
 				</Header>
-				<Content style={styles.content}>
-					<Card>
-						<CardItem header>
-							<Body>
-								<Text>Selamat Datang, {this.props.authUser}</Text>
-							</Body>
-						</CardItem>
-					</Card>
-					{this.props.selectedCard}
+				<Content
+					// style={styles.content}
+				>
+					<View>
+						<Card>
+							<CardItem header>
+								<Body>
+									<Text>Selamat Datang, {this.props.authUser}</Text>
+								</Body>
+							</CardItem>
+						</Card>
+						{this.props.selectedCard}
+					</View>
 				</Content>
+				{/* <Footer></Footer> */}
 			</Container>
 		);
 	}
