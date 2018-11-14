@@ -97,8 +97,13 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa
 		tanggalBooking: isTanggalBooking,
 		timeStamp: firebase.database.ServerValue.TIMESTAMP,
 	});
-	db.ref(`daftarTunggu`).update({
-		nomorAntrian: parseInt(nomorAntrian, 10) + 1,
+	db.ref(`daftarTunggu/${isTanggalBooking}`).update({
+		// Uid: uid,
+		nomorAntrianPasien: parseInt(nomorAntrian, 10) + 1,
+	});
+	db.ref(`daftarTunggu/${isTanggalBooking}/${nomorAntrian}`).update({
+		Uid: uid,
+		// nomorAntrianPasien: parseInt(nomorAntrian, 10) + 1,
 	});
 };
 
@@ -286,7 +291,7 @@ export const GetSingleUsers = (uid) => {
 };
 
 export const getNumberLastAntrian = ( p ) => {
-	const resUser = db.ref(`pasiens/${p}/nomorAntrianPasien`).once("value");
+	const resUser = db.ref(`daftarTunggu/${p}/nomorAntrianPasien`).once("value");
 	return resUser;
 };
 

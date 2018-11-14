@@ -22,6 +22,7 @@ class PasienStore {
 	@observable stoIdObat: "";
 
 	@observable stoStatusPasien: "";
+	@observable stoPasienFlagActivity;
 
 	@observable Users;
 
@@ -37,8 +38,9 @@ class PasienStore {
 	}
 
 	@action
-	_handleStatusPasien(p) {
+	_handleStatusPasien(p, q) {
 		this.stoStatusPasien = p;
+		this.stoPasienFlagActivity = q;
 		// this.isLoading = false;
 	}
 

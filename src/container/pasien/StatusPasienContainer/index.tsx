@@ -65,7 +65,10 @@ taskUser;
 			}).catch((err) => {
 				console.log(err);
 		});
-		this.props.pasienStore._handleStatusPasien(this.state.listUsers[0].statusPasien);
+		this.props.pasienStore._handleStatusPasien(
+			this.state.listUsers[0].statusPasien,
+			this.state.listUsers[0].flagActivity,
+			);
 		// console.log(this.state.listUsers[0].statusPasien);
 	}
 

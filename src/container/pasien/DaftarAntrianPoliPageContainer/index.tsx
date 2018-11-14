@@ -19,11 +19,11 @@ export interface Props {
 
 export interface State {
 	chosenDate: any;
-	nomorAntri: any;
+	nomorAntriFromFb: any;
 	isStatusPasien;
 	isDokters;
 	isDokterPeriksa;
-	isNomorAntrian;
+	sttFlagActivity;
 }
 
 @inject("mainStore", "pasienStore")
@@ -34,11 +34,11 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 		super(props);
 		this.state = {
 			chosenDate: new Date(),
-			nomorAntri: "",
+			nomorAntriFromFb: "",
 			isStatusPasien: "Umum",
 			isDokters: [],
 			isDokterPeriksa: "",
-			isNomorAntrian: "",
+			sttFlagActivity: "",
 		};
 	}
 
@@ -46,17 +46,20 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 		this.getNoAntri();
 		this.setState({
 			isStatusPasien: this.props.pasienStore.stoStatusPasien,
+			sttFlagActivity: this.props.pasienStore.stoPasienFlagActivity,
 		});
 		this._getListDokter();
 	}
 
 	getNoAntri() {
-		const { currentUid } = this.props.mainStore;
+		// const { currentUid } = this.props.mainStore;
 		// console.log(currentUid);
-		db.getNumberLastAntrian(currentUid)
+		db.getNumberLastAntrian(moment().format("YYYY-MM-DD"))
 			.then(res => {
 				// console.log("hahaha", res.val());
-				this.setState({ nomorAntri: res.val() });
+				this.setState({ nomorAntriFromFb: res.val() === null ? 1 : res.val() });
+				// if (res.val() !== null ) {
+				// }
 			});
 	}
 
@@ -80,22 +83,42 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	handleAntriPoli(uid, uName) {
-		db.getNumberLastAntrian(uid)
-			.then(res => {
-				db.doPasienDaftarAntrian(
-					uid,
-					uName,
-					res.val() + 1,
-					this.state.isDokterPeriksa,
-					moment().format("YYYY-MM-DD"),
-					this.state.isStatusPasien,
-				);
-				this.setState({ nomorAntri: res.val() + 1 });
-				this.props.mainStore.nomorAntrianPoli = this.state.nomorAntri;
-			});
-		this.setState({ isNomorAntrian: this.state.nomorAntri });
+		if (this.state.sttFlagActivity === "userIdle") {
+			console.log("proses");
+			db.doPasienDaftarAntrian(
+				uid,
+				uName,
+				parseInt(this.state.nomorAntriFromFb, 10),
+				this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
+				moment().format("YYYY-MM-DD"),
+				this.state.isStatusPasien,
+			);
+		}
+		// db.getNumberLastAntrian(uid)
+		// 	.then(res => {
+		// 		db.doPasienDaftarAntrian(
+		// 			uid,
+		// 			uName,
+		// 			res.val(),
+		// 			this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
+		// 			moment().format("YYYY-MM-DD"),
+		// 			this.state.isStatusPasien,
+		// 		);
+		// 		// this.setState({ nomorAntriFromFb: res.val() + 1 });
+		// 		// this.props.mainStore.nomorAntriFromFbanPoli = this.state.nomorAntriFromFb;
+		// 	});
+		// this.setState({ isNomorAntriFromFban: this.state.nomorAntriFromFb });
 		this.props.navigation.navigate("Home");
 	}
+
+	// db.doPasienDaftarAntrian(
+	// 	el.profil._key,
+	// 	el.profil.username,
+	// 	res.val(),
+	// 	el.statusPasien === "BPJS" ? "UMUM" : "BPJS",
+	// 	moment().format("YYYY-MM-DD"),
+	// 	el.statusPasien,
+	// );
 
 	render() {
 		// console.log(this.state);
@@ -122,7 +145,10 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 					// footer button
 					// onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
 					>
-						<Text>Daftar Antrian Poli ke - {this.state.nomorAntri ? this.state.nomorAntri : "Belum mengambil nomor antrian"}</Text>
+						<Text>Daftar Antrian Poli ke -
+								{this.state.sttFlagActivity === "antriPoliklinik"
+									? this.state.nomorAntriFromFb
+									: "Belum mendaftar antrian."}</Text>
 					</CardItem>
 					<CardItem>
 						<View>
