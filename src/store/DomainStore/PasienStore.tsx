@@ -37,6 +37,12 @@ class PasienStore {
 	}
 
 	@action
+	_handleStatusPasien(p) {
+		this.stoStatusPasien = p;
+		// this.isLoading = false;
+	}
+
+	@action
 	_handleNameDiagSelected( p, q ) {
 		try {
 			const a = _.find(q, { namaDiag: p });

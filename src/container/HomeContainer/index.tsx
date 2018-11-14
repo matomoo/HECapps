@@ -14,6 +14,7 @@ import { CardItem,
 
 import Home from "../../stories/screens/Home";
 import AntrianPasien from "../pasien/AntrianPasienContainer";
+import StatusPasien from "../pasien/StatusPasienContainer";
 import { db } from "../../firebase";
 import { AsyncStorage } from "react-native";
 
@@ -100,7 +101,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 	// }
 
 	render() {
-		console.log(this.props);
+		console.log(this.props.pasienStore);
 		const key = this.props.mainStore.currentUid;
 		const { currentUserRole } = this.props.mainStore;
 
@@ -151,7 +152,8 @@ export default class HomeContainer extends React.Component<Props, State> {
 					</ListItem>
 					</List>
 				</Card>
-				<AntrianPasien />
+				<StatusPasien onPress={() => this.props.navigation.navigate("InputPengaturanPasienPage", {name: {key}} )} />
+				<AntrianPasien onPress={() => this.props.navigation.navigate("DaftarAntrianPoliPage", {name: {key}} )} />
 			</View>
 		);
 

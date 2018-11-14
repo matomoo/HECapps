@@ -8,21 +8,22 @@ import {
 	// Icon,
 	// Left, Right, Body,
 } from "native-base";
-import {
+// import {
 // 	Modal,
-	// TouchableHighlight,
+// 	// TouchableHighlight,
 // 	// Text, View, StyleSheet,
-	TouchableOpacity,
-}
-from "react-native";
+// }
+// from "react-native";
 // import { db } from "../../../firebase";
 // import moment from "moment";
 import * as db1 from "../../../firebase/firebase";
+import { TouchableOpacity } from "react-native";
 // import styles from "./styles";
 
 export interface Props {
 	mainStore?;
-	onPress?;
+	onPress;
+	pasienStore?;
 	// navigation: any;
 }
 export interface State {
@@ -48,6 +49,10 @@ taskUser;
 		this.getFirstData(this.taskUser);
 	}
 
+	// componentDidUpdate() {
+	// 	this.getFirstData(this.taskUser);
+	// }
+
 	async getFirstData( p ) {
 		await p.once("value")
 			.then((result) => {
@@ -60,22 +65,26 @@ taskUser;
 			}).catch((err) => {
 				console.log(err);
 		});
+		this.props.pasienStore._handleStatusPasien(this.state.listUsers[0].statusPasien);
+		// console.log(this.state.listUsers[0].statusPasien);
 	}
 
 	render() {
+		// console.log(this.state);
 		const { listUsers } = this.state;
+		// const param = this.props.navigation.state.params;
 		return (
-			<View>
+			<View >
 				<TouchableOpacity
-						onPress={this.props.onPress}
-						>
+					onPress={this.props.onPress}
+					>
 					{ listUsers.map(el =>
-						<Card key="2">
+						<Card key="1" >
 							<CardItem>
-								<Text>Informasi nomor antrian</Text>
+								<Text>Informasi status pasien</Text>
 							</CardItem>
 							<CardItem>
-								<Text>Nomor Antrian: { el.flagActivity === "antriPoliklinik" ? el.nomorAntrianPasien : "Belum mendaftar antrian." }</Text>
+								<Text>Status Pasien: { el.statusPasien }</Text>
 							</CardItem>
 						</Card>,
 					)}

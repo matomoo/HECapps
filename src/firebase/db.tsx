@@ -285,8 +285,8 @@ export const GetSingleUsers = (uid) => {
 	return resUser;
 };
 
-export const getNumberLastAntrian = () => {
-	const resUser = db.ref(`daftarTunggu/nomorAntrian`).once("value");
+export const getNumberLastAntrian = ( p ) => {
+	const resUser = db.ref(`pasiens/${p}/nomorAntrianPasien`).once("value");
 	return resUser;
 };
 

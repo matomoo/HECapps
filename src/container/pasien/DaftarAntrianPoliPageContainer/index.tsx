@@ -6,6 +6,7 @@ import {
 	Text,
 	Card,
 	CardItem,
+	Button,
 } from "native-base";
 import { db } from "../../../firebase";
 import moment from "moment";
@@ -50,11 +51,12 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	getNoAntri() {
-		// console.log(this.props);
-		db.getNumberLastAntrian()
+		const { currentUid } = this.props.mainStore;
+		// console.log(currentUid);
+		db.getNumberLastAntrian(currentUid)
 			.then(res => {
-				this.setState({ nomorAntri: res.val() + 1 });
-				// console.log(res.val());
+				// console.log("hahaha", res.val());
+				this.setState({ nomorAntri: res.val() });
 			});
 	}
 
@@ -69,7 +71,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 
 	snapshotToArray(snapshot) {
 		const returnArr = [];
-		snapshot.forEach(function(childSnapshot) {
+		snapshot.forEach(function (childSnapshot) {
 			const item = childSnapshot.val();
 			item.key = childSnapshot.key;
 			returnArr.push(item);
@@ -77,8 +79,8 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 		return returnArr;
 	}
 
-	handleAntriPoli( uid, uName) {
-		db.getNumberLastAntrian()
+	handleAntriPoli(uid, uName) {
+		db.getNumberLastAntrian(uid)
 			.then(res => {
 				db.doPasienDaftarAntrian(
 					uid,
@@ -91,8 +93,8 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 				this.setState({ nomorAntri: res.val() + 1 });
 				this.props.mainStore.nomorAntrianPoli = this.state.nomorAntri;
 			});
-			this.setState({ isNomorAntrian: this.state.nomorAntri });
-			this.props.navigation.navigate("Home");
+		this.setState({ isNomorAntrian: this.state.nomorAntri });
+		this.props.navigation.navigate("Home");
 	}
 
 	render() {
@@ -101,7 +103,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 
 		const formListDokter = (
 			<Card>
-				{ this.state.isDokters.map(element =>
+				{this.state.isDokters.map(element =>
 					<CardItem button
 						key={element.username}
 						onPress={() => this.setState({ isDokterPeriksa: element.username })}
@@ -114,28 +116,28 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 
 		const Forms = (
 			<View>
+				{this.state.isStatusPasien === "Umum" ? formListDokter : undefined}
 				<Card>
-					<CardItem>
-						<View style={{padding: 1, flexDirection: "column"}}>
-							<Text>Dokter Periksa : { this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "belum ada pilihan dokter" }</Text>
-							<Text>Nomor Antrian : { this.state.isNomorAntrian ? this.state.isNomorAntrian : "belum ada pilihan nomor antrian" }</Text>
-						</View>
+					<CardItem
+					// footer button
+					// onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
+					>
+						<Text>Daftar Antrian Poli ke - {this.state.nomorAntri ? this.state.nomorAntri : "Belum mengambil nomor antrian"}</Text>
 					</CardItem>
-				</Card>
-				{ this.state.isStatusPasien === "Umum" ? formListDokter : undefined }
-				<Card>
-					<CardItem footer button
-						onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
-						>
-						<Text>Daftar Antrian Poli ke - { this.state.nomorAntri ? this.state.nomorAntri : "loading data..." }</Text>
+					<CardItem>
+						<View>
+							<Button block onPress={() => this.handleAntriPoli(currentUid, currentUsername)}>
+								<Text>Ambil Nomor Antrian</Text>
+							</Button>
+						</View>
 					</CardItem>
 				</Card>
 			</View>
 		);
 
 		return <DaftarAntrianPoliPage
-					navigation={this.props.navigation}
-					forms = {Forms}
-				/>;
+			navigation={this.props.navigation}
+			forms={Forms}
+		/>;
 	}
 }
