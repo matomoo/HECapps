@@ -18,7 +18,6 @@ export interface Props {
 }
 
 export interface State {
-	chosenDate: any;
 	nomorAntriFromFb: any;
 	isStatusPasien;
 	isDokters;
@@ -33,7 +32,6 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	constructor(props) {
 		super(props);
 		this.state = {
-			chosenDate: new Date(),
 			nomorAntriFromFb: "",
 			isStatusPasien: "Umum",
 			isDokters: [],
@@ -52,14 +50,9 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	getNoAntri() {
-		// const { currentUid } = this.props.mainStore;
-		// console.log(currentUid);
 		db.getNumberLastAntrian(moment().format("YYYY-MM-DD"))
 			.then(res => {
-				// console.log("hahaha", res.val());
 				this.setState({ nomorAntriFromFb: res.val() === null ? 1 : res.val() });
-				// if (res.val() !== null ) {
-				// }
 			});
 	}
 
@@ -90,35 +83,12 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 				uName,
 				parseInt(this.state.nomorAntriFromFb, 10),
 				this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
-				moment().format("YYYY-MM-DD"),
+				moment().add(1, "days").format("YYYY-MM-DD"),
 				this.state.isStatusPasien,
 			);
 		}
-		// db.getNumberLastAntrian(uid)
-		// 	.then(res => {
-		// 		db.doPasienDaftarAntrian(
-		// 			uid,
-		// 			uName,
-		// 			res.val(),
-		// 			this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
-		// 			moment().format("YYYY-MM-DD"),
-		// 			this.state.isStatusPasien,
-		// 		);
-		// 		// this.setState({ nomorAntriFromFb: res.val() + 1 });
-		// 		// this.props.mainStore.nomorAntriFromFbanPoli = this.state.nomorAntriFromFb;
-		// 	});
-		// this.setState({ isNomorAntriFromFban: this.state.nomorAntriFromFb });
 		this.props.navigation.navigate("Home");
 	}
-
-	// db.doPasienDaftarAntrian(
-	// 	el.profil._key,
-	// 	el.profil.username,
-	// 	res.val(),
-	// 	el.statusPasien === "BPJS" ? "UMUM" : "BPJS",
-	// 	moment().format("YYYY-MM-DD"),
-	// 	el.statusPasien,
-	// );
 
 	render() {
 		// console.log(this.state);
@@ -141,13 +111,10 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 			<View>
 				{this.state.isStatusPasien === "Umum" ? formListDokter : undefined}
 				<Card>
-					<CardItem
-					// footer button
-					// onPress={() => this.handleAntriPoli(currentUid, currentUsername)}
-					>
+					<CardItem>
 						<Text>Daftar Antrian Poli ke -
 								{this.state.sttFlagActivity === "antriPoliklinik"
-									? this.state.nomorAntriFromFb
+									? this.state.nomorAntriFromFb + " pada tanggal " + (moment().add(1, "days").format("YYYY-MM-DD") )
 									: "Belum mendaftar antrian."}</Text>
 					</CardItem>
 					<CardItem>

@@ -72,8 +72,9 @@ taskUser;
 
 	handleAntriPoli( ) {
 		const { listUsers } = this.state;
+		let x;
 		// console.log(listUsers[0].profil.username);
-		db.getNumberLastAntrian()
+		db.getNumberLastAntrian( x )
 			.then(res => {
 				// console.log(res);
 				listUsers.forEach(el => {

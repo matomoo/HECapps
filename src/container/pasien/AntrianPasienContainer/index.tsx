@@ -75,7 +75,9 @@ taskUser;
 								<Text>Informasi nomor antrian</Text>
 							</CardItem>
 							<CardItem>
-								<Text>Nomor Antrian: { el.flagActivity === "antriPoliklinik" ? el.nomorAntrianPasien : "Belum mendaftar antrian." }</Text>
+								<Text>Nomor Antrian: { el.flagActivity === "antriPoliklinik"
+										? el.nomorAntrianPasien + " pada tanggal " + el.tanggalBooking
+										: "Belum mendaftar antrian." }</Text>
 							</CardItem>
 						</Card>,
 					)}

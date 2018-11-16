@@ -87,6 +87,7 @@ export const doPasienDaftarAntrian = ( uid, uName, nomorAntrian, isDokterPeriksa
 	db.ref(`pasiens/${uid}`).update({
 		flagActivity : "antriPoliklinik",
 		nomorAntrianPasien: nomorAntrian,
+		tanggalBooking: isTanggalBooking,
 	});
 	db.ref(`daftarTunggu/${uid}`).update({
 		Uid: uid,
