@@ -9,6 +9,7 @@ import {
 	Button,
 } from "native-base";
 import { db } from "../../../firebase";
+import * as db1 from "../../../firebase/firebase";
 import moment from "moment";
 
 export interface Props {
@@ -23,56 +24,59 @@ export interface State {
 	isDokters;
 	isDokterPeriksa;
 	sttFlagActivity;
+	listPolis;
+	tanggalBooking;
 }
 
 @inject("mainStore", "pasienStore")
 @observer
 export default class DaftarAntrianPoliPageContainer extends React.Component<Props, State> {
+taskPoli;
 
 	constructor(props) {
 		super(props);
+		this.taskPoli = db1.db.ref(`poliklinik/scheduleOfPoli`);
 		this.state = {
 			nomorAntriFromFb: "",
 			isStatusPasien: "Umum",
 			isDokters: [],
 			isDokterPeriksa: "",
 			sttFlagActivity: "",
+			listPolis: [],
+			tanggalBooking: "",
 		};
 	}
 
 	componentDidMount() {
 		this.getNoAntri();
-		this.setState({
-			isStatusPasien: this.props.pasienStore.stoStatusPasien,
-			sttFlagActivity: this.props.pasienStore.stoPasienFlagActivity,
-		});
-		this._getListDokter();
+		this.getFirstData( this.taskPoli );
 	}
 
 	getNoAntri() {
 		db.getNumberLastAntrian(moment().format("YYYY-MM-DD"))
 			.then(res => {
-				this.setState({ nomorAntriFromFb: res.val() === null ? 1 : res.val() });
-			});
-	}
-
-	_getListDokter() {
-		db.getListAllDokter()
-			.then(c1 => {
 				this.setState({
-					isDokters: this.snapshotToArray(c1),
+					nomorAntriFromFb: res.val() === null ? 1 : res.val(),
+					isStatusPasien: this.props.pasienStore.stoStatusPasien,
+				sttFlagActivity: this.props.pasienStore.stoPasienFlagActivity,
 				});
 			});
 	}
 
-	snapshotToArray(snapshot) {
-		const returnArr = [];
-		snapshot.forEach(function (childSnapshot) {
-			const item = childSnapshot.val();
-			item.key = childSnapshot.key;
-			returnArr.push(item);
+	async getFirstData( p ) {
+		await p.once("value")
+			.then((result) => {
+				const r1 = [];
+				result.forEach(el => {
+					r1.push(el.val());
+				});
+				this.setState({
+					listPolis: r1,
+				});
+
+			}).catch((err) => {
+				console.log(err);
 		});
-		return returnArr;
 	}
 
 	handleAntriPoli(uid, uName) {
@@ -83,7 +87,7 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 				uName,
 				parseInt(this.state.nomorAntriFromFb, 10),
 				this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
-				moment().add(1, "days").format("YYYY-MM-DD"),
+				this.state.isStatusPasien === "UMUM" ? this.state.tanggalBooking : moment().add(1, "days").format("YYYY-MM-DD"),
 				this.state.isStatusPasien,
 			);
 		}
@@ -91,17 +95,27 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 	}
 
 	render() {
-		// console.log(this.state);
+		console.log(this.state.listPolis);
 		const { currentUid, currentUsername } = this.props.mainStore;
 
 		const formListDokter = (
 			<Card>
-				{this.state.isDokters.map(element =>
-					<CardItem button
-						key={element.username}
-						onPress={() => this.setState({ isDokterPeriksa: element.username })}
+				<CardItem>
+					<Text>Pilih tanggal booking berikut:</Text>
+				</CardItem>
+				{this.state.listPolis.map(element =>
+					<CardItem button bordered
+						key={element._key}
+						onPress={() => this.setState({
+							isDokterPeriksa: element.poli1DokterName,
+							tanggalBooking: element.tanggal,
+						})}
 					>
-						<Text> {element.username} </Text>
+						<View>
+							<Text>Tanggal periksa: {element.tanggal}</Text>
+							<Text>Dokter Poli 1: {element.poli1DokterName}</Text>
+							{/* <Text>Dokter Poli 2: {element.poli2DokterName}</Text> */}
+						</View>
 					</CardItem>,
 				)}
 			</Card>
@@ -112,10 +126,13 @@ export default class DaftarAntrianPoliPageContainer extends React.Component<Prop
 				{this.state.isStatusPasien === "Umum" ? formListDokter : undefined}
 				<Card>
 					<CardItem>
-						<Text>Daftar Antrian Poli ke -
-								{this.state.sttFlagActivity === "antriPoliklinik"
-									? this.state.nomorAntriFromFb + " pada tanggal " + (moment().add(1, "days").format("YYYY-MM-DD") )
-									: "Belum mendaftar antrian."}</Text>
+						<View>
+							<Text>Dokter periksa: {this.state.isDokterPeriksa}</Text>
+							<Text>Daftar Antrian Poli ke -
+									{this.state.sttFlagActivity === "antriPoliklinik"
+										? this.state.nomorAntriFromFb + " pada tanggal " + (moment().add(1, "days").format("YYYY-MM-DD") )
+										: " Belum mendaftar antrian."}</Text>
+						</View>
 					</CardItem>
 					<CardItem>
 						<View>

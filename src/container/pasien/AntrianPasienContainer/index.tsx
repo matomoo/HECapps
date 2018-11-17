@@ -27,6 +27,7 @@ export interface Props {
 }
 export interface State {
 	listUsers;
+	btnDisabled;
 }
 
 @inject("mainStore", "pasienStore")
@@ -41,6 +42,7 @@ taskUser;
 		this.taskUser = db1.db.ref(`pasiens/${currentUid}`);
 		this.state = {
 			listUsers: [],
+			btnDisabled: true,
 		};
 	}
 
@@ -55,8 +57,9 @@ taskUser;
 				r1.push(result.val());
 				this.setState({
 					listUsers: r1,
+					btnDisabled: r1[0].flagActivity === "userIdle" ? false : true,
 				});
-
+				console.log(r1);
 			}).catch((err) => {
 				console.log(err);
 		});
@@ -68,6 +71,7 @@ taskUser;
 			<View>
 				<TouchableOpacity
 						onPress={this.props.onPress}
+						disabled={this.state.btnDisabled}
 						>
 					{ listUsers.map(el =>
 						<Card key="2">
@@ -75,9 +79,14 @@ taskUser;
 								<Text>Informasi nomor antrian</Text>
 							</CardItem>
 							<CardItem>
-								<Text>Nomor Antrian: { el.flagActivity === "antriPoliklinik"
-										? el.nomorAntrianPasien + " pada tanggal " + el.tanggalBooking
-										: "Belum mendaftar antrian." }</Text>
+								<View>
+									<Text>Nomor Antrian: { el.flagActivity === "antriPoliklinik"
+											? el.nomorAntrianPasien + " pada tanggal " + el.tanggalBooking
+											: "Belum mendaftar antrian." }</Text>
+									{ el.statusPasien === "Umum" &&
+										<Text>Dokter periksa: {el.dokterPeriksa}</Text>
+									}
+								</View>
 							</CardItem>
 						</Card>,
 					)}
