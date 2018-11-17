@@ -16,6 +16,7 @@ import { List,
 } from "native-base";
 // import Content from "../../theme/components/Content";
 // import moment from "moment";
+// import {RNHTMLtoPDF} from "react-native-html-to-pdf";
 
 export interface Props {
 	navigation: any;
@@ -122,7 +123,7 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 				// this.props.pasienStore.itemsRekamMedikDiagPasien.push( JSON.parse(res.itemDiag) );
 				// this.props.pasienStore.itemsRekamMedikObatPasien.push( JSON.parse(res.itemObat) );
 			});
-			console.log("pasienStore", this.props.pasienStore);
+			// console.log("pasienStore", this.props.pasienStore);
 		});
 	}
 
@@ -193,8 +194,26 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			});
 			db1.db.ref(`daftarTunggu`).child(`${currentPasienTerpilihUid}`).remove();
 			this.props.navigation.navigate("Home");
+			// this.createPDF();
+			// console.log("og pdf");
 		}
 	}
+
+	// async createPDF() {
+	// 	let options = {
+	// 		html: "<h1>PDF TEST</h1>",
+	// 		fileName: "test",
+	// 		directory: "Documents",
+	// 	};
+
+	// 	try {
+	// 		let file = await RNHTMLtoPDF.convert(options);
+	// 		alert(file.filePath);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// 	console.log("og pdf2");
+	// 	}
 
 	render() {
 		// console.log(this.props.navigation);
@@ -232,17 +251,12 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			</List>
 		);
 
-		// const menuApotek = (
-		// 	<List>
-		// 		<ListItem
-		// 			key="5"
-		// 			// onPress={() => this._onApotekSimpanData() }
-		// 			>
-		// 			<Left><Text>Simpan Data</Text></Left>
-		// 			<Right><Icon active name="ios-arrow-forward"/></Right>
-		// 		</ListItem>
-		// 	</List>
-		// );
+		const menuApotek = props => (
+			<CardItem button
+				onPress={() => this._onApotekSimpanData(props._key) } >
+				<Text>Status Apotek: { props.statusApotek }</Text>
+			</CardItem>
+		);
 
 		// const menuBilling = (
 		// 	<List>
@@ -280,6 +294,11 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 								<Text>{el.tanggalPeriksa} ({el.transaksiNomorFakturKeluar})</Text>
 							</CardItem>
 							<CardItem>
+								<Text>
+									Total Faktur: {parseInt(el.transaksiTotalDiag, 10) + parseInt(el.transaksiTotalObat, 10)}
+								</Text>
+							</CardItem>
+							<CardItem>
 								<Text>Diag: { JSON.parse(el.itemDiag).map( el1 => el1.namaDiag ).join(", ") }</Text>
 							</CardItem>
 							<CardItem>
@@ -289,14 +308,18 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 								</Text>
 							</CardItem>
 							<CardItem></CardItem>
-							<CardItem button
-								onPress={() => this._onApotekSimpanData(el._key) } >
-								<Text>Status Apotek: { el.statusApotek }</Text>
-							</CardItem>
-							<CardItem button
-								onPress={() => this._onBillingSimpanData(el._key) } >
-								<Text>Status Billing: { el.statusBilling }</Text>
-							</CardItem>
+							{ currentUserRole === "apotek" &&
+								<CardItem button
+									onPress={() => this._onApotekSimpanData(el._key) } >
+									<Text>Status Apotek: { el.statusApotek }</Text>
+								</CardItem>
+							}
+							{ currentUserRole === "billing" &&
+								<CardItem button
+									onPress={() => this._onBillingSimpanData(el._key) } >
+									<Text>Status Billing: { el.statusBilling }</Text>
+								</CardItem>
+							}
 						</Card>,
 					)
 				}
