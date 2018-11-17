@@ -251,12 +251,12 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			</List>
 		);
 
-		const menuApotek = props => (
-			<CardItem button
-				onPress={() => this._onApotekSimpanData(props._key) } >
-				<Text>Status Apotek: { props.statusApotek }</Text>
-			</CardItem>
-		);
+		// const menuApotek = props => (
+		// 	<CardItem button
+		// 		onPress={() => this._onApotekSimpanData(props._key) } >
+		// 		<Text>Status Apotek: { props.statusApotek }</Text>
+		// 	</CardItem>
+		// );
 
 		// const menuBilling = (
 		// 	<List>
