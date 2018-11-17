@@ -45,6 +45,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 					{ !!this.props.lists &&
 						<List>
 							{Object.keys(this.props.lists).map(key =>
+								this.props.lists[key].flagActivity === "antriPoliklinik" &&
 								<ListItem
 									key={key}
 									onPress={() => this.props.navigation.navigate("RekamMedikPasienPage", {name: {key}} )}

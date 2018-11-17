@@ -2,7 +2,7 @@ import React from "react";
 import { observer, inject } from "mobx-react/native";
 import DaftarTungguPage from "../../../stories/screens/resepsionis/DaftarTungguPage";
 import { db } from "../../../firebase";
-// import moment from "moment";
+import moment from "moment";
 
 export interface Props {
 	navigation: any;
@@ -16,7 +16,7 @@ export interface State {}
 export default class DaftarTungguPageContainer extends React.Component<Props, State> {
 
 	componentDidMount() {
-		db.GetLihatDaftarTungguByToday().then(snapshot => {
+		db.GetLihatDaftarTungguByToday( moment().format("YYYY-MM-DD")).then(snapshot => {
 			this.props.pasienStore.itemsPasien = snapshot.val();
 		});
 	}

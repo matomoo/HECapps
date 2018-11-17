@@ -18,7 +18,7 @@ import StatusPasien from "../pasien/StatusPasienContainer";
 import { db } from "../../firebase";
 import { AsyncStorage } from "react-native";
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 export interface Props {
 	navigation: any;

@@ -255,10 +255,15 @@ export const GetLihatDaftarTunggu = () => {
 	return getter;
 };
 
-export const GetLihatDaftarTungguByToday = () => {
-	const getter = db.ref("pasiens").orderByChild("flagActivity").equalTo("antriPoliklinikByToday").once("value");
+export const GetLihatDaftarTungguByToday = ( p ) => {
+	const getter = db.ref("pasiens").orderByChild("tanggalBooking").equalTo(`${p}`).once("value");
 	return getter;
 };
+
+// export const GetLihatDaftarTungguByToday = () => {
+// 	const getter = db.ref("pasiens").orderByChild("flagActivity").equalTo("antriPoliklinikByToday").once("value");
+// 	return getter;
+// };
 
 export const GetRekamMedikPasien = (uid) => {
 	const getter = db.ref(`pasiens/${uid}`).once("value");

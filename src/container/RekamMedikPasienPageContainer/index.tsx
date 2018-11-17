@@ -191,6 +191,9 @@ export default class RekamMedikPasienPageContainer extends React.Component<Props
 			db1.db.ref(`pasiens/${currentPasienTerpilihUid}`)
 				.update({
 					flagActivity: "userIdle",
+					dokterPeriksa: "-",
+					nomorAntrianPasien: 9999,
+					tanggalBooking: "",
 			});
 			db1.db.ref(`daftarTunggu`).child(`${currentPasienTerpilihUid}`).remove();
 			this.props.navigation.navigate("Home");

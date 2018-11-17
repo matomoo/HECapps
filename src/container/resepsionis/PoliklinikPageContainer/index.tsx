@@ -124,18 +124,18 @@ export default class PoliklinikPageContainer extends React.Component<Props, Stat
 	_handlePoli() {
 		const { selected1, selected2, chosenDate } = this.state;
 		db.doUpdateScheduleOfPoli(moment(chosenDate).format("YYYY-MM-DD"), selected1, selected2);
-		db.getDaftarTungguxxByTanggal(moment().format("YYYY-MM-DD"))
-			.then(c1 => {
-				const tasks = [];
-				c1.forEach(c2 => {
-					tasks.push({
-						_key: c2.key,
-					});
-					db.doUpdatePolidaftarTunggu(c2.key, "Poli1");
-					db.doUpdateFlagActivity(c2.key, "antriPoliklinikByToday");
-				});
-				this.setState({ tasks: tasks });
-			});
+		// db.getDaftarTungguxxByTanggal(moment().format("YYYY-MM-DD"))
+		// 	.then(c1 => {
+		// 		const tasks = [];
+		// 		c1.forEach(c2 => {
+		// 			tasks.push({
+		// 				_key: c2.key,
+		// 			});
+		// 			db.doUpdatePolidaftarTunggu(c2.key, "Poli1");
+		// 			db.doUpdateFlagActivity(c2.key, "antriPoliklinikByToday");
+		// 		});
+		// 		this.setState({ tasks: tasks });
+		// 	});
 		this.props.navigation.navigate("Home");
 	}
 
