@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Text, Button, Icon, Left, Body,
 			List,
 			ListItem,
 			Card,
@@ -28,7 +28,7 @@ class AntriBillingPage extends React.Component<Props, State> {
 						<Title>Antri Billing</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -36,7 +36,7 @@ class AntriBillingPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>

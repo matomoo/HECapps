@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from "native-base";
+import { Container, Header, Title, Content, Button, Icon, Left, Body } from "native-base";
 import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
@@ -24,14 +24,14 @@ class PoliklinikPage extends React.Component<Props, State> {
 						<Title>Pengaturan Poliklinik</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent onPress={() => this.props.navigation.navigate("Home")}>
 							<Icon
 								active
 								name="home"
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>

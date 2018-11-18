@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Button, Icon, Left, Body,
 			// List, ListItem, Text, Card,
 } from "native-base";
 import {
@@ -36,7 +36,7 @@ class ProfilePasienPage extends React.Component<Props, State> {
 						<Title>Profile Pasien</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -46,7 +46,7 @@ class ProfilePasienPage extends React.Component<Props, State> {
 								}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container, Header, Title, Content,
 		// Text,
 		// View,
-		Button, Icon, Left, Right, Body} from "native-base";
+		Button, Icon, Left, Body} from "native-base";
 import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
@@ -25,7 +25,7 @@ class UpdateUserPage extends React.Component<Props, State> {
 					<Body style={{ flex: 3 }}>
 						<Title>Update User Information</Title>
 					</Body>
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -33,7 +33,7 @@ class UpdateUserPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 				<Content padder>
 					{this.props.formInputBarang}

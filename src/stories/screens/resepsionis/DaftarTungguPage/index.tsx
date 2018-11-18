@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Text, Button, Icon, Left, Body,
 			List,
 			ListItem,
 			Card,
@@ -29,7 +29,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 						<Title>List Daftar Tunggu Poliklinik</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -37,7 +37,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
