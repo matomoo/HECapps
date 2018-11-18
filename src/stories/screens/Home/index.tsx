@@ -5,8 +5,8 @@ import {
 	Title,
 	Content,
 	Text,
-	// Button,
-	// Icon,
+	Button,
+	Icon,
 	// Left,
 	Body,
 	Right,
@@ -15,10 +15,11 @@ import {
 	// Footer, FooterTab,
 	View,
 } from "native-base";
-
+import { AsyncStorage } from "react-native";
 import FooterNav from "../../../navigation/FooterNav";
 import styles from "./styles";
 // import Footer from "../../../theme/components/Footer";
+import { NavigationActions } from "react-navigation";
 
 export interface Props {
 	navigation: any;
@@ -29,6 +30,12 @@ export interface Props {
 	selectedCard: any;
 }
 export interface State {}
+
+const resetAction = NavigationActions.reset({
+	index: 0,
+	actions: [NavigationActions.navigate({ routeName: "Login" })],
+});
+
 class Home extends React.Component<Props, State> {
 	render() {
 		// const key = this.props.authUid;
@@ -47,7 +54,18 @@ class Home extends React.Component<Props, State> {
 					<Body>
 						<Title>Dashboard</Title>
 					</Body>
-					<Right />
+					<Right>
+						<Button transparent>
+							<Icon
+								active
+								name="md-power"
+								onPress={() => {
+									AsyncStorage.setItem("@MySuperStore:xockey", "nok");
+									this.props.navigation.dispatch(resetAction);
+									}}
+							/>
+						</Button>
+					</Right>
 				</Header>
 				<Content
 					// style={styles.content}
