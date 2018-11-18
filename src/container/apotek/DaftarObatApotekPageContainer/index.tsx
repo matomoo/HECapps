@@ -16,7 +16,6 @@ import {
 
 export interface Props {
 	navigation: any;
-	pasienStore: any;
 	mainStore: any;
 	inputBarangApotekStore;
 }
@@ -24,7 +23,7 @@ export interface State {
 	listObats;
 }
 
-@inject ("pasienStore", "mainStore", "inputBarangApotekStore")
+@inject ("mainStore", "inputBarangApotekStore")
 @observer
 export default class DaftarObatApotekPageContainer extends React.Component<Props, State> {
 	taskObat;

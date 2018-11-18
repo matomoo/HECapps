@@ -1,6 +1,10 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body,
-			// List, ListItem, Text, Card,
+import { Container, Header, Content, Button, Icon, Left,
+			// Item, Input, Text,
+			Body,
+			Right,
+			// List, ListItem, Card, Text,
+			Title,
 } from "native-base";
 
 import styles from "./styles";
@@ -20,11 +24,9 @@ class DaftarObatPage extends React.Component<Props, State> {
 							<Icon name="ios-arrow-back" />
 						</Button>
 					</Left>
-
 					<Body style={{ flex: 3 }}>
 						<Title>Daftar Obat Apotek</Title>
 					</Body>
-
 					<Right>
 						<Button transparent>
 							<Icon
