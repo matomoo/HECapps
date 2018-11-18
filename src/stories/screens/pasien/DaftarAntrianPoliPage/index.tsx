@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -23,7 +23,7 @@ class DaftarAntrianPoliPage extends React.Component<Props, State> {
 						<Title>Daftar Antrian Poliklinik</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -31,12 +31,13 @@ class DaftarAntrianPoliPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
 					{this.props.forms}
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

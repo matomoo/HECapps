@@ -2,12 +2,13 @@ import * as React from "react";
 import { Container, Header, Content, Button, Icon, Left,
 			// Item, Input, Text,
 			Body,
-			Right,
+			// Right,
 			// List, ListItem, Card, Text,
 			Title,
 } from "native-base";
 
 import styles from "./styles";
+import FooterNav from "../../../../navigation/FooterNav";
 export interface Props {
 	navigation: any;
 	viewObats;
@@ -27,7 +28,7 @@ class DaftarObatPage extends React.Component<Props, State> {
 					<Body style={{ flex: 3 }}>
 						<Title>Daftar Obat Apotek</Title>
 					</Body>
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -35,12 +36,13 @@ class DaftarObatPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
 					{this.props.viewObats}
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

@@ -8,9 +8,10 @@ import {
 	// Input,
 	Picker,
 	Label,
-	// Button,
+	Button,
 	// Icon,
 	Text,
+	Separator,
 	// Right,
 	// Left,
 } from "native-base";
@@ -132,6 +133,10 @@ export default class UpdateUserPageContainer extends React.Component<Props, Stat
 						>
 						{ this._make_list(this.state.roles, "-Pilih User Role-")}
 					</Picker>
+					<Separator />
+					<Button block onPress={() => this._handleUpdateUserRole()}>
+						<Text>Simpan Data</Text>
+					</Button>
 				</Form>
 			</Card>
 		);

@@ -4,7 +4,7 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Bod
 			ListItem,
 			Card,
 } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -55,6 +55,7 @@ class AntriBillingPage extends React.Component<Props, State> {
 					}
 					</Card>
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

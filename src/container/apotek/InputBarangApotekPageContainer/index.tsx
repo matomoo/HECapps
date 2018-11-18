@@ -7,9 +7,10 @@ import {
 	Input,
 	Picker,
 	Label,
-	// Button,
+	Button,
 	// Icon,
-	// Text,
+	Text,
+	Separator,
 	// Right,
 	// Left,
 } from "native-base";
@@ -191,6 +192,10 @@ export default class InputBarangApotekPageContainer extends React.Component<Prop
 						>
 						{ this._make_list(this.props.inputBarangApotekStore.listJenisABM, "-Pilih Jenis Barang-")}
 					</Picker>
+					<Separator />
+					<Button block onPress={() => this._handleInputBarang()}>
+						<Text>Simpan Data</Text>
+					</Button>
 				</Form>
 			</Card>
 		);

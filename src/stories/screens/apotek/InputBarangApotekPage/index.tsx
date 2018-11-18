@@ -1,10 +1,16 @@
 import * as React from "react";
 import { Container, Header, Title, Content,
-		Text,
+		// Text,
 		// View,
-		Button, Icon, Left, Right, Body, Footer } from "native-base";
+		Button, Icon, Left,
+		// Right,
+		Body,
+		// Footer
+		} from "native-base";
 
 import styles from "./styles";
+import FooterNav from "../../../../navigation/FooterNav";
+
 export interface Props {
 	navigation: any;
 	formInputBarang: any;
@@ -25,7 +31,7 @@ class InputBarangApotekPage extends React.Component<Props, State> {
 					<Body style={{ flex: 3 }}>
 						<Title>Input Barang Apotek</Title>
 					</Body>
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -33,18 +39,19 @@ class InputBarangApotekPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 				<Content padder>
 					{this.props.formInputBarang}
 				</Content>
-				<Footer>
+				{/* <Footer>
 					<Content>
 						<Button block onPress={() => this.props.handleInputBarang()}>
 							<Text>Simpan Data</Text>
 						</Button>
 					</Content>
-				</Footer>
+				</Footer> */}
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

@@ -1,14 +1,16 @@
 import * as React from "react";
 import { Container, Header, Title, Content,
-		Text,
+		// Text,
 		// View,
-		Button, Icon, Left, Right, Body, Footer } from "native-base";
+		Button, Icon, Left, Body,
+		// Footer
+		} from "native-base";
 
 import styles from "./styles";
+import FooterNav from "../../../../navigation/FooterNav";
 export interface Props {
 	navigation: any;
 	formInputBarang: any;
-	handleUpdateRole: any;
 }
 export interface State {}
 class UpdateProfilePasienPage extends React.Component<Props, State> {
@@ -25,7 +27,7 @@ class UpdateProfilePasienPage extends React.Component<Props, State> {
 					<Body style={{ flex: 3 }}>
 						<Title>Update User Information</Title>
 					</Body>
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -33,18 +35,12 @@ class UpdateProfilePasienPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 				<Content padder>
 					{this.props.formInputBarang}
 				</Content>
-				<Footer>
-					<Content>
-						<Button block onPress={() => this.props.handleUpdateRole()}>
-							<Text>Simpan Data</Text>
-						</Button>
-					</Content>
-				</Footer>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

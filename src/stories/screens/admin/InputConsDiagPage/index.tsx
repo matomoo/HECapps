@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body, Footer } from "native-base";
+import { Container, Header, Title, Content, Button, Icon, Left, Body } from "native-base";
 
 import styles from "./styles";
+import FooterNav from "../../../../navigation/FooterNav";
 export interface Props {
 	navigation: any;
 	inputFormDiag: any;
@@ -24,20 +25,13 @@ class InputConsDiagPage extends React.Component<Props, State> {
 						<Title>Input Constant Diagnosa</Title>
 					</Body>
 
-					<Right />
+					{/* <Right /> */}
 				</Header>
 
 				<Content padder>
 					{ this.props.inputFormDiag }
 				</Content>
-
-				<Footer>
-					<Content>
-						<Button block onPress={() => this.props.handleInputDiag()}>
-							<Text>Simpan Data</Text>
-						</Button>
-					</Content>
-				</Footer>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

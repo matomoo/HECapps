@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Button, Icon, Left, Body,
 			// List, ListItem, Text, Card,
 } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -25,7 +25,7 @@ class DaftarUserPage extends React.Component<Props, State> {
 						<Title>Daftar User</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -33,12 +33,13 @@ class DaftarUserPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
 					{this.props.viewUsers}
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

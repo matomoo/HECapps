@@ -3,7 +3,7 @@ import { Container, Header, Title, Content,
 			// Text,
 			Button, Icon, Left, Right, Body,
 		} from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -26,7 +26,7 @@ class PengaturanPage extends React.Component<Props, State> {
 						<Title>Pengaturan</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -34,12 +34,13 @@ class PengaturanPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
 					{ this.props.forms }
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

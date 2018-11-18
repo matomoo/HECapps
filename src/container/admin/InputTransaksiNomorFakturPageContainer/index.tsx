@@ -6,6 +6,7 @@ import { Card,
 			Item,
 			Label,
 			Input,
+			Separator, Button, Text,
 } from "native-base";
 import { db } from "../../../firebase";
 
@@ -43,6 +44,10 @@ export default class InputTransaksiNomorFakturPageContainer extends React.Compon
 							onChangeText={e => form.transaksiNomorFakturKeluarOnChange(e)}
 						/>
 					</Item>
+					<Separator />
+					<Button block onPress={() => this._handleInputDiag()}>
+						<Text>Simpan Data</Text>
+					</Button>
 				</Form>
 			</Card>
 		);

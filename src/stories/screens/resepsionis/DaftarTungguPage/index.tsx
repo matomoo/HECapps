@@ -5,6 +5,7 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Bod
 			Card,
 } from "native-base";
 import moment from "moment";
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -57,6 +58,7 @@ class DaftarTungguPage extends React.Component<Props, State> {
 					}
 					</Card>
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

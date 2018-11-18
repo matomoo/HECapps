@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container, Header, Title, Content,
 	// Text,
 	Button, Icon, Left, Right, Body } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -39,6 +39,7 @@ class DashboardPage extends React.Component<Props, State> {
 				<Content padder>
 					{this.props.forms}
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -38,6 +38,7 @@ class PoliklinikPage extends React.Component<Props, State> {
 					{ this.props.forms }
 					{ this.props.skedul }
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

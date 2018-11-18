@@ -9,6 +9,7 @@ import {
 	Image,
 } from "react-native";
 import styles from "./styles";
+import FooterNav from "../../../../navigation/FooterNav";
 export interface Props {
 	navigation: any;
 	Users;
@@ -73,6 +74,7 @@ class ProfileDokterPage extends React.Component<Props, State> {
 						)
 					}
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

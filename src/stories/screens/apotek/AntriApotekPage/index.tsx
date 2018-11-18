@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Container, Header, Title, Content, Text, Button, Icon, Left, Right, Body,
+import { Container, Header, Title, Content, Text, Button, Icon, Left, // Right,
+			Body,
 			List,
 			ListItem,
 			Card,
 } from "native-base";
-
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -28,7 +29,7 @@ class AntriApotekPage extends React.Component<Props, State> {
 						<Title>Antri Apotek</Title>
 					</Body>
 
-					<Right>
+					{/* <Right>
 						<Button transparent>
 							<Icon
 								active
@@ -36,7 +37,7 @@ class AntriApotekPage extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("Home")}
 							/>
 						</Button>
-					</Right>
+					</Right> */}
 				</Header>
 
 				<Content padder>
@@ -55,6 +56,7 @@ class AntriApotekPage extends React.Component<Props, State> {
 					}
 					</Card>
 				</Content>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

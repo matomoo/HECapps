@@ -8,9 +8,10 @@ import {
 	Input,
 	Picker,
 	Label,
-	// Button,
+	Separator,
+	Button,
 	// Icon,
-	// Text,
+	Text,
 	// Right,
 	// Left,
 } from "native-base";
@@ -219,6 +220,10 @@ export default class UpdateProfilePasienPageContainer extends React.Component<Pr
 							onChangeText={e => this._handleDescriptionChange(e)}
 						/>
 					</Item>
+					<Separator/>
+					<Button block onPress={() => this._handleUpdateProfileDokter()}>
+						<Text>Simpan Data</Text>
+					</Button>
 				</Form>
 			</Card>
 		);
@@ -226,7 +231,6 @@ export default class UpdateProfilePasienPageContainer extends React.Component<Pr
 		return <UpdateProfilePasienPage
 					navigation={this.props.navigation}
 					formInputBarang={FormInputBarang}
-					handleUpdateRole={() => this._handleUpdateProfileDokter()}
 				/>;
 	}
 }

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Container, Header, Title, Content,
-		Text,
+		// Text,
 		// View,
-		Button, Icon, Left, Right, Body, Footer } from "native-base";
-
+		Button, Icon, Left, Right, Body} from "native-base";
+import FooterNav from "../../../../navigation/FooterNav";
 import styles from "./styles";
 export interface Props {
 	navigation: any;
@@ -38,13 +38,7 @@ class UpdateUserPage extends React.Component<Props, State> {
 				<Content padder>
 					{this.props.formInputBarang}
 				</Content>
-				<Footer>
-					<Content>
-						<Button block onPress={() => this.props.handleUpdateRole()}>
-							<Text>Simpan Data</Text>
-						</Button>
-					</Content>
-				</Footer>
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}

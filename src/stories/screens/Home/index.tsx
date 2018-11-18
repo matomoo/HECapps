@@ -5,17 +5,18 @@ import {
 	Title,
 	Content,
 	Text,
-	Button,
-	Icon,
-	Left,
+	// Button,
+	// Icon,
+	// Left,
 	Body,
 	Right,
 	Card,
 	CardItem,
-	// Footer,
+	// Footer, FooterTab,
 	View,
 } from "native-base";
 
+import FooterNav from "../../../navigation/FooterNav";
 import styles from "./styles";
 // import Footer from "../../../theme/components/Footer";
 
@@ -34,7 +35,7 @@ class Home extends React.Component<Props, State> {
 		return (
 			<Container style={styles.container}>
 				<Header>
-					<Left>
+					{/* <Left>
 						<Button transparent>
 							<Icon
 								active
@@ -42,7 +43,7 @@ class Home extends React.Component<Props, State> {
 								onPress={() => this.props.navigation.navigate("DrawerOpen")}
 							/>
 						</Button>
-					</Left>
+					</Left> */}
 					<Body>
 						<Title>Dashboard</Title>
 					</Body>
@@ -62,7 +63,7 @@ class Home extends React.Component<Props, State> {
 						{this.props.selectedCard}
 					</View>
 				</Content>
-				{/* <Footer></Footer> */}
+				<FooterNav navigation={this.props.navigation} />
 			</Container>
 		);
 	}
