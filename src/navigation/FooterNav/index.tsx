@@ -28,7 +28,6 @@ export interface State {
 export default class FooterNav extends React.Component<Props, State> {
 
 	render() {
-		const {currentUserRole} = this.props.mainStore;
 		return (
 			<Footer>
 					<FooterTab style={styles.footerTab}>
