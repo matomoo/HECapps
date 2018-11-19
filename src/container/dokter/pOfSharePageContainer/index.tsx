@@ -74,7 +74,7 @@ export default class POfSharePageContainer extends React.Component<Props, State>
 			<View>
 				{ taskShare.map ( el =>
 					el !== null &&
-					<Card>
+					<Card key="1">
 						<CardItem header>
 							<Text>View Percentage of Share</Text>
 						</CardItem>

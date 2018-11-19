@@ -87,7 +87,7 @@ taskPoli;
 				uName,
 				parseInt(this.state.nomorAntriFromFb, 10),
 				this.state.isDokterPeriksa ? this.state.isDokterPeriksa : "BPJS",
-				this.state.isStatusPasien === "UMUM" ? this.state.tanggalBooking : moment().add(1, "days").format("YYYY-MM-DD"),
+				this.state.isStatusPasien === "UMUM" ? moment().add(1, "days").format("YYYY-MM-DD") : this.state.tanggalBooking ,
 				this.state.isStatusPasien,
 			);
 		}
@@ -95,7 +95,7 @@ taskPoli;
 	}
 
 	render() {
-		console.log(this.state.listPolis);
+		console.log(this.state);
 		const { currentUid, currentUsername } = this.props.mainStore;
 
 		const formListDokter = (
@@ -130,7 +130,7 @@ taskPoli;
 							<Text>Dokter periksa: {this.state.isDokterPeriksa}</Text>
 							<Text>Daftar Antrian Poli ke -
 									{this.state.sttFlagActivity === "antriPoliklinik"
-										? this.state.nomorAntriFromFb + " pada tanggal " + (moment().add(1, "days").format("YYYY-MM-DD") )
+										? this.state.nomorAntriFromFb + " pada tanggal " + this.state.tanggalBooking
 										: " Belum mendaftar antrian."}</Text>
 						</View>
 					</CardItem>

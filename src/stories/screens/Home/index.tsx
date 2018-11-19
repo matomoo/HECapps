@@ -57,6 +57,7 @@ class Home extends React.Component<Props, State> {
 					<Right>
 						<Button transparent>
 							<Icon
+								style={{ color: "#ffab91" }}
 								active
 								name="md-power"
 								onPress={() => {
@@ -67,9 +68,7 @@ class Home extends React.Component<Props, State> {
 						</Button>
 					</Right>
 				</Header>
-				<Content
-					// style={styles.content}
-				>
+				<Content>
 					<View>
 						<Card>
 							<CardItem header>

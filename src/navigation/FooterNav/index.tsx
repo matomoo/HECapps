@@ -28,21 +28,23 @@ export interface State {
 export default class FooterNav extends React.Component<Props, State> {
 
 	render() {
-
+		const {currentUserRole} = this.props.mainStore;
 		return (
 			<Footer>
-					<FooterTab style={styles.container}>
+					<FooterTab style={styles.footerTab}>
 						<Button
 							onPress={() => this.props.navigation.navigate("Home")}
 						>
-							<Icon name="apps" />
-							<Text>Home</Text>
+							{/* <View style={styles.footerIcon}> */}
+								<Icon name="apps" style={styles.footerIcon}/>
+								<Text style={styles.footerIcon}>Home</Text>
+							{/* </View> */}
 						</Button>
 						<Button
 							onPress={() => this.props.navigation.navigate("ProfilePasienPage")}
 						>
-							<Icon name="person" />
-							<Text>Profile</Text>
+							<Icon name="person" style={styles.footerIcon}/>
+							<Text style={styles.footerIcon}>Profile</Text>
 						</Button>
 					</FooterTab>
 				</Footer>

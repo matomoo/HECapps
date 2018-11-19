@@ -11,7 +11,7 @@ import { Container, Header, Title, Content, Text,
 			// View,
 } from "native-base";
 // import _ from "lodash";
-
+import FooterNav from "../../../navigation/FooterNav";
 import styles from "./styles";
 
 export interface Props {
@@ -77,6 +77,9 @@ class RekamMedikPasienPage extends React.Component<Props, State> {
 						{ this.props.selectedCard }
 					</Card>
 				</Content>
+				{ this.props.userRole !== "dokter" &&
+					<FooterNav navigation={this.props.navigation} />
+				}
 			</Container>
 		);
 	}
