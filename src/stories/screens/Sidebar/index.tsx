@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, Container, List, ListItem, Content } from "native-base";
-import { NavigationActions } from "react-navigation";
+// import { NavigationActions } from "react-navigation";
 import { AsyncStorage } from "react-native";
 
 const routes = [
@@ -19,10 +19,10 @@ export interface Props {
 }
 export interface State {}
 
-const resetAction = NavigationActions.reset({
-	index: 0,
-	actions: [NavigationActions.navigate({ routeName: "Login" })],
-});
+// const resetAction = NavigationActions.reset({
+// 	index: 0,
+// 	actions: [NavigationActions.navigate({ routeName: "Login" })],
+// });
 
 export default class Sidebar extends React.Component<Props, State> {
 	render() {
@@ -38,9 +38,9 @@ export default class Sidebar extends React.Component<Props, State> {
 									button
 									onPress={() => {
 										AsyncStorage.setItem("@MySuperStore:xockey", "nok");
-										data.route === "Login"
-											? this.props.navigation.dispatch(resetAction)
-											: this.props.navigation.navigate(data.route);
+										// data.route === "Login"
+										// 	? this.props.navigation.dispatch(resetAction)
+										// 	: this.props.navigation.navigate(data.route);
 										// console.log(data.route);
 									}}
 								>

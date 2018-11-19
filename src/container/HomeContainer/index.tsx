@@ -101,7 +101,7 @@ export default class HomeContainer extends React.Component<Props, State> {
 	// }
 
 	render() {
-		console.log(this.props.pasienStore);
+		// console.log(this.props.pasienStore);
 		const key = this.props.mainStore.currentUid;
 		const { currentUserRole } = this.props.mainStore;
 

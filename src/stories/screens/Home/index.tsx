@@ -19,7 +19,7 @@ import { AsyncStorage } from "react-native";
 import FooterNav from "../../../navigation/FooterNav";
 import styles from "./styles";
 // import Footer from "../../../theme/components/Footer";
-import { NavigationActions } from "react-navigation";
+// import { NavigationActions } from "react-navigation";
 
 export interface Props {
 	navigation: any;
@@ -31,10 +31,10 @@ export interface Props {
 }
 export interface State {}
 
-const resetAction = NavigationActions.reset({
-	index: 0,
-	actions: [NavigationActions.navigate({ routeName: "Login" })],
-});
+// const resetAction = NavigationActions.reset({
+// 	index: 0,
+// 	actions: [NavigationActions.navigate({ routeName: "Login" })],
+// });
 
 class Home extends React.Component<Props, State> {
 	render() {
@@ -62,7 +62,8 @@ class Home extends React.Component<Props, State> {
 								name="md-power"
 								onPress={() => {
 									AsyncStorage.setItem("@MySuperStore:xockey", "nok");
-									this.props.navigation.dispatch(resetAction);
+									// this.props.navigation.dispatch(resetAction);
+									this.props.navigation.navigate("Login");
 									}}
 							/>
 						</Button>
