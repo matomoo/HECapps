@@ -238,13 +238,13 @@ export default class HomeContainer extends React.Component<Props, State> {
 					<Left><Text>View percentage of share</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
 				</CardItem>
-				<CardItem
+				{/* <CardItem
 					key="4"
 					button
 					onPress={() => this.props.navigation.navigate("ProfileDokterPage")} >
 					<Left><Text>Profil Dokter</Text></Left>
 					<Right><Icon active name="ios-arrow-forward"/></Right>
-				</CardItem>
+				</CardItem> */}
 			</Card>
 		);
 
